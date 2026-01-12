@@ -1,9 +1,9 @@
 # Australis Systems Documentation Repository
 
-**Repository**: Australis Systems Docs  
-**Status**: Active  
-**Last Updated**: 2026-01-12  
-**License**: Proprietary  
+**Repository**: Australis Systems Docs
+**Status**: Active
+**Last Updated**: 2026-01-12
+**License**: Proprietary
 
 ---
 
