@@ -2,6 +2,21 @@
 
 ######################################################################################################################
 
+CONTEXT: You are starting a new session, and you have been provided with a handover document and some content from the previous session.
+
+READ_AND_REVIEW:
+  - the handover document
+  - the CODE_IMPLEMENTATION_SPEC and/or DEBUG_TROUBLESHOOTING_SPEC
+  - the provided content from the previous session
+
+DOCUMENTS:
+
+
+then HALT
+
+######################################################################################################################
+
+
 Base_Directory: docs/implementation/instructions/v2/
 File_Extension: .yaml
 
@@ -202,9 +217,17 @@ ENFORCE:
   - "003-PROTOCOL-FastAPI_Pure_Code_Implementation"
   - "004-PROTOCOL-Validate_Remediate_Codebase"
 
+
+REMEMBER:
+  - USE MCP TOOLS CONTEXT7 AND MCP TOOLS GREP.
+  - SCAFFOLD THE CURRENT CODE FROM THE REF CODEBASES FIRST.
+  - THEN, COPY THE FILES FORM THE REF REPOS.
+  - THEN, ADAPT TO THE DESTINATION CODEBASE.
+
 EXECUTE: "205-INSTRUCTIONS-Scaffolding_Prioritization_Comparative_Selection-v2.0.0"
 
 INPUTS:
+
 
 
 
