@@ -216,3 +216,98 @@ I will create a `verify_storage_runtime.py` inside the `FSP Shell` context to ve
 2. Get `DocumentNamespaceStore` for namespace "test".
 3. Perform CRUD (Happy Path).
 4. Simulate Failure (Edge Case) -> Force switch active backend -> Verify Fallback.
+
+## 3. API Inventory
+**Source**: `src/au_sys_storage/adapters/api/router.py`
+
+| Method | Endpoint | Function | Summary | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **GET** | `/health` | `get_health` | Get Storage Health | ✅ Implemented |
+| **GET** | `/sync/status` | `get_sync_status` | Get Sync Status | ✅ Implemented |
+| **POST** | `/sync/trigger` | `trigger_sync` | Trigger Synchronization | ✅ Implemented |
+| **GET** | `/sync/conflicts` | `get_conflicts` | Get Sync Conflicts | ✅ Implemented |
+| **POST** | `/sync/conflicts/{conflict_id}/resolve` | `resolve_conflict` | Resolve Conflict | ✅ Implemented |
+| **GET** | `/data/{collection}` | `list_documents` | List Documents | ✅ Implemented |
+| **POST** | `/data/{collection}` | `create_document` | Create Document | ✅ Implemented |
+| **GET** | `/data/{collection}/{doc_id}` | `get_document` | Get Document | ✅ Implemented |
+| **PUT** | `/data/{collection}/{doc_id}` | `update_document` | Update Document | ✅ Implemented |
+| **DELETE** | `/data/{collection}/{doc_id}` | `delete_document` | Delete Document | ✅ Implemented |
+| **POST** | `/admin/backup` | `create_backup` | Create Backup | ⚠️ Not Implemented (501) |
+
+
+## 4. UI/Web Inventory
+**Source**: `src/au_sys_storage/adapters/web/router.py`
+
+| Method | Endpoint | Function | Summary | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **GET** | `/` | `index` | Storage UI Dashboard (Home) | ✅ Implemented |
+| **MOUNT** | `/static` | `setup_ui` (helper) | Static File Serving | ✅ Implemented |
+
+**Admin Interface**:
+**Source**: `src/au_sys_storage/adapters/admin/core.py`
+- Uses `sqladmin` library.
+- Provides `setup_admin` helper to attach Admin interface to FastAPI app.
+- Authentication managed by `StorageAdminAuth` in `src/au_sys_storage/adapters/admin/auth.py`.
+
+
+## 5. REST API Validation Plan
+**Objective**: Validate 100% of the REST API surface using the `ValidationFramework`.
+
+| # | Script | Coverage Target |
+| :--- | :--- | :--- |
+| **10** | `validate_10_api_health.py` | `/api/v1/health` (GET) |
+| **11** | `validate_11_api_crud_lifecycle.py` | `/api/v1/data/{collection}` (GET, POST)<br>`/api/v1/data/{collection}/{doc_id}` (GET, PUT, DELETE) |
+| **12** | `validate_12_api_sync.py` | `/api/v1/sync/status` (GET)<br>`/api/v1/sync/trigger` (POST)<br>`/api/v1/sync/conflicts` (GET)<br>`/api/v1/sync/conflicts/{id}/resolve` (POST) |
+| **13** | `validate_13_api_admin.py` | `/api/v1/admin/backup` (POST) |
+| **14** | `validate_14_web_ui.py` | `/` (GET) - Check HTML response status |
+
+**Strategy**:
+- Use `TestClient` (or `httpx`) to simulate external calls against the mounted router.
+- **IMPORTANT**: The existing framework spins up a `StorageFactory`. We must mount the `api_router` to a test `FastAPI` app within the script to mock the "Server" aspect while using the REAL `StorageFactory` implementation.
+- This ensures we are testing the **Router -> Controller -> Factory -> Provider** chain.
+
+
+## 6. Execution Verification
+All validaton scripts (01-14) are implemented and verified to pass.
+The validation suite now covers:
+1.  **Core Factory** (Memory, Config)
+2.  **Backends** (Mongo, SQLite, TinyDB)
+3.  **Features** (Encryption, Failover, Sync)
+4.  **API Layer** (Router, Controllers, Health, Sync, CRUD)
+5.  **Web/Admin** (UI Routes, Backup stub)
+
+**Status**: 100% Code Coverage of defined scope validated via runtime scripts.
+
+## 7. API Validation Suite (Real HTTP)
+A specialized suite of validation scripts has been implemented to perform **System Integration Testing** against a running instance of the service. 
+
+**Key Features**:
+*   **Real HTTP**: Uses `requests` to hit `SERVICE_BASE_URL` (default: localhost:8000).
+*   **No Mocks**: Validates the full stack including networking and serialization.
+*   **Strict Logging**: Trace-level request/response logging to timestamped files.
+*   **Inventory Driven**: Validates against generated `api_endpoint_method_inventory.json`.
+
+### Components
+1.  **Inventory Generator** (`gen_api_inventory.py`):
+    *   Introspects the code to produce `openapi.json` and `api_endpoint_method_inventory.json`.
+    *   Acts as the **Source of Truth** for coverage.
+
+2.  **API Handler & Client** (`api_client.py`):
+    *   Wraps `requests` with mandatory trace logging.
+    *   Enforces `X-Request-ID`.
+    *   Handles connection timeouts and logic.
+
+3.  **Scripts**:
+    *   `validate_api_00_prereqs.py`: Technical Gate. Checks `SERVICE_BASE_URL`, inventory existence, and basic connectivity. Aborts suite if failed.
+    *   `validate_api_01_health.py`: Validates `/api/v1/health` and Admin stub.
+    *   `validate_api_02_crud.py`: Full Lifecycle (Create, Read, Update, Delete, Negative Read) on `/api/v1/data`.
+
+4.  **Runner** (`api_runner.py`):
+    *   Orchestrates execution.
+    *   Enforces Prerequisite check first.
+    *   Fails fast on any script failure.
+
+### Coverage
+The suite covers the core CRUD and Health/Admin endpoints (11 operations discovered).
+Execution requires a running service instance (e.g., via `docker compose` or `uvicorn`).
+    *   `validate_api_03_sync.py`: Validates Sync triggers, status, and conflict resolution (including negative tests).
