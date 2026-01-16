@@ -1,0 +1,277 @@
+standard:
+  id: "322"
+  title: "Standard Validation Suite Architecture (The 'Au-Sys-Storage' Pattern)"
+  version: "1.0.0"
+  status: "ACTIVE"
+  references:
+    - "321-INSTRUCTIONS-Validation_CORE_Services-v1.0.0.yaml"
+
+  intent: >
+    Define the mandatory directory structure and implementation pattern for
+    Production Validation Suites within Sovereign Capabilities.
+    This standardizes the "how" of complying with Protocol 321.
+
+  directory_structure:
+    root: "libraries/python/capabilities/{capability}/src/{package_name}/validation/"
+    required_files:
+      - "__init__.py"           # Empty marker
+      - "framework.py"          # The Logic Core (TestResult, Logger, Assertions)
+      - "runner.py"             # The Executor (Discovers and runs scripts)
+      - "validate_00_prereqs.py" # The Gatekeeper (Validates environment)
+      - "validate_xx_*.py"      # Sequential Test Scripts
+    ignored_patterns:
+      - "logs/"                 # Must be gitignored
+
+  templates:
+    framework_py: |
+      import os
+      import sys
+      import json
+      import logging
+      import datetime
+      import time
+      import contextlib
+      from typing import Any, Dict, List, Optional
+      from dataclasses import dataclass, asdict
+
+      # Ensure we can import the library locally if needed
+      current_dir = os.path.dirname(os.path.abspath(__file__))
+      src_path = os.path.abspath(os.path.join(current_dir, "../.."))
+      if src_path not in sys.path:
+          sys.path.append(src_path)
+
+      @dataclass
+      class TestResult:
+          sequence: int
+          test_id: str
+          description: str
+          command: str
+          inputs: Any
+          expected: Any
+          actual: Any
+          comparison_type: str
+          passed: bool
+          error_detail: Optional[str] = None
+
+      @dataclass
+      class OperationRecord:
+          timestamp: str
+          script_id: str
+          run_id: str
+          operation_id: str
+          operation_sequence_number: int
+          operation_type: str
+          command_executed: str
+          inputs: Any
+          outputs: Any
+          status: str
+          duration_ms: float
+          warnings: List[str]
+          errors: List[str]
+          correlation_id: Optional[str] = None
+
+          def to_dict(self):
+              return {k: v for k, v in asdict(self).items() if v is not None}
+
+      class ValidationFramework:
+          def __init__(self, script_name: str):
+              self.script_name = script_name
+              self.run_id = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+              self.tests: List[TestResult] = []
+              self.sequence_counter = 1
+              self.operation_counter = 1
+              self.log_dir = os.path.join(current_dir, "logs")
+              self.log_file = os.path.join(self.log_dir, f"{script_name}_{self.run_id}.log")
+
+              if not os.path.exists(self.log_dir):
+                  os.makedirs(self.log_dir)
+
+              self.logger = logging.getLogger(script_name)
+              self.logger.setLevel(logging.DEBUG)
+              self.logger.handlers = []
+
+              fh = logging.FileHandler(self.log_file)
+              fh.setLevel(logging.DEBUG)
+              fh.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+              self.logger.addHandler(fh)
+
+              ch = logging.StreamHandler(sys.stdout)
+              ch.setLevel(logging.INFO)
+              ch.setFormatter(logging.Formatter('%(message)s'))
+              self.logger.addHandler(ch)
+
+              self.log_header()
+
+          def log_header(self):
+              header = {
+                  "type": "SCRIPT_START",
+                  "script_id": self.script_name,
+                  "run_id": self.run_id,
+                  "log_file": self.log_file,
+                  "timestamp": datetime.datetime.utcnow().isoformat()
+              }
+              self.logger.info(f"SCRIPT_START: {json.dumps(header)}")
+              print(f"[{self.script_name}] Started. Log: {self.log_file}")
+
+          def log_footer(self):
+              passed = sum(1 for t in self.tests if t.passed)
+              failed = sum(1 for t in self.tests if not t.passed)
+              footer = {
+                  "type": "SCRIPT_END",
+                  "total_tests": len(self.tests),
+                  "passed": passed,
+                  "failed": failed,
+                  "timestamp": datetime.datetime.utcnow().isoformat()
+              }
+              self.logger.info(f"SCRIPT_END: {json.dumps(footer)}")
+
+              if failed > 0:
+                  print(f"[{self.script_name}] FAILED. {passed}/{len(self.tests)} passed.")
+                  sys.exit(1)
+              else:
+                  print(f"[{self.script_name}] PASSED. {passed}/{len(self.tests)} passed.")
+                  sys.exit(0)
+
+          def _record_result(self, result: TestResult):
+              self.tests.append(result)
+              log_entry = {
+                  "type": "TEST_RESULT",
+                  "sequence": result.sequence,
+                  "test_id": result.test_id,
+                  "description": result.description,
+                  "inputs": str(result.inputs),
+                  "expected": str(result.expected),
+                  "actual": str(result.actual),
+                  "comparison": result.comparison_type,
+                  "passed": result.passed,
+                  "error": result.error_detail
+              }
+              if result.passed:
+                  self.logger.info(f"PASS [{result.test_id}]: {json.dumps(log_entry)}")
+              else:
+                  self.logger.error(f"FAIL [{result.test_id}]: {json.dumps(log_entry)}")
+
+          def expect_equal(self, test_id: str, description: str, inputs: Any, expected: Any, actual: Any):
+              passed = (expected == actual)
+              result = TestResult(
+                  sequence=self.sequence_counter,
+                  test_id=test_id,
+                  description=description,
+                  command="equality_check",
+                  inputs=inputs,
+                  expected=expected,
+                  actual=actual,
+                  comparison_type="equality",
+                  passed=passed,
+                  error_detail=None if passed else f"Expected {expected}, got {actual}"
+              )
+              self.sequence_counter += 1
+              self._record_result(result)
+              if not passed:
+                  self.log_footer()
+
+          def expect_true(self, test_id: str, description: str, inputs: Any, actual: Any):
+              passed = bool(actual)
+              result = TestResult(
+                  sequence=self.sequence_counter,
+                  test_id=test_id,
+                  description=description,
+                  command="predicate_check",
+                  inputs=inputs,
+                  expected=True,
+                  actual=actual,
+                  comparison_type="predicate",
+                  passed=passed,
+                  error_detail=None if passed else "Predicate evaluated to False"
+              )
+              self.sequence_counter += 1
+              self._record_result(result)
+              if not passed:
+                  self.log_footer()
+
+          def log_operation(self, operation_type: str, command_executed: str, inputs: Any, outputs: Any, status: str, duration_ms: float, warnings: List[str] = None):
+              record = OperationRecord(
+                  timestamp=datetime.datetime.utcnow().isoformat(),
+                  script_id=self.script_name,
+                  run_id=self.run_id,
+                  operation_id=f"OP-{self.run_id}-{self.operation_counter:03d}",
+                  operation_sequence_number=self.operation_counter,
+                  operation_type=operation_type,
+                  command_executed=command_executed,
+                  inputs=inputs,
+                  outputs=outputs,
+                  status=status,
+                  duration_ms=duration_ms,
+                  warnings=warnings or [],
+                  errors=[]
+              )
+              self.operation_counter += 1
+              self.logger.debug(f"TRACE: {json.dumps({'type': 'OPERATION_TRACE', **record.to_dict()})}")
+
+    runner_py: |
+      import os
+      import sys
+      import subprocess
+      import time
+      import glob
+      import re
+      import datetime
+
+      def run_validation_suite():
+          print("=========================================================")
+          print("   CAPABILITY PRODUCTION VALIDATION SUITE RUNNER")
+          print("=========================================================")
+
+          # 1. Discover Scripts
+          base_dir = os.path.dirname(os.path.abspath(__file__))
+          # Regex for strictly numbered scripts: validate_01_name.py
+          scripts = [
+              s for s in sorted(glob.glob(os.path.join(base_dir, "validate_*.py")))
+              if re.match(r"^validate_\d{2}_.*\.py$", os.path.basename(s))
+          ]
+
+          if not scripts:
+              print("[ERROR] No validation scripts found in:", base_dir)
+              sys.exit(1)
+
+          print(f"[INFO] Found {len(scripts)} validation scripts.")
+
+          passed = 0
+          failed = 0
+
+          # 2. Execute Sequentially
+          for i, script in enumerate(scripts):
+              script_name = os.path.basename(script)
+              print(f"\n[{i+1}/{len(scripts)}] Running {script_name}...")
+              start_time = time.time()
+
+              # Setup Environment (Ensure library is importable)
+              library_root = os.path.abspath(os.path.join(base_dir, "../.."))
+              env = os.environ.copy()
+              env["PYTHONPATH"] = f"{library_root}{os.pathsep}{env.get('PYTHONPATH', '')}"
+
+              try:
+                  subprocess.run([sys.executable, script], env=env, check=True)
+                  print(f"✅ PASS: {script_name} ({time.time() - start_time:.2f}s)")
+                  passed += 1
+              except subprocess.CalledProcessError as e:
+                  print(f"❌ FAIL: {script_name} (Exit Code: {e.returncode})")
+                  print(f"!!! CRITICAL FAILURE: Aborting suite !!!")
+                  sys.exit(1)
+
+          # 3. Summary
+          print("\n=========================================================")
+          print(f"   SUITE COMPLETE: {passed}/{len(scripts)} Passed")
+          print("=========================================================")
+          sys.exit(0 if failed == 0 else 1)
+
+      if __name__ == "__main__":
+          run_validation_suite()
+
+  action_checklist:
+    - "Create the `validation/` directory in the capability source tree."
+    - "Add `framework.py` and `runner.py` using the templates above."
+    - "Ensure `logs/` is added to `.gitignore`."
+    - "Implement `validate_00_prereqs.py` to check database/service connectivity."
+    - "Implement capability-specific test scripts (`validate_01_...py`)."
+    - "Run `python runner.py` to execute the full suite."
