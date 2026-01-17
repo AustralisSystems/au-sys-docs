@@ -1,11 +1,11 @@
 standard:
-  id: "322"
+  id: "320"
   title: "Standard Validation Suite Architecture (The 'Au-Sys-Storage' Pattern)"
   version: "1.0.0"
   status: "ACTIVE"
   references:
     - "321-INSTRUCTIONS-Validation_CORE_Services-v1.0.0.yaml"
-
+    - "322-INSTRUCTIONS-Validation_Suite_Standard_Structure-v1.0.0.yaml"
   intent: >
     Define the mandatory directory structure and implementation pattern for
     Production Validation Suites within Sovereign Capabilities.
@@ -271,7 +271,7 @@ standard:
   action_checklist:
     - "Create the `validation/` directory in the capability source tree."
     - "Add `framework.py` and `runner.py` using the templates above."
-    - "Ensure `logs/` is added to `.gitignore`."
+    - "Ensure `logs/` is added to `.gitignore` and excluded from `pyproject.toml`."
     - "Implement `validate_00_prereqs.py` to check database/service connectivity."
     - "Implement capability-specific test scripts (`validate_01_...py`)."
     - "Run `python runner.py` to execute the full suite."

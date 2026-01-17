@@ -30,6 +30,23 @@ DOCUMENTS:
 
 then HALT
 
+
+
+######################################################################################################################
+
+These docs are part of the the previous session and are the the implemtation plans and other related docs. Review them to uncover futher info, gaps and details NOT included in the handover or other previous content provided.
+
+READ_AND_REVIEW:
+  - the provided content from the previous session
+
+DOCUMENTS:
+
+
+
+then HALT
+
+
+
 ######################################################################################################################
 
 # CONTEXT
