@@ -630,75 +630,339 @@ The following FastAPI Services Platform documentation has been reviewed:
 
 ---
 
-## 📝 IMPLEMENTATION FINDINGS
+## 📝 COMPREHENSIVE GAP ANALYSIS & FINDINGS
 
-### Initial Findings
+### Session Context Review
 
-**Date**: [YYYY-MM-DD HH:MM:SS (Australia/Adelaide)]
+**Date**: 2026-01-17 11:30:00 (Australia/Adelaide)
 
-1. **Protocols Successfully Loaded**
-   - All required doctrine and protocols have been loaded and parsed
-   - Multiple protocols are actively enforced for this session
-   - Implementation instruction protocols loaded
+**Documents Analyzed**:
+1. ✅ Handover Report (20260117_004500) - Async deadlock root cause identified
+2. ✅ Chat History Parts 1-3 - Implementation progression (D+ → B+)
+3. ✅ Gap Implementation SPEC - 90% complete, 3 gaps remaining
+4. ✅ Runtime Verification SPEC - 100% validation suite implemented
 
-2. **FastAPI Services Platform Documentation Reviewed**
-   - Comprehensive platform documentation reviewed
-   - Architecture and engine documentation reviewed
-   - Key architectural principles understood
+### Critical Findings Summary
 
-3. **Session State**
-   - Session initialized per user instruction
-   - Awaiting explicit implementation task or requirement identification
-   - No files modified yet
-   - No specific implementation identified yet
+#### 1. **Async Deadlock Issue (CRITICAL - BLOCKING)**
+
+**Status**: 🔴 UNRESOLVED
+**Priority**: P0 - CRITICAL BLOCKER
+**Impact**: Validation suite cannot execute
+
+**Root Cause Identified**:
+- `DynamicStorageManager` uses synchronous `threading.Lock`
+- Blocking asyncio event loop when called from async context
+- `validate_00_prereqs.py` hangs at `factory.get_storage()` call
+
+**Previous Remediation Attempted**:
+- ✅ Refactored `StorageFactory.get_storage()` to async coroutine
+- ✅ Replaced `threading.Lock` with `asyncio.Lock` in `DynamicStorageManager`
+- ✅ Updated `app.py` and `dependencies.py` to await factory calls
+- ✅ Converted MongoDB connection test to use `AsyncIOMotorClient`
+
+**Current Status**:
+- `validate_00_prereqs.py` passes INV_001 test
+- Script proceeds past storage acquisition (previously hung)
+- ⚠️ **REMAINING WORK**: Scripts 01-04 need async updates
+
+**Files Requiring Async Updates**:
+```
+libraries/python/capabilities/au_sys_storage/src/au_sys_storage/validation/
+├── validate_01_core_logic.py      # ⚠️ Needs async update
+├── validate_02_api_endpoints.py   # ⚠️ Needs async update
+├── validate_03_*.py               # ⚠️ Needs async update
+└── validate_04_*.py               # ⚠️ Needs async update
+```
+
+#### 2. **Implementation Progress Assessment**
+
+**Overall Grade**: B+ (90% complete) ⬆️ from D+ (55%)
+
+**Progression Timeline**:
+- **Initial State** (Jan 16 AM): D+ (55%) - 7 CRITICAL gaps identified
+- **Mid-Implementation** (Jan 16 PM): B (85%) - Gaps 1.1-1.4 complete
+- **Current State** (Jan 17): **B+ (90%)** - 6 gaps complete, 3 gaps 30-85% complete
+
+**Gap Completion Status**:
+
+| Gap | Status | Progress | Notes |
+|-----|--------|----------|-------|
+| **1.1** Multi-Tenancy | ✅ COMPLETE | 100% | ContextVar + Middleware implemented |
+| **1.2** PostgreSQL/SQLAlchemy | ✅ COMPLETE | 100% | Async provider with schema isolation |
+| **1.3** Beanie ODM | ✅ COMPLETE | 100% | Full async MongoDB provider |
+| **1.4** Duplicate Interfaces | ✅ COMPLETE | 100% | Canonical interfaces established |
+| **1.5** Operational APIs | 🟡 PARTIAL | 85% | 35+ endpoints implemented, integration tests pending |
+| **1.6** SQLAdmin Integration | 🟡 PARTIAL | 80% | 7 views registered, RBAC + Export pending |
+| **1.7** Web UI | 🟡 PARTIAL | 30% | Dashboard done, 10 pages remaining |
+
+#### 3. **Validation Suite Implementation Status**
+
+**Total Scripts**: 16 validation scripts
+**Status**: 100% IMPLEMENTED but BLOCKED by async issues
+
+**Core Validation Suite** (6 scripts):
+- ✅ `validate_00_prereqs.py` - Prerequisites (PASSES INV_001, hangs at factory)
+- ⚠️ `validate_01_core_logic.py` - Factory/Manager logic (NEEDS ASYNC UPDATE)
+- ⚠️ `validate_02_backends.py` - MongoDB, SQLite, TinyDB (NEEDS ASYNC UPDATE)
+- ⚠️ `validate_03_encryption.py` - AES encryption (NEEDS ASYNC UPDATE)
+- ⚠️ `validate_04_failover.py` - Resilience testing (NEEDS ASYNC UPDATE)
+- ⚠️ `validate_05_sync.py` - Synchronization (NEEDS ASYNC UPDATE)
+
+**API Validation Suite** (5 scripts):
+- ⚠️ `validate_10_api_health.py` - Health endpoints (NEEDS ASYNC UPDATE)
+- ⚠️ `validate_11_api_crud_lifecycle.py` - Full CRUD (NEEDS ASYNC UPDATE)
+- ⚠️ `validate_12_api_sync.py` - Sync endpoints (NEEDS ASYNC UPDATE)
+- ⚠️ `validate_13_api_admin.py` - Admin backup (NEEDS ASYNC UPDATE)
+- ⚠️ `validate_14_web_ui.py` - Web UI routes (NEEDS ASYNC UPDATE)
+
+**Advanced Testing** (3 scripts):
+- ⚠️ `verify_storage.py` - Happy path CRUD (NEEDS ASYNC UPDATE)
+- ⚠️ `verify_resilience.py` - Failover/Recovery (NEEDS ASYNC UPDATE)
+- ⚠️ `verify_continuous.py` - Continuous resilience (NEEDS ASYNC UPDATE)
+
+**HTTP Validation Suite** (4 scripts + infrastructure):
+- ⚠️ `validate_api_00_prereqs.py` - Technical gate (NEEDS ASYNC UPDATE)
+- ⚠️ `validate_api_01_health.py` - Health endpoints (NEEDS ASYNC UPDATE)
+- ⚠️ `validate_api_02_crud.py` - Full lifecycle (NEEDS ASYNC UPDATE)
+- ⚠️ `validate_api_03_sync.py` - Sync operations (NEEDS ASYNC UPDATE)
+
+#### 4. **Gap 1.5: Operational APIs (85% Complete)**
+
+**Status**: 🟡 85% COMPLETE
+**Remaining**: 15% (Integration tests)
+
+**Implemented** (35+ endpoints across 7 routers):
+```
+src/au_sys_storage/adapters/api/endpoints/
+├── ✅ database.py        # 8 endpoints - Database lifecycle
+├── ✅ backup.py          # 7 endpoints - Backup operations
+├── ✅ snapshot.py        # 5 endpoints - Snapshot management
+├── ✅ sync.py            # 6 endpoints - Sync operations
+├── ✅ failover.py        # 4 endpoints - Failover management
+├── ✅ connections.py     # 3 endpoints - Connection management
+└── ✅ secrets.py         # 4 endpoints - Secret management
+```
+
+**Missing**:
+- Integration tests for all 35+ endpoints
+- End-to-end workflow validation
+- Error handling validation
+
+#### 5. **Gap 1.6: SQLAdmin Integration (80% Complete)**
+
+**Status**: 🟡 80% COMPLETE
+**Remaining**: 20% (RBAC + Export)
+
+**Implemented**:
+- ✅ 7 core admin views registered:
+  1. Provider Management
+  2. Database Management
+  3. Backup Management
+  4. Sync Management
+  5. Tenant Management
+  6. Health Management
+  7. Audit Logs
+- ✅ Factory integration with auto-discovery
+- ✅ Basic CRUD operations
+
+**Missing**:
+- Role-Based Access Control (RBAC)
+- Export capabilities (CSV, JSON, Excel)
+- Advanced filtering and search
+
+#### 6. **Gap 1.7: Web UI (30% Complete)**
+
+**Status**: 🟡 30% COMPLETE
+**Remaining**: 70% (10 pages)
+
+**Tech Stack**: HTMX + DaisyUI + Tailwind v4 + Jinja2
+
+**Implemented** (1 page):
+- ✅ Dashboard - Real-time health radial, connection counts, infrastructure logs
+
+**Missing** (10 pages):
+1. 🔴 Providers Management - Visual list with health indicators
+2. 🔴 Database Inventory - Lifecycle management, backup triggers
+3. 🔴 Backup & Recovery - History, restore operations
+4. 🔴 Sync Management - Status, triggers, conflict resolution
+5. 🔴 Health Monitoring - Real-time metrics, diagnostics
+6. 🔴 Connection Pools - Live monitoring, pool status
+7. 🔴 Tenant Management - Isolation, configuration
+8. 🔴 Audit Logs - User actions, system events, security
+9. 🔴 Settings - Configuration management
+10. 🔴 Documentation - In-app help and API docs
+
+#### 7. **Architecture & Implementation Achievements**
+
+**Completed Features** (from Gap Implementation SPEC):
+
+**Multi-Tenancy** (Gap 1.1):
+- ✅ ContextVar-based tenant isolation
+- ✅ TenancyMiddleware for header extraction (`X-Tenant-ID`)
+- ✅ DatabaseNamingService for standardized naming
+- ✅ Thread-safe request-scoped context
+
+**PostgreSQL Provider** (Gap 1.2):
+- ✅ SQLAlchemy 2.0 with async support (asyncpg)
+- ✅ `schema_translate_map` for tenant schema isolation
+- ✅ Connection pooling with pre-ping
+- ✅ Transaction management
+
+**Beanie ODM Provider** (Gap 1.3):
+- ✅ Full async MongoDB provider with Motor
+- ✅ Pydantic V2 integration
+- ✅ AuSysDocument base with multi-tenancy + audit fields
+- ✅ Dynamic database switching
+- ✅ Advanced queries and aggregation pipelines
+
+**Operational Surface Area** (Gap 1.5):
+- ✅ 35+ REST endpoints across 7 modular routers
+- ✅ Database lifecycle management
+- ✅ Backup and recovery operations
+- ✅ Snapshot management
+- ✅ Replication and sync
+- ✅ Failover and resilience
+- ✅ Connection pool monitoring
+- ✅ Secret management
+
+#### 8. **Key Technical Decisions**
+
+**Logging Strategy** (from user directive):
+> "do not create or use a 'logger factory', the au_sys_storage MAY have its own logger implementation, but IT MUST be the fallback logger... Another 'au_sys_logging' service will be created"
+
+**Implication**: Use simple fallback logging internally, NOT centralized logger factory
+
+**Async Architecture**:
+- All database operations async
+- `asyncio.Lock` instead of `threading.Lock`
+- `AsyncIOMotorClient` for MongoDB
+- `asyncpg` for PostgreSQL
+- Async session management
+
+**Provider Architecture**:
+- **PostgreSQL**: Schema isolation via `schema_translate_map`
+- **MongoDB**: Database switching via dynamic connection
+- **SQLite**: File-based isolation
+- **TinyDB**: Async-wrapped fallback for edge scenarios
+
+#### 9. **Discrepancy Resolution**
+
+**Three Related But Different Sessions Identified**:
+
+1. **Gap Implementation Session** (Jan 16, 2026):
+   - Focus: Implement 7 CRITICAL gaps
+   - Result: D+ → B+ (90% complete)
+   - Status: 3 gaps partially complete (1.5, 1.6, 1.7)
+
+2. **Runtime Verification Session** (Jan 16, 2026):
+   - Focus: Verify runtime integrity, protocol compliance
+   - Result: 100% validation suite implemented and passing
+   - Status: ✅ COMPLETE (9 phases, 16 scripts)
+
+3. **Async Refactor Session** (Jan 17, 2026 00:45):
+   - Focus: Resolve deadlock in validation scripts
+   - Result: Async refactor implemented, validate_00 passes INV_001
+   - Status: ⚠️ PARTIAL (scripts 01-04 need updates)
+
+**Key Understanding**:
+- Gap Implementation shows 90% project completion
+- Runtime Verification shows 100% validation suite exists
+- Async Refactor shows validation suite blocked by async issues
+- **CURRENT SESSION**: Complete remaining 10%, resolve async blocks
 
 ### Implementation Progress
 
-**Files Modified**: [List files as implementation progresses]
+**Previous Session Files Modified** (from Gap Implementation):
+- `src/au_sys_storage/context.py` - Multi-tenancy ContextVar
+- `src/au_sys_storage/core/services/naming.py` - DatabaseNamingService
+- `src/au_sys_storage/core/storage/providers/sqlalchemy/provider.py` - Async SQLAlchemy 2.0
+- `src/au_sys_storage/core/storage/providers/beanie/` - Full package restructure
+- `src/au_sys_storage/adapters/api/` - 7 router modules (35+ endpoints)
+- `src/au_sys_storage/adapters/admin/core.py` - 7 SQLAdmin views
+- `src/au_sys_storage/adapters/ui/` - Dashboard + templates
+- `src/au_sys_storage/validation/` - 16 validation suite scripts
 
-**Patterns Reused**: [List patterns/utilities reused from codebase]
+**Async Refactor Files Modified** (from Handover):
+- `src/au_sys_storage/core/storage/factory.py` - Made `get_storage()` async
+- `src/au_sys_storage/core/storage/dynamic_manager.py` - Replaced `threading.Lock` with `asyncio.Lock`
+- `src/au_sys_storage/app.py` - Updated `startup_event` to await factory
+- `src/au_sys_storage/adapters/api/dependencies.py` - Updated `get_system_session` to await
+- `src/au_sys_storage/validation/validate_00_prereqs.py` - Async updates (PARTIAL)
 
-**New Dependencies**: [List any new dependencies added]
+**Current Session Files to Modify**: [Track as work progresses]
 
-**Violations Found and Eradicated**: [Track violations found and fixed]
+**Patterns Reused**:
+- ContextVar for tenant isolation (from existing patterns)
+- SQLAlchemy async session management
+- Beanie document base classes
+- FastAPI dependency injection patterns
 
-**Gap Analysis Findings**: [Document missing elements, TODOs, mocks, stubs, unfinished code found]
+**New Dependencies Added** (from Gap Implementation):
+- `asyncpg` - PostgreSQL async driver
+- `motor` - MongoDB async driver (Beanie)
+- `sqladmin` - Admin interface
+- `aiosqlite` - SQLite async
 
-**Partially Completed Items Identified**: [List items that can be quickly implemented by copying/adjusting]
+**Violations Found and Eradicated** (from Gap Implementation):
+- ✅ Duplicate `_interface.py` files removed (Gap 1.4)
+- ✅ Sync DB operations converted to async
+- ✅ `threading.Lock` replaced with `asyncio.Lock`
+- ✅ Blocking calls in async context eliminated
 
-**Cloned GitHub Repositories**: [List all cloned repos with their purposes - for future reference/examples]
+**Gap Analysis Findings**: [Documented above in Critical Findings Summary]
 
-- Repository: [repo-url] - Purpose: [description] - Cloned: [date]
-- Repository: [repo-url] - Purpose: [description] - Cloned: [date]
+**Partially Completed Items Identified**:
+- Gap 1.5: 85% complete (integration tests pending)
+- Gap 1.6: 80% complete (RBAC + Export pending)
+- Gap 1.7: 30% complete (10 pages pending)
 
-**Reactivated/Restored Items**: [List items reactivated or restored from cloned repos]
+**Cloned GitHub Repositories**: [Track as repos are cloned]
 
-**MCP Tools Usage**: [Document MCP Grep searches and MCP Fetch retrievals performed]
+**Reactivated/Restored Items**: [Track as items are restored]
+
+**MCP Tools Usage**: [Document as searches are performed]
 
 **Structured Implementation Plan Checklists**: [Reference to structured checklists section below]
 
-**Current Group in Progress**: [Identify which group is currently being worked on]
+**Current Group in Progress**: [To be determined based on priority]
 
-**Next Group to Execute**: [Identify next group to execute based on priority and dependencies]
+**Next Group to Execute**: [To be determined based on structured checklists]
 
-**Copy-and-Adapt Operations**: [Document directory structures, files, modules, functions, code blocks copied and adapted]
+**Copy-and-Adapt Operations**: [Document as operations are performed]
 
-**Code Quality Check Results**: [Document results of code quality checks performed]
+**Code Quality Check Results**: [Document as checks are performed]
 
-**Plan Validation Results**: [Document validation results for each plan/group]
+**Plan Validation Results**: [Document as validations are completed]
 
-**Plans Completed**: [List all completed plans/groups]
+**Plans Completed**: [Track completed plans]
 
-**Plans Remaining**: [List all remaining plans/groups to execute]
+**Plans Remaining**: [Track remaining plans]
 
-**Iteration Status**: [Track iteration progress through plans]
+**Iteration Status**: [Track iteration progress]
+
+### Remaining Work Summary
+
+**Estimated Effort**:
+- **Sequential**: 5-10 days
+- **Parallel** (2-3 developers): 2-3 days
+
+**Priority Order**:
+1. **P0-CRITICAL**: Resolve async deadlock (validate_00-04) - 4-8 hours
+2. **P1-HIGH**: Complete Gap 1.5 integration tests - 2-3 days
+3. **P1-HIGH**: Complete Gap 1.6 RBAC + Export - 1-2 days
+4. **P2-MEDIUM**: Complete Gap 1.7 remaining UI pages - 3-5 days
+
+**Completion Criteria**:
+- ✅ All validation scripts execute without deadlock
+- ✅ 100% validation suite passes (16 scripts)
+- ✅ Gap 1.5: 35+ API endpoints integration tested
+- ✅ Gap 1.6: RBAC + Export implemented
+- ✅ Gap 1.7: All 11 UI pages implemented
+- ✅ Grade: A (100% complete)
+- ✅ Production Readiness: 100%
 
 ### Next Steps
-
-1. **Await Explicit Implementation Task**
-   - User must provide explicit implementation task or requirement details
-   - Scope information needed if not provided
-   - Files/modules information needed if not provided
 
 2. **Codebase Examination and Gap Analysis** (When Task Identified)
    - Examine production codebase for missing elements, TODOs, mocks, stubs, unfinished code
@@ -777,49 +1041,106 @@ Each implementation plan checklist should include:
 
 ### Implementation Plan Checklists
 
-#### Group 1: [Group Name]
+#### Group 1: Async Deadlock Resolution (Validation Suite)
 
-**Status**: [Pending / In Progress / Complete]
-**Priority**: [P0-CRITICAL / P1-HIGH / P2-MEDIUM / P3-LOW]
-**Description**: [Brief description of what this group addresses]
+**Status**: In Progress
+**Priority**: P0-CRITICAL
+**Description**: Refactor validation suite scripts to fully fully support async/await patterns, eliminating deadlocks caused by synchronous-
+**Items**:
+
+- [x] **[P0] [CRITICAL] Resolve Code Duplication**
+  - [x] **Compare Source of Truth**: Identify `capabilities` vs `services` divergence (services was stale).
+  - [x] **Consolidate Codebase**: Promote V18 `capabilities` code to `libraries/python/services/au_sys_storage`.
+  - [x] **Decommission Stale Path**: Remove `libraries/python/capabilities/au_sys_storage`.
+  - [ ] **Verify Consolidation**: Ensure `validate_01_core_logic.py` passes in new location.
+
+- [ ] **[P0] [CRITICAL] Resolve "ImportError" in Validation Suite**
+  - [x] **Fix Inner Import**: Corrected `from ...providers.sqlalchemy` to `...providers.sqlalchemy.provider`.
+  - [ ] **Validate Fix**: Run `validate_01_core_logic.py` (Now in `services`).
+
+- [ ] **[P0] [CRITICAL] Fix "AttributeError: TinyDBProvider object has no attribute 'session'"**
+  - [x] **Implement Session Protocol**: Add `session()` method to `IStorageProvider` and `TinyDBProvider`.
+  - [x] **Force SQLAlchemy for System**: ensure `StorageFactory` uses SQL for `database_type=SYSTEM`.
+- [ ] Item 5: Refactor `validate_04_failover.py` to `async def` and `asyncio.run()`
+- [ ] Item 6: Refactor `validate_05_sync.py` to `async def` and `asyncio.run()`
+- [ ] Item 7: Verify all Core Validation Suite scripts pass without deadlock
+
+**Dependencies**: `au_sys_storage` core refactor (Factory/DynamicManager) - COMPLETED
+
+**Validation Criteria**: All scripts 00-05 execute successfully with exit code 0 and no hangs.
+
+**Progress Notes**:
+- `validate_00_prereqs.py` partially updated in previous session.
+- Core factory and manager already refactored to async.
+
+---
+
+#### Group 2: Gap 1.5 - Operational APIs Integration Testing
+
+**Status**: Pending
+**Priority**: P1-HIGH
+**Description**: Complete integration testing for the 35+ implemented operational API endpoints.
 
 **Items**:
 
-- [ ] Item 1: [Description]
-- [ ] Item 2: [Description]
-- [ ] Item 3: [Description]
+- [ ] Item 1: Update `validate_10_api_health.py` to async client
+- [ ] Item 2: Update `validate_11_api_crud_lifecycle.py` to async client
+- [ ] Item 3: Update `validate_12_api_sync.py` to async client
+- [ ] Item 4: Update `validate_13_api_admin.py` to async client
+- [ ] Item 5: Run full API validation suite against running server
 
-**Dependencies**: [List any dependencies]
+**Dependencies**: Group 1 (Core Validation)
 
-**Validation Criteria**: [What constitutes completion]
+**Validation Criteria**: All API validation scripts 10-14 execute successfully against a running instance.
 
-**Progress Notes**: [Track progress, issues, decisions - DO NOT include code examples]
+**Progress Notes**: Endpoints implemented, waiting for test harness async update.
 
 ---
 
-#### Group 2: [Group Name]
+#### Group 3: Gap 1.6 - SQLAdmin RBAC & Export
 
-**Status**: [Pending / In Progress / Complete]
-**Priority**: [P0-CRITICAL / P1-HIGH / P2-MEDIUM / P3-LOW]
-**Description**: [Brief description of what this group addresses]
+**Status**: Pending
+**Priority**: P1-HIGH
+**Description**: Implement Role-Based Access Control and Export functionality for SQLAdmin.
 
 **Items**:
 
-- [ ] Item 1: [Description]
-- [ ] Item 2: [Description]
-- [ ] Item 3: [Description]
+- [ ] Item 1: Implement RBAC permission checks in admin views
+- [ ] Item 2: Implement CSV/JSON export actions
+- [ ] Item 3: Validate admin security
 
-**Dependencies**: [List any dependencies]
+**Dependencies**: Group 2 (API Validation)
 
-**Validation Criteria**: [What constitutes completion]
+**Validation Criteria**: Admin interface correctly restricts access and allows export.
 
-**Progress Notes**: [Track progress, issues, decisions - DO NOT include code examples]
-
----
-
-_[Add additional groups as needed]_
+**Progress Notes**: Basic views registered.
 
 ---
+
+#### Group 4: Gap 1.7 - Web UI Completion
+
+**Status**: Pending
+**Priority**: P2-MEDIUM
+**Description**: Complete the remaining 10 UI pages for the Storage Dashboard.
+
+**Items**:
+
+- [ ] Item 1: Implement Providers Management Page
+- [ ] Item 2: Implement Database Inventory Page
+- [ ] Item 3: Implement Backup & Recovery Page
+- [ ] Item 4: Implement Sync Management Page
+- [ ] Item 5: Implement Health Monitoring Page
+- [ ] Item 6: Implement Connection Pools Page
+- [ ] Item 7: Implement Tenant Management Page
+- [ ] Item 8: Implement Audit Logs Page
+- [ ] Item 9: Implement Settings Page
+- [ ] Item 10: Implement Documentation Page
+
+**Dependencies**: Group 1, Group 2
+
+**Validation Criteria**: All UI pages load correctly and display real data.
+
+**Progress Notes**: Dashboard implemented.
 
 ## 🔄 SESSION STATUS TRACKING
 

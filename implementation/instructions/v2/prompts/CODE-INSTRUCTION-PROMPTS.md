@@ -181,24 +181,20 @@ SPEC_Directory: docs/implementation/in_progress
 SPEC_File_Extention: .md
 
 # AUSTRALIS SYSTEMS DOCTRINE
-READ_AND_EXECUTE:
+READ_AND_ACKNOWLEDGE:
   DOCTRINE: "000-DOCTRINE-Enterprise_Canonical_Execution"
 
 # AUSTRALIS SYSTEMS PROTOCOLS
-READ_AND_IMPLEMENT:
+READ_AND_ACKNOWLEDGE:
   - "001-PROTOCOL-The_GoldenRule_Execution"
   - "002-PROTOCOL-Zero_Tolerance_Remediation"
   - "003-PROTOCOL-FastAPI_Pure_Code_Implementation"
   - "004-PROTOCOL-Validate_Remediate_Codebase"
   - "006-PROTOCOL-RFC2119_Requirements_Language"
 
-# AUSTRALIS SYSTEMS PROTOCOLS
-READ_AND_IMPLEMENT:
-- "002-PROTOCOL-Zero_Tolerance_Remediation"
-- "003-PROTOCOL-FastAPI_Pure_Code_Implementation"
-- "004-PROTOCOL-Validate_Remediate_Codebase"
+---
 
-# IMPLEMENTATION PLANS
+# CODE IMPLEMENTATION SPEC PLAN
 CODE_IMPLEMENTATION_SPEC: C:\github_development\AustralisSystems\docs\implementation\in_progress\CODE_IMPLEMENTATION_SPEC_2026-01-15_2111.md
 
 # EXECUTION DIRECTIVES
