@@ -72,10 +72,14 @@ READ_AND_ACKNOWLEDGE:
   - "004-PROTOCOL-Validate_Remediate_Codebase"
   - "006-PROTOCOL-RFC2119_Requirements_Language"
 
+Then, HALT
+
 ---
 
 # CODE IMPLEMENTATION SPEC PLAN
-CODE_IMPLEMENTATION_SPEC: C:\github_development\AustralisSystems\docs\implementation\in_progress\CODE_IMPLEMENTATION_SPEC_20260118_FSP_Shell_UFC_Blueprint.md
+CODE_IMPLEMENTATION_SPEC:
+
+
 
 # EXECUTION DIRECTIVES
 DIRECTIVE:
@@ -86,7 +90,7 @@ DIRECTIVE:
 
 # EXECUTE INSTRUCTIONS WORKFLOW
 READ_AND_EXECUTE:
-  - "104-INSTRUCTIONS-Execute_Implementation_Phase_Tasks"
+  - "202-INSTRUCTIONS-Pure_Code_Implementation_Execution_Protocol"
 
 
 
