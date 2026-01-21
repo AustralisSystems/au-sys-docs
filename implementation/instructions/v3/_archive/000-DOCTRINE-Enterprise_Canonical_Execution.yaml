@@ -1,0 +1,23 @@
+DOCTRINE: "000-DOCTRINE-Enterprise_Canonical_Execution"
+
+PROTOCOLS:
+  - "001-PROTOCOL-The_GoldenRule_Execution"
+  - "002-PROTOCOL-Zero_Tolerance_Remediation"
+  - "003-PROTOCOL-FastAPI_Pure_Code_Implementation"
+  - "004-PROTOCOL-Validate_Remediate_Codebase"
+  - "006-PROTOCOL-RFC2119_Requirements_Language"
+
+ENFORCE:
+  - "002-PROTOCOL-Zero_Tolerance_Remediation"
+  - "003-PROTOCOL-FastAPI_Pure_Code_Implementation"
+  - "004-PROTOCOL-Validate_Remediate_Codebase"
+
+EXECUTE:
+  - "104-INSTRUCTIONS-Execute_Implementation_Phase_Tasks"
+  - "202-INSTRUCTIONS-Pure_Code_Implementation_Execution_Protocol"
+  - "203-INSTRUCTIONS-FastAPI_Design_Implementation_Refactor"
+
+INPUTS:
+  - "Followed templates: docs/implementation/SPEC_TEMPLATE_v1.0.0.md and docs/implementation/SPEC_CREATION_GUIDE_v1.0.0.md"
+  - "Copy template: docs/implementation/CODE_IMPLEMENTATION_SPEC_TEMPLATE.md to docs/implementation/in_progress/ and rename for this session"
+  - "Maintain and update progress in the CODE_IMPLEMENTATION_SPEC file"

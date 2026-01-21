@@ -1,0 +1,745 @@
+prompt_name: FastAPI_Pure_Code_Implementation
+version: 2.0.0
+type: implementation_protocol
+language: en-AU
+references:
+- docs/implementation/instructions/v2/00-Enterprise_Canonical_Execution_Protocol_v2.1_DOCTRINE.yaml
+- docs/implementation/instructions/v2/01-The_GoldenRule_Execution_Protocol_v2.1_DOCTRINE.yaml
+- docs/implementation/instructions/v2/002-PROTOCOL-Zero_Tolerance_Remediation-v2.0.0.yaml
+- docs/implementation/instructions/v2/97-LOGGING_REQUIREMENTS_INSTRUCTION.yaml
+- docs/implementation/instructions/v2/202-INSTRUCTIONS-Pure_Code_Implementation_Execution_Protocol-v2.0.0.yaml
+- docs/implementation/instructions/v2/203-INSTRUCTIONS-FastAPI_Design_Implementation_Refactor-v2.0.0.yaml
+
+---
+context:
+  role: Execute FastAPI design, implementation, and refactoring under enterprise canonical protocols with pure code execution standards
+  intent: 'FastAPI implementation + refactoring: enforce async correctness, performance, reliability, and production readiness with zero tolerance for placeholders, shortcuts, or undocumented assumptions'
+  workflow: Follow canonical implementation protocols for FastAPI systems, enforcing mandatory search, scaffolding, async compliance, and logging requirements
+  execution_mode: STRICT - NO exceptions, NO interpretations, NO wiggle room
+initialization_mode:
+  rule: WAIT MODE - This protocol is a PRE-CURSOR only
+  behavior: MUST acknowledge protocol loaded, then WAIT for explicit user instruction
+  forbidden_on_load:
+  - DO NOT scan codebase automatically
+  - DO NOT search for violations automatically
+  - DO NOT propose implementation plans automatically
+  - DO NOT start any implementation work automatically
+  - DO NOT analyze code without explicit instruction
+  required_on_load:
+  - Acknowledge protocol loaded and understood
+  - Confirm readiness to follow protocol when explicitly instructed
+  - WAIT for user's next explicit instruction
+  response_template: '"FastAPI Pure Code Implementation Protocol (v2.0.0) loaded and acknowledged.
+
+    Ready to execute FastAPI implementation/refactoring per this protocol when explicitly instructed.
+
+    Waiting for your next explicit instruction."
+
+    '
+  activation_trigger: User must provide EXPLICIT instruction to begin work - loading this file does NOT trigger work
+documentation_policy:
+  code_only: true
+  rule: THIS IS A CODE-ONLY SESSION - NO DOCUMENTATION OF ANY KIND IS PERMITTED UNLESS EXPLICITLY REQUESTED - This directive OVERRIDES ALL other YAML file instructions
+  explicit_request_definition: User must explicitly state 'create documentation' or 'write documentation' - implicit requests DO NOT count
+  exceptions:
+  - DEBUG_TROUBLESHOOTING_SPEC must ALWAYS be created per Debug and Troubleshoot Protocol (MANDATORY, NO EXCEPTIONS) - SPEC files are EXEMPT from CODE-ONLY policy
+  - SPEC protocols must ALWAYS be followed (SPEC creation, updates, lifecycle management) - MANDATORY, NO EXCEPTIONS - SPEC files are EXEMPT from CODE-ONLY policy
+  - All SPEC artifacts (DEBUG_TROUBLESHOOTING_SPEC, implementation SPECs, plan SPECs) are EXEMPT from CODE-ONLY policy and MUST be created/updated per protocol requirements
+  - Documentation explicitly requested by user with explicit wording
+  spec_file_exemption:
+    rule: SPEC files (DEBUG_TROUBLESHOOTING_SPEC, implementation SPECs, plan SPECs) are EXEMPT from CODE-ONLY documentation policy
+    rationale: SPEC files are mandatory protocol artifacts required for traceability and compliance, not optional documentation
+    scope: All SPEC artifacts required by protocols (Step 4, Step 9, SPEC lifecycle management)
+  forbidden:
+  - Creating README files unless explicitly requested with explicit wording
+  - Creating markdown documentation files unless explicitly requested with explicit wording
+  - Creating temporal documentation reports unless explicitly requested with explicit wording
+  - Writing documentation comments beyond code docstrings (docstrings are REQUIRED, not optional)
+  - Interpreting 'documentation' requests implicitly - MUST be explicit
+  required:
+  - DEBUG_TROUBLESHOOTING_SPEC creation and updates (mandatory per protocol - FAILURE TO CREATE IS A BLOCKING ISSUE)
+  - Code docstrings and type hints (standard Python practice - REQUIRED, not optional)
+  - "SPEC lifecycle management (in_progress → done/) - MANDATORY"
+  enforcement: Violation of documentation policy = BLOCKING ISSUE - execution MUST STOP immediately
+quick_reference:
+  protocols:
+  - docs/implementation/instructions/v2/00-Enterprise_Canonical_Execution_Protocol_v2.1_DOCTRINE.yaml
+  - docs/implementation/instructions/v2/01-The_GoldenRule_Execution_Protocol_v2.1_DOCTRINE.yaml
+  - docs/implementation/instructions/v2/002-PROTOCOL-Zero_Tolerance_Remediation-v2.0.0.yaml
+  - docs/implementation/instructions/v2/97-LOGGING_REQUIREMENTS_INSTRUCTION.yaml
+  instructions:
+  - docs/implementation/instructions/v2/202-INSTRUCTIONS-Pure_Code_Implementation_Execution_Protocol-v2.0.0.yaml
+  - docs/implementation/instructions/v2/203-INSTRUCTIONS-FastAPI_Design_Implementation_Refactor-v2.0.0.yaml
+  pure_code_summary:
+  - Search before writing (MCP Grep + Context7 MANDATORY)
+  - Scaffold before implementing
+  - Implement fully and correctly
+  - Enforce logging and observability
+  fastapi_summary:
+  - Async correctness (ALL endpoints async def)
+  - Non-blocking operations only
+  - Performance primitives (connection pooling, keep-alive)
+  - Reliability primitives (retry, circuit breakers, health monitoring)
+zero_tolerance_requirements:
+  absolute_forbidden:
+  - 0 TODOs (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with production code immediately, NO exceptions)
+  - 0 mocks (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with real implementation immediately, NO exceptions)
+  - 0 stub code blocks (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST implement fully immediately, NO exceptions)
+  - 0 "PASS" passes (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with real validation immediately, NO exceptions)
+  - 0 hacks (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with proper solutions immediately, NO exceptions)
+  - 0 notes that code needs to be implemented (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST implement immediately, NO exceptions)
+    detection_patterns:
+      - Comments containing "Note:" followed by "would be", "should be", "needs to be", "will be", "to be done", "handling", "implementation"
+      - Comments containing "Note:" followed by future-tense action verbs (would, should, needs, will) AND implementation-related terms
+    detection_rule: If a comment contains "Note:" AND indicates future work/deferred implementation, it MUST BE ERADICATED immediately
+  - 0 placeholder/demo data (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with real data retrieval immediately, NO exceptions)
+  - 0 hard-coded values for anything that is dynamic by nature (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST move to config/DB immediately, NO exceptions)
+  - 0 blocking calls in async context (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST convert to async immediately, NO exceptions)
+  - 0 sync endpoints when async is required (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST convert to async def immediately, NO exceptions)
+  - 0 violations of SOLID/DRY/KISS (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST refactor immediately, NO exceptions)
+  - 0 deviations from the Golden Rules (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST fix immediately, NO exceptions)
+  - 0 partial implementations (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST complete immediately, NO exceptions)
+  - 0 workarounds or temporary solutions (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with proper solutions immediately, NO exceptions)
+  production_code_implementation_mandate:
+    mandatory: true
+    rule: ALL production code MUST be implemented 100% correctly, to the highest standards, with 0 errors, 0 warnings, and 0 issues
+    incomplete_code_eradication:
+      requirement: The following violations MUST BE FOUND AND ERADICATED FROM THE CODEBASE
+      violations:
+      - TODOs (ALL must be found and replaced with production code)
+      - Mocks (ALL must be found and replaced with real implementation)
+      - Stubs (ALL must be found and fully implemented)
+      - "PASS" passes (ALL must be found and replaced with real validation)
+      - Hacks (ALL must be found and replaced with proper solutions)
+      - Notes that code needs to be implemented (ALL must be found and implemented)
+      - Placeholder code (ALL must be found and replaced with production code)
+      - Demo/test data in production paths (ALL must be found and replaced with real data retrieval)
+      - Partial implementations (ALL must be found and completed)
+      - Workarounds or temporary solutions (ALL must be found and replaced with proper solutions)
+    implementation_requirements:
+      - Production code MUST be implemented 100% correctly
+      - Production code MUST meet the highest enterprise standards
+      - Production code MUST have 0 errors
+      - Production code MUST have 0 warnings
+      - Production code MUST have 0 issues
+      - Production code MUST be fully functional, not partial
+      - Production code MUST NOT skip any required functionality
+      - Production code MUST NOT use workarounds or temporary solutions
+      - Production code MUST be production-ready, not development/test code
+    enforcement:
+      - Finding incomplete code = STOP current work immediately
+      - Eradicate incomplete code = MANDATORY, cannot proceed until complete
+      - Implement production code = MANDATORY, cannot skip or defer
+      - Verify implementation = MANDATORY, must achieve 0 errors, 0 warnings, 0 issues
+      - Violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  refactoring_mandate:
+    rule: If a TODO, mock, stub, "PASS" pass, hack, note, placeholder, partial implementation, blocking call, or sync endpoint exists ANYWHERE, it MUST BE FOUND AND ERADICATED, then refactored into production-ready code IMMEDIATELY - NO DELAYS, NO EXCEPTIONS, NO DEFERRALS
+    enforcement: Finding a violation = STOP current work immediately, FIND AND ERADICATE violation, IMPLEMENT production code, VERIFY fix achieves 0 errors/0 warnings/0 issues, THEN continue - NO WORKAROUNDS ALLOWED
+    required_replacements:
+    - real, production-ready async code (MUST be fully functional, not partial)
+    - real async endpoints (MUST be async def, not sync)
+    - real async services (MUST be fully implemented with error handling)
+    - real async data retrieval flows (MUST retrieve from actual backend, not mock data)
+    - real async configuration mechanisms (MUST use config files or DB tables, not hard-coded)
+    - backed by actual OpenAPI-defined backend functionality (MUST have OpenAPI spec, not ad-hoc)
+    verification: 'After replacement, MUST verify: code compiles, tests pass, validators pass, async correctness verified, no violations remain'
+development_standards:
+  backend_first: Backend functionality MUST be implemented before frontend. Frontend-only work is a violation.
+  openapi_first: OpenAPI MUST be defined/updated before implementing endpoints. No ad-hoc endpoints.
+  naming_synchronization: Names MUST match exactly across backend/frontend. No shims/aliases.
+  data_retrieval: No static/demo data. Must retrieve real data dynamically from backend/storage.
+  pydantic_version: Pydantic v2 ONLY. Any v1 usage is a blocking violation.
+  hard_coded_variables: No hard-coded dynamic variables/settings in code. Externalise to config/DB (DB preferred).
+  universal_container_deployment:
+    mandatory: true
+    rule: This application MUST be universally deployable across ALL container platforms (Docker, Podman, Kubernetes, public cloud container services, container orchestration platforms)
+    requirements:
+    - ALL container images MUST be OCI-compliant
+    - NO platform-specific dependencies or assumptions
+    - Container manifests MUST work identically across platforms
+    - Build processes MUST produce platform-agnostic artifacts
+    - Runtime configuration MUST be environment-agnostic
+    enforcement: Violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  cybersecurity_ai_security:
+    mandatory: true
+    rule: This application MUST apply the HIGHEST STANDARDS of cybersecurity and AI security frameworks. This application will be deployed into the MOST SECURE ENVIRONMENTS ON THE PLANET. It MUST EXCEED the security frameworks they operate in.
+    requirements:
+    - MUST comply with NIST Cybersecurity Framework (CSF) at the highest maturity level
+    - MUST comply with ISO/IEC 27001 security management standards
+    - MUST comply with OWASP Top 10 and ASVS (Application Security Verification Standard)
+    - MUST comply with AI security frameworks (NIST AI RMF, ISO/IEC 23053, OWASP LLM Top 10)
+    - MUST implement defense-in-depth security architecture
+    - MUST enforce least privilege access controls
+    - MUST implement comprehensive security logging and monitoring
+    - MUST undergo regular security audits and penetration testing
+    - MUST maintain security documentation and threat models
+    - MUST implement secure-by-design principles throughout
+    enforcement: Security violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  python_version:
+    mandatory: true
+    rule: The codebase MUST use Python 3.12 or higher as the MINIMUM version
+    requirements:
+    - ALL code MUST be compatible with Python 3.12+
+    - NO code may use deprecated features from Python < 3.12
+    - Type hints MUST use Python 3.12+ syntax and features
+    - ALL dependencies MUST support Python 3.12+
+    - Build and deployment processes MUST enforce Python 3.12+ requirement
+    enforcement: Python version violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  dependency_management:
+    mandatory: true
+    rule: Dependencies MUST be maintained to support the latest versions without causing conflicts
+    requirements:
+    - Dependencies MUST be kept at their latest stable versions
+    - If a new version of a dependency would advance, improve, or enhance the codebase: IT MUST BE IMPLEMENTED IMMEDIATELY
+    - ALL breaking changes MUST be resolved
+    - ALL breaking changes MUST be validated to be 100% functional
+    - Validation MUST result in 0 errors, 0 warnings, and 0 issues
+    - Dependency conflicts MUST be resolved immediately
+    - Security vulnerabilities in dependencies MUST be remediated immediately
+    - Dependency updates MUST NOT introduce regressions
+    - ALL dependency changes MUST be validated with full test suite
+    enforcement: Dependency management violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  async_compliance:
+    mandatory: true
+    rule: ALL FastAPI endpoints, services, and integrations MUST be async, non-blocking, observable, and production-safe
+    enforcement: Async violation = BLOCKING ISSUE - execution MUST STOP until fixed
+    requirements:
+    - ALL endpoints MUST be `async def`
+    - NO blocking calls in async context
+    - ALL blocking I/O MUST use `asyncio.to_thread()`
+    - Deprecated loop APIs are FORBIDDEN
+    - HTTP clients MUST use connection pooling
+    - Database connections MUST use pooling + pre-ping
+    - Keep-alive MUST be enabled
+    - No per-request client instantiation
+  protocol_compliance:
+    mandatory: true
+    rule: MUST follow ALL rules defined in the Enterprise Canonical Execution Protocol - NO exceptions
+    enforcement: Protocol violation = BLOCKING ISSUE - execution MUST STOP until fixed
+mandatory_intelligence_tools:
+  tool_a_context7:
+    mandatory: true
+    purpose:
+    - Resolve authoritative library/API usage
+    - Confirm correct call patterns, async/sync behaviour, and edge cases
+    rule: If an external library/framework is involved, you MUST consult Context7 before implementing or refactoring code that uses it
+    enforcement: Writing code without Context7 consultation (when applicable) = BLOCKING VIOLATION
+  tool_b_mcp_grep:
+    mandatory: true
+    purpose:
+    - Search the local codebase for existing patterns/utilities
+    - Search internal templates and prior implementations
+    - Search GitHub for production patterns when local patterns are absent
+    rule: You MUST perform MCP grep searches BEFORE writing new code. If suitable code exists, it MUST be reused/adapted rather than reinvented
+    enforcement: Writing code without MCP Grep search = BLOCKING VIOLATION
+  blocking_rule: WRITING CODE WITHOUT FIRST USING MCP Grep (and Context7 when applicable) IS A BLOCKING VIOLATION
+logging_requirements:
+  logger_factory:
+    mandatory: true
+    location: '@src/services/logging/logger_factory.py'
+    rule: The logger factory is the ONLY logger that must be used
+  usage_patterns:
+    allowed:
+    - get_logger
+    - get_component_logger
+    - create_debug_logger
+    forbidden:
+    - logging.getLogger()
+    - logging.basicConfig()
+    - print() statements
+  security_modules: Audit logging required for security/auth/compliance modules.
+  service_modules: Debug logging capability required for service/core modules.
+  output_formats:
+    console: MUST be JSON formatted
+    file: MUST be detailed text formatted
+  blocking: Any logging non-compliance is blocking.
+async_compliance_requirements:
+  endpoint_requirements:
+    mandatory: true
+    rule: ALL endpoints MUST be `async def` - NO exceptions
+    enforcement: Sync endpoint found = STOP, FIX, VERIFY
+  blocking_operations:
+    mandatory: true
+    rule: NO blocking calls in async context - ALL blocking I/O MUST use `asyncio.to_thread()`
+    enforcement: Blocking call found = STOP, FIX, VERIFY
+  deprecated_apis:
+    mandatory: true
+    rule: Deprecated loop APIs are FORBIDDEN
+    enforcement: Deprecated API found = STOP, FIX, VERIFY
+  required_patterns:
+    - asyncio.to_thread() for file and blocking I/O
+    - asyncio.get_running_loop() for background tasks
+    - ThreadPoolExecutor for sync→async bridges
+    - create_task() for fire-and-forget only
+performance_requirements:
+  http_clients:
+    mandatory: true
+    rule: HTTP clients MUST use connection pooling
+    enforcement: Per-request client instantiation = BLOCKING ISSUE
+  database_connections:
+    mandatory: true
+    rule: Database connections MUST use pooling + pre-ping
+    enforcement: Non-pooled connections = BLOCKING ISSUE
+  keep_alive:
+    mandatory: true
+    rule: Keep-alive MUST be enabled
+    enforcement: Keep-alive disabled = BLOCKING ISSUE
+  no_per_request_instantiation:
+    mandatory: true
+    rule: No per-request client instantiation
+    enforcement: Per-request instantiation = BLOCKING ISSUE
+reliability_requirements:
+  error_handling:
+    mandatory: true
+    rule: Structured error handling in all async paths
+    enforcement: Missing error handling = BLOCKING ISSUE
+  retry_mechanisms:
+    mandatory: true
+    rule: Retry with exponential backoff for transient failures
+    enforcement: Missing retry = BLOCKING ISSUE
+  circuit_breakers:
+    mandatory: true
+    rule: Circuit breakers for critical integrations
+    enforcement: Missing circuit breaker = BLOCKING ISSUE
+  health_monitoring:
+    mandatory: true
+    rule: Health monitoring for connection pools
+    enforcement: Missing health monitoring = BLOCKING ISSUE
+execution_order:
+  mandatory: true
+  rule: MUST follow execution order sequentially - CANNOT skip steps, CANNOT reorder steps
+  blocking_rule: If ANY step fails, MUST stop and fix before proceeding - NO exceptions
+  steps:
+    step_1_search:
+      name: Search (MANDATORY)
+      mandatory: true
+      rule: |
+        - Use MCP Grep to search:
+          - current repo for patterns, helpers, interfaces, conventions
+          - local templates / golden repos (if available)
+          - GitHub repos (only if local repo lacks patterns)
+        - If external library/framework involved: MUST consult Context7
+        - Identify the canonical pattern to follow
+        - Record the evidence (paths + matched identifiers)
+      blocking: Cannot proceed to step 2 until step 1 is complete with evidence recorded
+    step_2_scope_lock:
+      name: Scope Lock
+      mandatory: true
+      rule: State the exact files/modules in scope. Anything outside scope is forbidden unless explicitly approved
+      blocking: Cannot proceed to step 3 until step 2 is complete
+    step_3_scaffold:
+      name: Scaffold (MANDATORY)
+      mandatory: true
+      rule: |
+        - Create/adapt the minimal required structure consistent with the repo
+        - Align naming, imports, interfaces, and directory layout to existing patterns
+        - Ensure async structure is correct
+      blocking: Cannot proceed to step 4 until step 3 is complete
+    step_4_identify_blocking:
+      name: Identify Blocking Operations (FastAPI-specific)
+      mandatory: true
+      rule: Identify ALL blocking operations in async context - NO exceptions
+      blocking: Cannot proceed to step 5 until step 4 is complete
+    step_5_convert_async:
+      name: Convert to Async (FastAPI-specific)
+      mandatory: true
+      rule: Convert ALL blocking operations to async - NO exceptions
+      blocking: Cannot proceed to step 6 until step 5 is complete
+    step_6_apply_patterns:
+      name: Apply Async Patterns (FastAPI-specific)
+      mandatory: true
+      rule: Apply required async patterns (asyncio.to_thread(), ThreadPoolExecutor, etc.)
+      blocking: Cannot proceed to step 7 until step 6 is complete
+    step_7_implement:
+      name: Implement (MANDATORY)
+      mandatory: true
+      rule: |
+        - Implement required functionality fully
+        - FORBIDDEN: TODOs, stubs, mocks, placeholders, demo data, partial routes, fake adapters
+        - FORBIDDEN: hard-coded dynamic values (must be config/DB driven as per repo norms)
+        - FORBIDDEN: sync endpoints (must be async def)
+        - FORBIDDEN: blocking calls in async context
+      blocking: Cannot proceed to step 8 until step 7 is complete
+    step_8_add_performance:
+      name: Add Performance Primitives (FastAPI-specific)
+      mandatory: true
+      rule: Add connection pooling, keep-alive, and other performance primitives
+      blocking: Cannot proceed to step 9 until step 8 is complete
+    step_9_add_reliability:
+      name: Add Reliability Primitives (FastAPI-specific)
+      mandatory: true
+      rule: Add retry, circuit breakers, health monitoring, and structured error handling
+      blocking: Cannot proceed to step 10 until step 9 is complete
+    step_10_logging_compliance:
+      name: Logging Compliance (97 ENFORCED) - MANDATORY
+      mandatory: true
+      rule: |
+        - ALL logging MUST use logger_factory patterns only
+        - If security/auth/compliance paths are touched: audit logging is mandatory
+        - Service/core modules must expose debug/transactional observability
+        - Any logging non-compliance = STOP → FIX → VERIFY
+      blocking: Cannot proceed to step 11 until step 10 is complete
+    step_11_validate_async:
+      name: Validate Async Correctness (FastAPI-specific)
+      mandatory: true
+      rule: Validate ALL endpoints are async, no blocking calls, async patterns applied correctly
+      blocking: Cannot proceed to step 12 until step 11 is complete
+    step_12_validate_performance:
+      name: Validate Performance (FastAPI-specific)
+      mandatory: true
+      rule: Validate connection pooling, keep-alive, and performance primitives are present
+      blocking: Cannot proceed to step 13 until step 12 is complete
+    step_13_validate_reliability:
+      name: Validate Reliability (FastAPI-specific)
+      mandatory: true
+      rule: Validate retry, circuit breakers, health monitoring, and error handling are present
+      blocking: Cannot proceed to step 14 until step 13 is complete
+    step_14_validation:
+      name: Validation (MANDATORY)
+      mandatory: true
+      rule: |
+        - Run/produce the exact commands required to validate the change
+        - Capture exit codes and key pass/fail lines as evidence
+        - If any required check fails: STOP → remediate → re-validate
+      blocking: Cannot proceed to step 15 until step 14 is complete
+    step_15_zero_tolerance_verification:
+      name: Zero-Tolerance Verification (101 RE-ENFORCED)
+      mandatory: true
+      rule: Verify the full zero-tolerance checklist - If any item is not true: STOP → fix → re-verify
+      blocking: Cannot proceed to step 16 until step 15 is complete
+    step_16_final_compliance:
+      name: Final Compliance Verification
+      mandatory: true
+      rule: Verify ALL validation checkpoints pass - NO exceptions
+      blocking: Cannot mark complete until step 16 is complete and ALL checkpoints pass
+validation_checkpoint:
+  mandatory: true
+  rule: MUST verify ALL checkpoints before marking complete. 100% compliance only.
+  blocking: Any checkpoint failure blocks completion; fix and re-verify.
+  before_completion:
+    protocols: All required protocols followed (00, 01, 002, 97, 202, 203)
+    production_code_implementation: ALL production code implemented 100% correctly, to highest standards, with 0 errors, 0 warnings, 0 issues. ALL incomplete code (TODOs, mocks, stubs, "PASS" passes, hacks, notes, placeholders, partial implementations, workarounds) MUST BE FOUND AND ERADICATED FROM CODEBASE.
+    zero_tolerance: 0 TODOs (FOUND AND ERADICATED), 0 mocks (FOUND AND ERADICATED), 0 stubs (FOUND AND ERADICATED), 0 "PASS" passes (FOUND AND ERADICATED), 0 hacks (FOUND AND ERADICATED), 0 notes that code needs implementation (FOUND AND ERADICATED), 0 placeholder/demo (FOUND AND ERADICATED), 0 hard-coded dynamic values (FOUND AND ERADICATED), 0 partial implementations (FOUND AND ERADICATED), 0 workarounds (FOUND AND ERADICATED), 0 SOLID/DRY/KISS violations
+    async_compliance: 0 sync endpoints, 0 blocking calls in async context, 0 deprecated loop APIs, all async patterns applied
+    performance_compliance: Connection pooling enabled, keep-alive enabled, no per-request instantiation
+    reliability_compliance: Error handling present, retry mechanisms present, circuit breakers present, health monitoring present
+    logging_compliance: Logger factory only; audit logging for security; debug logging for services; required output formats verified
+    code_quality: All required validators pass with 0 errors (and 0 warnings when policy requires)
+    production_readiness: No unfinished code paths; real data retrieval; externalised config; endpoints/services fully implemented and async; production code implemented 100% correctly
+workflow:
+  protocol:
+  - docs/implementation/instructions/v2/202-INSTRUCTIONS-Pure_Code_Implementation_Execution_Protocol-v2.0.0.yaml
+  - docs/implementation/instructions/v2/203-INSTRUCTIONS-FastAPI_Design_Implementation_Refactor-v2.0.0.yaml
+  focus: 'Assisting in FASTAPI IMPLEMENTATION + REFACTORING for specific issues, gaps, or requirements provided in messages. Enforces async correctness, performance, reliability, and production readiness with mandatory search, scaffolding, and logging compliance.'
+  mode: CODE-ONLY SESSION - NO DOCUMENTATION OF ANY KIND PERMITTED UNLESS EXPLICITLY REQUESTED - This directive OVERRIDES ALL other YAML file instructions - focus on FastAPI code implementation and refactoring, not documentation
+  execution_rule: MUST follow steps sequentially - NO skipping steps, NO parallel execution of steps, NO shortcuts
+  blocking_rule: If ANY step fails, MUST stop and fix before proceeding - NO workarounds
+  activation:
+    rule: Workflow is ONLY activated by EXPLICIT user instruction - NOT by loading this file
+    trigger: User must explicitly instruct to begin FastAPI implementation/refactoring work
+    wait_mode: If no explicit instruction provided, MUST remain in WAIT MODE - NO automatic activation
+  documentation_note: NO documentation files shall be created unless explicitly requested with explicit wording. SPEC lifecycle management and required SPEC artifacts (including DEBUG_TROUBLESHOOTING_SPEC when troubleshooting) are mandatory exceptions and MUST be executed per protocol. SPEC files are EXEMPT from CODE-ONLY policy as they are protocol artifacts, not optional documentation.
+enforcement:
+  strict_mode: true
+  interpretation_policy: NO interpretations. Requirements are literal.
+  wiggle_room: ZERO.
+  blocking_rules:
+  - 'CODE-ONLY: No documentation files unless explicitly requested (explicit wording only).'
+  - Any zero-tolerance violation = STOP, FIX, VERIFY, then continue.
+  - Any async compliance violation = STOP, FIX, VERIFY, then continue.
+  - Any performance violation = STOP, FIX, VERIFY, then continue.
+  - Any reliability violation = STOP, FIX, VERIFY, then continue.
+  - Any logging violation = STOP, FIX, VERIFY, then continue.
+  - Writing code without MCP Grep search = STOP, FIX, VERIFY, then continue.
+  - Writing code without Context7 consultation (when applicable) = STOP, FIX, VERIFY, then continue.
+  - Cannot proceed to next step until current is 100% complete and verified.
+  - All required validators/checkpoints must pass (0 errors; 0 warnings when policy requires).
+  violation_response: "STOP → identify violation → fix → verify → re-run validation → confirm 100% compliance → continue."
+  no_exceptions: true
+output_format:
+  on_initialization:
+    mode: WAIT MODE - Acknowledgement only
+    required_output: '"FastAPI Pure Code Implementation Protocol (v2.0.0) loaded and acknowledged.
+
+      Ready to execute FastAPI implementation/refactoring per this protocol when explicitly instructed.
+
+      Waiting for your next explicit instruction."
+
+      '
+    forbidden_output:
+    - DO NOT output violation counts
+    - DO NOT output implementation plans
+    - DO NOT output proposed approaches
+    - DO NOT output next steps or options
+    - DO NOT scan codebase or analyze code
+  on_explicit_instruction: |
+    CODE/DIFF first. Then minimal evidence + re-validation commands. No narration.
+
+    Required output format:
+    1) Principles Compliance (SOLID/DRY/KISS)
+       - Evidence: brief bullets mapping changes to principles (max 6)
+
+    2) Implementation Result (CODE/DIFF FIRST)
+       ```diff
+       [PATCH / DIFF ONLY]
+       ```
+
+    3) Scaffolding Evidence (202)
+       - Evidence: MCP grep results (paths + matched identifiers)
+       - Evidence: Context7 consultation results (if applicable)
+       - Evidence: reused/adapted modules/patterns (list)
+
+    4) Async Compliance Evidence (203)
+       - Evidence: async endpoints (file:line)
+       - Evidence: async patterns applied (file:line)
+       - Evidence: blocking operations converted (file:line)
+
+    5) Performance Evidence (203)
+       - Evidence: connection pooling (file:line)
+       - Evidence: keep-alive enabled (file:line)
+       - Evidence: performance primitives (file:line)
+
+    6) Reliability Evidence (203)
+       - Evidence: error handling (file:line)
+       - Evidence: retry mechanisms (file:line)
+       - Evidence: circuit breakers (file:line)
+       - Evidence: health monitoring (file:line)
+
+    7) Logging Compliance Evidence (97)
+       - Evidence: logger_factory usage locations (file:line)
+       - Evidence: audit logging (if security/auth touched) locations (file:line)
+       - Evidence: debug/transactional logging gates (file:line)
+
+    8) Validation Evidence
+       - Evidence: commands run + exit codes
+       - Evidence: key output lines (only the lines proving pass/fail)
+
+    9) AST / Dependency Impact Evidence
+       - Evidence: changed modules + new deps (if any)
+       - Evidence: removed deps (if any)
+       - Evidence: impact surface summary (max 6 bullets)
+
+    10) Zero-Tolerance Checklist (MUST be ALL TRUE)
+        - 0 TODOs / stubs / mocks / placeholders
+        - 0 hard-coded dynamic values
+        - 0 missing/incorrect logging
+        - 0 partial implementations
+        - 0 silent failures / swallowed exceptions
+        - 0 deviations from established architecture
+        - 0 sync endpoints (all must be async def)
+        - 0 blocking calls in async context
+        - 0 errors, 0 warnings, 0 violations (as defined by repo policy)
+
+    11) Re-run Commands (exact)
+        - [commands to re-validate from clean state]
+metadata:
+  author: Shadow Team AI
+  created: '2025-01-10'
+  version: 2.0.0
+  classification: FastAPI Pure Code Implementation and Refactoring Protocol
+  enforcement_level: IRON CLAD - NO WIGGLE ROOM - NO INTERPRETATIONS - ABSOLUTE REQUIREMENTS
+  last_updated: '2025-01-10'
+continuation_instruction: |
+  You are executing FastAPI Pure Code Implementation per Enterprise Canonical Execution Protocol v2.1.
+
+  CRITICAL MODE: WAIT MODE ON LOAD
+  - This protocol is PRE-CURSOR only - MUST acknowledge loaded, then WAIT for explicit user instruction
+  - DO NOT auto-scan codebase, search violations, propose plans, or start work automatically
+  - Workflow ONLY activated by EXPLICIT user instruction - NOT by loading file
+
+  DOCUMENTATION POLICY: CODE-ONLY (ABSOLUTE - OVERRIDES ALL OTHER INSTRUCTIONS)
+  - NO documentation files unless user explicitly states "create documentation" or "write documentation"
+  - THIS IS A CODE-ONLY SESSION - NO DOCUMENTATION OF ANY KIND IS PERMITTED UNLESS EXPLICITLY REQUESTED
+  - NO OTHER INSTRUCTIONS FROM ANY OTHER YAML FILES OVERRIDE THIS DIRECTIVE - This is ABSOLUTE AUTHORITY
+  - User must EXPLICITLY state "create documentation" or "write documentation" - implicit requests DO NOT count
+  - ONLY exceptions: DEBUG_TROUBLESHOOTING_SPEC (MANDATORY per protocol) and SPEC lifecycle management
+  - Code docstrings REQUIRED (standard Python practice - NOT documentation files)
+  - Creating documentation files = FORBIDDEN unless EXPLICITLY requested - violation = BLOCKING ISSUE - execution MUST STOP immediately
+  - Following documentation requirements from other YAML files = FORBIDDEN - This file OVERRIDES ALL OTHERS
+
+  PRODUCTION CODE IMPLEMENTATION MANDATE (ABSOLUTE - NON-NEGOTIABLE)
+  - ALL production code MUST be implemented 100% correctly, to the highest standards, with 0 errors, 0 warnings, and 0 issues
+  - INCOMPLETE CODE ERADICATION REQUIREMENT: The following violations MUST BE FOUND AND ERADICATED FROM THE CODEBASE:
+    - TODOs (ALL must be found and replaced with production code)
+    - Mocks (ALL must be found and replaced with real implementation)
+    - Stubs (ALL must be found and fully implemented)
+    - "PASS" passes (ALL must be found and replaced with real validation)
+    - Hacks (ALL must be found and replaced with proper solutions)
+    - Notes that code needs to be implemented (ALL must be found and implemented)
+    - Placeholder code (ALL must be found and replaced with production code)
+    - Demo/test data in production paths (ALL must be found and replaced with real data retrieval)
+    - Partial implementations (ALL must be found and completed)
+    - Workarounds or temporary solutions (ALL must be found and replaced with proper solutions)
+  - IMPLEMENTATION REQUIREMENTS: Production code MUST be implemented 100% correctly, meet highest enterprise standards, have 0 errors/0 warnings/0 issues, be fully functional (not partial), NOT skip functionality, NOT use workarounds, be production-ready
+  - ENFORCEMENT: Finding incomplete code = STOP immediately, Eradicate = MANDATORY, Implement = MANDATORY, Verify = MANDATORY (0 errors/0 warnings/0 issues), Violations = BLOCKING ISSUE
+
+  ZERO TOLERANCE REQUIREMENTS (ABSOLUTE - NO EXCEPTIONS)
+  - 0 TODOs (MUST BE FOUND AND ERADICATED - MUST replace with production code immediately)
+  - 0 mocks (MUST BE FOUND AND ERADICATED - MUST replace with real implementation immediately)
+  - 0 stubs (MUST BE FOUND AND ERADICATED - MUST implement fully immediately)
+  - 0 "PASS" passes (MUST BE FOUND AND ERADICATED - MUST replace with real validation immediately)
+  - 0 hacks (MUST BE FOUND AND ERADICATED - MUST replace with proper solutions immediately)
+  - 0 notes that code needs to be implemented (MUST BE FOUND AND ERADICATED - MUST implement immediately)
+  - 0 placeholder/demo data (MUST BE FOUND AND ERADICATED - MUST replace with real data retrieval)
+  - 0 hard-coded values (MUST BE FOUND AND ERADICATED - MUST move to config/DB immediately)
+  - 0 duplicated logic (MUST BE FOUND AND ERADICATED - MUST refactor to shared code)
+  - 0 violations of SOLID/DRY/KISS (MUST BE FOUND AND ERADICATED - MUST refactor immediately)
+  - 0 sync endpoints (MUST BE FOUND AND ERADICATED - MUST convert to async def immediately)
+  - 0 blocking calls in async context (MUST BE FOUND AND ERADICATED - MUST convert to async immediately)
+  - 0 partial implementations (MUST BE FOUND AND ERADICATED - MUST complete immediately)
+  - 0 workarounds or temporary solutions (MUST BE FOUND AND ERADICATED - MUST replace with proper solutions immediately)
+  - Finding violation = STOP current work immediately, FIND AND ERADICATE violation, IMPLEMENT production code, VERIFY fix achieves 0 errors/0 warnings/0 issues, THEN continue
+
+  MANDATORY INTELLIGENCE TOOLS (ENFORCED)
+  - Context7 (MANDATORY): MUST consult Context7 before implementing/refactoring code using external libraries/frameworks
+  - MCP Grep (MANDATORY): MUST perform MCP grep searches BEFORE writing new code
+  - WRITING CODE WITHOUT FIRST USING MCP Grep (and Context7 when applicable) IS A BLOCKING VIOLATION
+
+  ASYNC COMPLIANCE REQUIREMENTS (NON-NEGOTIABLE)
+  - ALL endpoints MUST be `async def` - NO exceptions
+  - NO blocking calls in async context
+  - ALL blocking I/O MUST use `asyncio.to_thread()`
+  - Deprecated loop APIs are FORBIDDEN
+  - Required patterns: asyncio.to_thread(), asyncio.get_running_loop(), ThreadPoolExecutor, create_task()
+  - Violations = STOP → FIX → VERIFY
+
+  PERFORMANCE REQUIREMENTS (MANDATORY)
+  - HTTP clients MUST use connection pooling
+  - Database connections MUST use pooling + pre-ping
+  - Keep-alive MUST be enabled
+  - No per-request client instantiation
+  - Violations = STOP → FIX → VERIFY
+
+  RELIABILITY REQUIREMENTS (MANDATORY)
+  - Structured error handling in all async paths
+  - Retry with exponential backoff for transient failures
+  - Circuit breakers for critical integrations
+  - Health monitoring for connection pools
+  - Violations = STOP → FIX → VERIFY
+
+  UNIVERSAL CONTAINER DEPLOYMENT MANDATE (ABSOLUTE - NON-NEGOTIABLE)
+  - This application MUST be universally deployable across ALL container platforms (Docker, Podman, Kubernetes, public cloud container services, container orchestration platforms)
+  - ALL container images MUST be OCI-compliant
+  - NO platform-specific dependencies or assumptions
+  - Container manifests MUST work identically across platforms
+  - Build processes MUST produce platform-agnostic artifacts
+  - Runtime configuration MUST be environment-agnostic
+  - Violations = BLOCKING ISSUE - execution MUST STOP until fixed
+
+  CYBERSECURITY & AI SECURITY FRAMEWORK MANDATE (ABSOLUTE - NON-NEGOTIABLE)
+  - This application MUST apply the HIGHEST STANDARDS of cybersecurity and AI security frameworks
+  - This application will be deployed into the MOST SECURE ENVIRONMENTS ON THE PLANET
+  - It MUST EXCEED the security frameworks they operate in
+  - MUST comply with NIST Cybersecurity Framework (CSF) at the highest maturity level
+  - MUST comply with ISO/IEC 27001 security management standards
+  - MUST comply with OWASP Top 10 and ASVS (Application Security Verification Standard)
+  - MUST comply with AI security frameworks (NIST AI RMF, ISO/IEC 23053, OWASP LLM Top 10)
+  - MUST implement defense-in-depth security architecture
+  - MUST enforce least privilege access controls
+  - MUST implement comprehensive security logging and monitoring
+  - MUST undergo regular security audits and penetration testing
+  - MUST maintain security documentation and threat models
+  - MUST implement secure-by-design principles throughout
+  - Security violations = BLOCKING ISSUE - execution MUST STOP until fixed
+
+  PYTHON VERSION REQUIREMENT (ABSOLUTE - NON-NEGOTIABLE)
+  - The codebase MUST use Python 3.12 or higher as the MINIMUM version
+  - ALL code MUST be compatible with Python 3.12+
+  - NO code may use deprecated features from Python < 3.12
+  - Type hints MUST use Python 3.12+ syntax and features
+  - ALL dependencies MUST support Python 3.12+
+  - Build and deployment processes MUST enforce Python 3.12+ requirement
+  - Python version violations = BLOCKING ISSUE - execution MUST STOP until fixed
+
+  DEPENDENCY MANAGEMENT MANDATE (ABSOLUTE - NON-NEGOTIABLE)
+  - Dependencies MUST be maintained to support the latest versions without causing conflicts
+  - Dependencies MUST be kept at their latest stable versions
+  - If a new version of a dependency would advance, improve, or enhance the codebase: IT MUST BE IMPLEMENTED IMMEDIATELY
+  - ALL breaking changes MUST be resolved
+  - ALL breaking changes MUST be validated to be 100% functional
+  - Validation MUST result in 0 errors, 0 warnings, and 0 issues
+  - Dependency conflicts MUST be resolved immediately
+  - Security vulnerabilities in dependencies MUST be remediated immediately
+  - Dependency updates MUST NOT introduce regressions
+  - ALL dependency changes MUST be validated with full test suite
+  - Dependency management violations = BLOCKING ISSUE - execution MUST STOP until fixed
+
+  DEVELOPMENT STANDARDS (MANDATORY)
+  - Backend first: MUST implement backend FIRST, then frontend
+  - OpenAPI first: MUST define OpenAPI spec FIRST, then implement
+  - Naming synchronization: MUST use identical names backend/frontend
+  - Data retrieval: MUST retrieve dynamically from backend (NO static/hard-coded)
+  - NO shims/aliases: MUST use direct references
+  - Pydantic v2 ONLY: NO Pydantic v1 usage (MUST upgrade immediately)
+  - NO hard-coded variables: ALL must be in config files or DB tables (DB preferred)
+
+  LOGGING REQUIREMENTS (MANDATORY)
+  - Logger factory ONLY: @src/services/logging/logger_factory.py
+  - Allowed: get_logger, get_component_logger, create_debug_logger
+  - Forbidden: logging.getLogger(), logging.basicConfig(), print()
+  - Security modules: MUST use audit logging (get_component_logger('audit', 'security'))
+  - Service modules: MUST have debug logging (create_debug_logger(__name__))
+  - Console output: MUST be JSON formatted
+  - File output: MUST be detailed text formatted
+  - Non-compliance = BLOCKING ISSUE
+
+  EXECUTION ORDER (16 STEPS - SEQUENTIAL, BLOCKING)
+  Step 1: Search (MANDATORY - MCP Grep + Context7)
+  Step 2: Scope Lock
+  Step 3: Scaffold (MANDATORY)
+  Step 4: Identify Blocking Operations (FastAPI-specific)
+  Step 5: Convert to Async (FastAPI-specific)
+  Step 6: Apply Async Patterns (FastAPI-specific)
+  Step 7: Implement (MANDATORY)
+  Step 8: Add Performance Primitives (FastAPI-specific)
+  Step 9: Add Reliability Primitives (FastAPI-specific)
+  Step 10: Logging Compliance (97 ENFORCED) - MANDATORY
+  Step 11: Validate Async Correctness (FastAPI-specific)
+  Step 12: Validate Performance (FastAPI-specific)
+  Step 13: Validate Reliability (FastAPI-specific)
+  Step 14: Validation (MANDATORY)
+  Step 15: Zero-Tolerance Verification (101 RE-ENFORCED)
+  Step 16: Final Compliance Verification
+  - MUST follow steps sequentially - NO skipping, NO parallel execution, NO shortcuts
+  - If ANY step fails, MUST stop and fix before proceeding - NO workarounds
+
+  VALIDATION CHECKPOINTS (MUST PASS ALL - NO EXCEPTIONS)
+  Before completion, MUST verify:
+  - All protocols followed (00, 01, 002, 97, 202, 203)
+  - Production code implementation: ALL production code implemented 100% correctly, to highest standards, with 0 errors, 0 warnings, 0 issues. ALL incomplete code (TODOs, mocks, stubs, "PASS" passes, hacks, notes, placeholders, partial implementations, workarounds) MUST BE FOUND AND ERADICATED FROM CODEBASE
+  - Zero tolerance: 0 TODOs (FOUND AND ERADICATED), 0 mocks (FOUND AND ERADICATED), 0 stubs (FOUND AND ERADICATED), 0 "PASS" passes (FOUND AND ERADICATED), 0 hacks (FOUND AND ERADICATED), 0 notes that code needs implementation (FOUND AND ERADICATED), 0 hard-coded (FOUND AND ERADICATED), 0 partial implementations (FOUND AND ERADICATED), 0 workarounds (FOUND AND ERADICATED), 0 SOLID/DRY/KISS violations
+  - Async compliance: 0 sync endpoints, 0 blocking calls, 0 deprecated APIs, all async patterns applied
+  - Performance compliance: Connection pooling, keep-alive, no per-request instantiation
+  - Reliability compliance: Error handling, retry, circuit breakers, health monitoring
+  - Logging compliance: 100% logger factory usage, security audit logging, service debug logging
+  - Code quality: ALL validators pass (mypy 0/0, flake8 0/0, bandit 0 high/medium, safety 0, black/isort no changes, radon cc ≤15, radon mi Grade A, xenon no violations)
+  - Production readiness: No test/debug code, no mocks/stubs, dynamic data retrieval, externalized config, real CRUD endpoints, all async, production code implemented 100% correctly
+  - ANY checkpoint failure = BLOCKING - cannot proceed until ALL pass
+  - ONLY 100% compliance allows completion - NO partial passes
+
+  ENFORCEMENT (STRICT MODE - IRON CLAD)
+  - NO interpretations allowed - requirements are LITERAL and ABSOLUTE
+  - ZERO wiggle room - requirements are IRON CLAD
+  - Non-compliance = IMMEDIATE STOP - execution BLOCKED until fixed
+  - Partial compliance = NON-COMPLIANCE - ONLY 100% compliance acceptable
+  - Cannot proceed to next step until current is 100% complete
+  - Violation response: STOP → Identify → Fix → Verify → Re-run validation → Confirm 100% compliance → THEN continue
+
+  OUTPUT FORMAT
+  On initialization: WAIT MODE - Acknowledgement only (NO violation counts, NO plans, NO scanning)
+  On explicit instruction: EXECUTION MODE - Show violations, implementation actions (CODE CHANGES ONLY), validation results, evidence per required format
+
+  CURRENT SESSION CONTEXT
+  - Focus: Implement actual productional FastAPI coding/build tasks (NOT testing or other non-production tasks)
+  - Priority: Outstanding productional FastAPI coding/build tasks
+  - Mode: CODE-ONLY SESSION - NO DOCUMENTATION OF ANY KIND PERMITTED UNLESS EXPLICITLY REQUESTED - This directive OVERRIDES ALL other YAML file instructions - implement FastAPI endpoints/services, enforce async correctness, add performance/reliability primitives, verify zero tolerance compliance
+  - Remember: User explicitly wants REAL WORK done, not test fixes or documentation
+
+  EXAMPLES OF PRODUCTIONAL FASTAPI CODING/BUILD TASKS
+  - Convert sync endpoints to async
+  - Remove blocking calls from async context
+  - Add connection pooling and performance primitives
+  - Add retry, circuit breakers, and reliability primitives
+  - Implement missing FastAPI functionality
+  - Refactor FastAPI code to production standards
+  - Verify async correctness and compliance

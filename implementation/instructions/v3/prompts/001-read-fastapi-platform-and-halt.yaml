@@ -1,0 +1,48 @@
+version: "1.0"
+schema: "mcp.prompt/v1"
+id: "001-read-fastapi_platform_and_halt"
+title: "Read FastAPI platform docs and HALT"
+description: "Review key READMEs under src/services/fastapi_services_platform and then HALT. Do not proceed beyond HALT unless explicitly instructed."
+source_md_section_index: 1
+files:
+  - "src/services/fastapi_services_platform/README.md"
+  - "src/services/fastapi_services_platform/engine/README.md"
+  - "src/services/fastapi_services_platform/docs/README.md"
+  - "src/services/fastapi_services_platform/docs/architecture/README.md"
+action: "halt"
+steps:
+  - "Open and read the listed files to acquire a comprehensive understanding of the fastapi_services_platform."
+  - "Record any immediate observations in the session spec only if explicitly instructed."
+halt: true
+variables: {}
+notes:
+  - "HALT: do not execute any follow-up steps until the user explicitly authorizes execution."
+  - "This prompt preserves original intent: read and pause."
+raw: |
+  Base_Directory: docs/implementation/instructions/v2/
+  File_Extension: .yaml
+
+  SPEC_Directory: docs/implementation/in_progress
+  SPEC_File_Extention: .md
+
+  PROTOCOLS:
+    - "001-PROTOCOL-The_GoldenRule_Execution"
+    - "002-PROTOCOL-Zero_Tolerance_Remediation"
+    - "003-PROTOCOL-FastAPI_Pure_Code_Implementation"
+    - "004-PROTOCOL-Validate_Remediate_Codebase"
+    - "006-PROTOCOL-RFC2119_Requirements_Language"
+
+  ENFORCE:
+  - "002-PROTOCOL-Zero_Tolerance_Remediation"
+  - "003-PROTOCOL-FastAPI_Pure_Code_Implementation"
+  - "004-PROTOCOL-Validate_Remediate_Codebase"
+
+  EXECUTE:
+  Review the following documents to acquire a comprehensive understanding of the fastapi_services_platform:
+
+  - @src/services/fastapi_services_platform/README.md
+  - @src/services/fastapi_services_platform/engine/README.md
+  - @src/services/fastapi_services_platform/docs/README.md
+  - @src/services/fastapi_services_platform/docs/architecture/README.md
+
+  Then, HALT

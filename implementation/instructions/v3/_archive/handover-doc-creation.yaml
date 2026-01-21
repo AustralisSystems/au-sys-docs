@@ -1,0 +1,226 @@
+SESSION HANDOVER DOCUMENT INSTRUCTIONS
+
+### [CONTEXT]
+
+You are preparing a **session handover document** that captures the outcomes, state, and continuity requirements of the **current working session**.
+This document will be consumed in a **future session** and must enable rapid re-orientation without ambiguity or context loss.
+The handover document may coexist alongside other workstreams, documents, or sessions.
+
+HANDOVER_DOC_DIR = "./docs/implementation/handovers"
+
+All handover documents must be stored at:
+
+```
+{{ HANDOVER_DOC_DIR }}
+```
+
+---
+
+### [PRIMARY OBJECTIVE]
+
+Produce a **clear, self-contained handover document** that accurately records what occurred during this session and enables the next session to resume work efficiently and correctly.
+
+---
+
+### [STEP-BY-STEP INSTRUCTIONS]
+
+**Step 1 — Session Identification & Scope**
+Clearly state:
+
+* The purpose of this session
+* The scope of work addressed
+* Any explicit boundaries or exclusions that applied
+
+This section must make it immediately clear **what this session did and did not cover**.
+
+---
+
+**Step 2 — Achievements & Outcomes**
+Document:
+
+* What was completed or advanced during the session
+* Key decisions made
+* Artifacts, prompts, documents, or structures produced
+
+Focus on **facts and outcomes**, not speculation.
+
+---
+
+**Step 3 — Challenges, Risks & Lessons Learned**
+Capture:
+
+* Obstacles or constraints encountered
+* Risks identified or mitigated
+* Lessons learned that should inform future sessions
+
+These insights must be **actionable**, not narrative filler.
+
+---
+
+**Step 4 — Current State & Progress Snapshot**
+Provide a clear status view:
+
+* What is **complete** as of session end
+* What is **in progress**
+* What remains **outstanding or pending**
+
+Avoid ambiguity. Each item should have a clear state.
+
+---
+
+**Step 5 — Continuity & Next-Session Readiness**
+Include:
+
+* References or links to relevant documents, files, or resources
+* Notes required to resume work without re-discovery
+* Suggested immediate next steps (without executing them)
+
+This section exists solely to **reduce ramp-up time** in the next session.
+
+---
+
+### [CRITICAL CONSTRAINTS — NON-NEGOTIABLE]
+
+* Do **NOT** include content unrelated to this session
+* Do **NOT** modify or reinterpret parallel workstreams
+* Do **NOT** assume future intent beyond what is explicitly stated
+* Maintain **neutral, factual, and traceable language**
+
+This is a handover artifact, not a planning manifesto.
+
+---
+
+### [AWARENESS & DISCIPLINE REMINDER]
+
+* Multiple sessions and workstreams may exist concurrently
+* This handover must remain **session-scoped and additive only**
+* Precision and restraint preserve continuity and trust
+
+Failure to maintain scope contaminates downstream sessions.
+
+---
+
+### [OUTPUT REQUIREMENTS]
+
+The handover document must:
+
+1. Stand alone without verbal explanation
+2. Clearly reflect session reality at end-state
+3. Enable the next session to resume work immediately
+4. Contain no execution, assumptions, or speculative actions
+
+---
+
+SESSION HANDOVER DOCUMENT INSTRUCTIONS
+
+### [CONTEXT]
+
+You are preparing a **session handover document** that captures the outcomes, state, and continuity requirements of the **current working session**.
+This document will be consumed in a **future session** and must enable rapid re-orientation without ambiguity or context loss.
+The handover document may coexist alongside other workstreams, documents, or sessions.
+
+HANDOVER_DOC_DIR = "./docs/implementation/handovers"
+
+All handover documents must be stored at:
+
+```
+{{ HANDOVER_DOC_DIR }}
+```
+
+---
+
+### [PRIMARY OBJECTIVE]
+
+Produce a **clear, self-contained handover document** that accurately records what occurred during this session and enables the next session to resume work efficiently and correctly.
+
+---
+
+### [STEP-BY-STEP INSTRUCTIONS]
+
+**Step 1 — Session Identification & Scope**
+Clearly state:
+
+* The purpose of this session
+* The scope of work addressed
+* Any explicit boundaries or exclusions that applied
+
+This section must make it immediately clear **what this session did and did not cover**.
+
+---
+
+**Step 2 — Achievements & Outcomes**
+Document:
+
+* What was completed or advanced during the session
+* Key decisions made
+* Artifacts, prompts, documents, or structures produced
+
+Focus on **facts and outcomes**, not speculation.
+
+---
+
+**Step 3 — Challenges, Risks & Lessons Learned**
+Capture:
+
+* Obstacles or constraints encountered
+* Risks identified or mitigated
+* Lessons learned that should inform future sessions
+
+These insights must be **actionable**, not narrative filler.
+
+---
+
+**Step 4 — Current State & Progress Snapshot**
+Provide a clear status view:
+
+* What is **complete** as of session end
+* What is **in progress**
+* What remains **outstanding or pending**
+
+Avoid ambiguity. Each item should have a clear state.
+
+---
+
+**Step 5 — Continuity & Next-Session Readiness**
+Include:
+
+* References or links to relevant documents, files, or resources
+* Notes required to resume work without re-discovery
+* Suggested immediate next steps (without executing them)
+
+This section exists solely to **reduce ramp-up time** in the next session.
+
+---
+
+### [CRITICAL CONSTRAINTS — NON-NEGOTIABLE]
+
+* Do **NOT** include content unrelated to this session
+* Do **NOT** modify or reinterpret parallel workstreams
+* Do **NOT** assume future intent beyond what is explicitly stated
+* Maintain **neutral, factual, and traceable language**
+
+This is a handover artifact, not a planning manifesto.
+
+---
+
+### [AWARENESS & DISCIPLINE REMINDER]
+
+* Multiple sessions and workstreams may exist concurrently
+* This handover must remain **session-scoped and additive only**
+* Precision and restraint preserve continuity and trust
+
+Failure to maintain scope contaminates downstream sessions.
+
+---
+
+### [OUTPUT REQUIREMENTS]
+
+The handover document must:
+
+1. Stand alone without verbal explanation
+2. Clearly reflect session reality at end-state
+3. Enable the next session to resume work immediately
+4. Contain no execution, assumptions, or speculative actions
+
+---
+

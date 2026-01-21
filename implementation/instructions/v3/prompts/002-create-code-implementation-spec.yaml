@@ -1,0 +1,43 @@
+version: "1.0"
+schema: "mcp.prompt/v1"
+id: "002-create_code_implementation_spec"
+title: "Create CODE_IMPLEMENTATION_SPEC for session"
+description: "Copy the provided CODE_IMPLEMENTATION_SPEC_TEMPLATE.md into docs/implementation/in_progress/, rename with date suffix, and use it to maintain session progress (do not rewrite template)."
+source_md_section_index: 2
+action: "create-file"
+steps:
+  - "Copy 'docs/implementation/CODE_IMPLEMENTATION_SPEC_TEMPLATE.md' to 'docs/implementation/in_progress/CODE_IMPLEMENTATION_SPEC_<YYYY-MM-DD>.md'."
+  - "Do not change the template content; only copy and rename for this session."
+  - "Use the created file to maintain and update session progress for every change; do not include code examples in the spec unless explicitly requested."
+halt: true
+variables:
+  code_implementation_spec_doc:
+    required: true
+    default: "docs/implementation/in_progress/CODE_IMPLEMENTATION_SPEC_<DATE>.md"
+notes:
+  - "This prompt enforces: maintain and update your progress in the CODE_IMPLEMENTATION_SPEC as per original instructions."
+raw: |
+  LOAD_AND_PARSE:
+    DOCTRINE: "000-DOCTRINE-Enterprise_Canonical_Execution"
+
+  ENFORCE:
+    - "002-PROTOCOL-Zero_Tolerance_Remediation"
+    - "003-PROTOCOL-FastAPI_Pure_Code_Implementation"
+    - "004-PROTOCOL-Validate_Remediate_Codebase"
+
+  EXECUTE:
+    - "104-INSTRUCTIONS-Execute_Implementation_Phase_Tasks"
+    - "202-INSTRUCTIONS-Pure_Code_Implementation_Execution_Protocol"
+    - "203-INSTRUCTIONS-FastAPI_Design_Implementation_Refactor"
+
+  INPUTS:
+  Create a "CODE_IMPLEMENTATION_SPEC" document to track this session, by:
+  following the instructions and examples from:
+    - "docs\implementation\SPEC_TEMPLATE_v1.0.0.md"
+    - "docs\implementation\SPEC_CREATION_GUIDE_v1.0.0.md"
+
+  - Copy the "docs\implementation\CODE_IMPLEMENTATION_SPEC_TEMPLATE.md" to the directory "docs\implementation\in_progress\"  DO NOT RE-WRITE IT,
+  - Then rename the file for this session and include a date stamp suffix in the name
+  - MAINTAIN AND UPDATE YOUR PROGRESS IN THE {{ CODE_IMPLEMENTATION_SPEC }}.
+
+  Then, Halt

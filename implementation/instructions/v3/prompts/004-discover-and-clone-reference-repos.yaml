@@ -1,0 +1,24 @@
+version: "1.0"
+schema: "mcp.prompt/v1"
+id: "004-discover_and_clone_reference_repos"
+title: "Discover and clone reference repositories using MCP tools"
+description: "Use MCP tools (grep/fetch) and GitHub search to find semantically similar code and authoritative examples, clone useful repositories locally for reference, and record them in the CODE_IMPLEMENTATION_SPEC. Do not perform mass copy/adapt without explicit approval."
+source_md_section_index: 4
+action: "discover-and-clone"
+steps:
+  - "Use MCP grep/fetch (or GitHub search) to identify useful repositories, code snippets, and canonical examples relevant to the treatments in the CODE_IMPLEMENTATION_SPEC."
+  - "Clone identified repositories into a local 'reference_repos' directory and record origin URL, license, and purpose in the CODE_IMPLEMENTATION_SPEC."
+  - "Do not remove cloned repos; they are kept for future reference."
+  - "Prepare candidate files/modules for potential copy-and-adapt remediation; do not copy until authorized."
+variables:
+  code_implementation_spec_doc:
+    required: true
+    default: "{{ CODE_IMPLEMENTATION_SPEC_DOCS }}"
+notes:
+  - "The original instructions require using MCP TOOLS to fetch and clone; this prompt preserves that behavior but flags the need for clear authorization before any content is copied into the prod codebase."
+raw: |
+  - You MUST use MCP TOOLS grep and fetch to retrieve additional useful repositories, code examples or semantically similar code base from GitHub to quickly use as a base and / or to scaffold.
+  - You MUST use GIT TO CLONE all the useful discovered GitHub repos to the local repository, even if they are only going to provide a small benefit to this code base NOTE: this is to use for future references and examples, do not remove the cloned repos.
+  - Focus on implementing, rectifying, or refactoring groups of items identified on your list, ensuring that all necessary improvements are executed with precision and adherence to best practices.
+  - Record in the {{ CODE_IMPLEMENTATION_SPEC_DOCS }} treatment plan structured checklists, DO NOT include code examples.
+  - You MUST COPY and adapt the acquired directory structures, files, modules, functions, code blocks and content to the prod code base DO NOT re-write any part of the content, THIS IS ERROR PRONE (require explicit authorization before copying).

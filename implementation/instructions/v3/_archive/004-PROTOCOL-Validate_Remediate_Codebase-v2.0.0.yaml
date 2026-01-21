@@ -1,0 +1,730 @@
+prompt_name: Validate_Remediate_Codebase
+version: 2.0.0
+type: validation_remediation_protocol
+language: en-AU
+references:
+- docs/implementation/instructions/v2/00-Enterprise_Canonical_Execution_Protocol_v2.1_DOCTRINE.yaml
+- docs/implementation/instructions/v2/01-The_GoldenRule_Execution_Protocol_v2.1_DOCTRINE.yaml
+- docs/implementation/instructions/v2/002-PROTOCOL-Zero_Tolerance_Remediation-v2.0.0.yaml
+- docs/implementation/instructions/v2/97-LOGGING_REQUIREMENTS_INSTRUCTION.yaml
+- docs/implementation/instructions/v2/106-INSTRUCTIONS-Validate_Code_Quality_and_Compliance-v2.0.0.yaml
+- docs/implementation/instructions/v2/107-INSTRUCTIONS-Remediate_And_Refactor_Codebase-v2.0.0.yaml
+
+---
+context:
+  role: Execute code quality validation and remediation under enterprise canonical protocols
+  intent: 'Validation + Remediation: validate code quality and compliance, then remediate verified defects with minimal controlled changes, ensuring objective evidence and traceability'
+  workflow: Follow canonical validation protocols to identify failures, then execute controlled remediation to eliminate defects while preserving system behaviour
+  execution_mode: STRICT - NO exceptions, NO interpretations, NO wiggle room
+initialization_mode:
+  rule: WAIT MODE - This protocol is a PRE-CURSOR only
+  behavior: MUST acknowledge protocol loaded, then WAIT for explicit user instruction
+  forbidden_on_load:
+  - DO NOT scan codebase automatically
+  - DO NOT run validations automatically
+  - DO NOT propose remediation plans automatically
+  - DO NOT start any validation or remediation work automatically
+  - DO NOT analyze code without explicit instruction
+  required_on_load:
+  - Acknowledge protocol loaded and understood
+  - Confirm readiness to follow protocol when explicitly instructed
+  - WAIT for user's next explicit instruction
+  response_template: '"Validate Remediate Codebase Protocol (v2.0.0) loaded and acknowledged.
+
+    Ready to execute validation and remediation per this protocol when explicitly instructed.
+
+    Waiting for your next explicit instruction."
+
+    '
+  activation_trigger: User must provide EXPLICIT instruction to begin work - loading this file does NOT trigger work
+documentation_policy:
+  code_only: true
+  rule: THIS IS A CODE-ONLY SESSION - NO DOCUMENTATION OF ANY KIND IS PERMITTED UNLESS EXPLICITLY REQUESTED - This directive OVERRIDES ALL other YAML file instructions
+  explicit_request_definition: User must explicitly state 'create documentation' or 'write documentation' - implicit requests DO NOT count
+  exceptions:
+  - DEBUG_TROUBLESHOOTING_SPEC must ALWAYS be created per Debug and Troubleshoot Protocol (MANDATORY, NO EXCEPTIONS) - SPEC files are EXEMPT from CODE-ONLY policy
+  - SPEC protocols must ALWAYS be followed (SPEC creation, updates, lifecycle management) - MANDATORY, NO EXCEPTIONS - SPEC files are EXEMPT from CODE-ONLY policy
+  - All SPEC artifacts (DEBUG_TROUBLESHOOTING_SPEC, implementation SPECs, plan SPECs) are EXEMPT from CODE-ONLY policy and MUST be created/updated per protocol requirements
+  - Documentation explicitly requested by user with explicit wording
+  spec_file_exemption:
+    rule: SPEC files (DEBUG_TROUBLESHOOTING_SPEC, implementation SPECs, plan SPECs) are EXEMPT from CODE-ONLY documentation policy
+    rationale: SPEC files are mandatory protocol artifacts required for traceability and compliance, not optional documentation
+    scope: All SPEC artifacts required by protocols (Step 4, Step 9, SPEC lifecycle management)
+  forbidden:
+  - Creating README files unless explicitly requested with explicit wording
+  - Creating markdown documentation files unless explicitly requested with explicit wording
+  - Creating temporal documentation reports unless explicitly requested with explicit wording
+  - Writing documentation comments beyond code docstrings (docstrings are REQUIRED, not optional)
+  - Interpreting 'documentation' requests implicitly - MUST be explicit
+  required:
+  - DEBUG_TROUBLESHOOTING_SPEC creation and updates (mandatory per protocol - FAILURE TO CREATE IS A BLOCKING ISSUE)
+  - Code docstrings and type hints (standard Python practice - REQUIRED, not optional)
+  - "SPEC lifecycle management (in_progress → done/) - MANDATORY"
+  enforcement: Violation of documentation policy = BLOCKING ISSUE - execution MUST STOP immediately
+quick_reference:
+  protocols:
+  - docs/implementation/instructions/v2/00-Enterprise_Canonical_Execution_Protocol_v2.1_DOCTRINE.yaml
+  - docs/implementation/instructions/v2/01-The_GoldenRule_Execution_Protocol_v2.1_DOCTRINE.yaml
+  - docs/implementation/instructions/v2/002-PROTOCOL-Zero_Tolerance_Remediation-v2.0.0.yaml
+  - docs/implementation/instructions/v2/97-LOGGING_REQUIREMENTS_INSTRUCTION.yaml
+  instructions:
+  - docs/implementation/instructions/v2/106-INSTRUCTIONS-Validate_Code_Quality_and_Compliance-v2.0.0.yaml
+  - docs/implementation/instructions/v2/107-INSTRUCTIONS-Remediate_And_Refactor_Codebase-v2.0.0.yaml
+  validation_summary:
+  - Execute defined quality checks
+  - Report objective results with evidence
+  - Block progression on failure
+  remediation_summary:
+  - Remediate verified failures only
+  - Minimal controlled changes
+  - Preserve system behaviour
+validation_requirements:
+  scope:
+    mandatory: true
+    includes:
+    - code style and linting
+    - formatting rules
+    - static analysis
+    - type checking
+    - dependency and license compliance
+    - security scanning
+    rule: Absence of a required check is itself a FAILURE
+  execution_rules:
+    mandatory: true
+    rules:
+    - Use the projects canonical tools and configurations
+    - Prefer repository scripts (package.json, Makefile, CI config)
+    - Do NOT substitute tools without explicit instruction
+  failure_rules:
+    mandatory: true
+    rules:
+    - Any error is a FAILURE
+    - Warnings are FAILURES if policy specifies zero-warnings
+    - Unverified "looks fine" assessments are invalid
+    on_failure:
+    - STOP
+    - Record evidence
+    - Do NOT proceed to further phases
+  evidence_requirements:
+    mandatory: true
+    for_each_validation:
+    - record command executed
+    - capture exit status
+    - capture relevant output lines
+    rule: Claims without evidence are invalid
+remediation_requirements:
+  entry_conditions:
+    mandatory: true
+    rule: Remediation may begin ONLY if at least one of the following exists:
+    - a failed validation step
+    - a confirmed runtime error
+    - a SPEC-defined corrective action
+    - an explicit remediation instruction
+    if_none_exist:
+    - STOP
+    - Do NOT refactor
+  discipline:
+    mandatory: true
+    rules:
+    - Every change must map to a specific failure or requirement
+    - Each change must have a clear causal justification
+    - One defect = one remediation scope (unless tightly coupled)
+  refactoring_rules:
+    permitted_only_when:
+    - required to correct a defect
+    - required to make validation pass
+    - required to remove unsafe behaviour
+    forbidden_when:
+    - cosmetic
+    - stylistic
+    - preference-based
+    - speculative
+    - unrelated to the failure
+  change_control:
+    mandatory: true
+    rules:
+    - Prefer minimal diffs
+    - Avoid touching unrelated files
+    - Preserve public APIs unless explicitly authorised
+    - Preserve data formats and contracts unless mandated
+  validation_requirement:
+    mandatory: true
+    rule: After remediation, MUST re-run the failing validation(s), confirm failure resolved, check for regressions
+    enforcement: Validation without evidence is invalid
+  failure_handling:
+    mandatory: true
+    rule: If remediation introduces new failures, regressions, or undefined behaviour, then STOP, report evidence, do NOT continue
+zero_tolerance_requirements:
+  absolute_forbidden:
+  - 0 TODOs (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with production code immediately, NO exceptions)
+  - 0 mocks (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with real implementation immediately, NO exceptions)
+  - 0 stub code blocks (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST implement fully immediately, NO exceptions)
+  - 0 "PASS" passes (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with real validation immediately, NO exceptions)
+  - 0 hacks (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with proper solutions immediately, NO exceptions)
+  - 0 notes that code needs to be implemented (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST implement immediately, NO exceptions)
+    detection_patterns:
+      - Comments containing "Note:" followed by "would be", "should be", "needs to be", "will be", "to be done", "handling", "implementation"
+      - Comments containing "Note:" followed by future-tense action verbs (would, should, needs, will) AND implementation-related terms
+    detection_rule: If a comment contains "Note:" AND indicates future work/deferred implementation, it MUST BE ERADICATED immediately
+  - 0 placeholder/demo data (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with real data retrieval immediately, NO exceptions)
+  - 0 hard-coded values for anything that is dynamic by nature (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST move to config/DB immediately, NO exceptions)
+  - 0 validation errors (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST remediate immediately, NO exceptions)
+  - 0 validation warnings when policy specifies zero-warnings (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST remediate immediately, NO exceptions)
+  - 0 violations of SOLID/DRY/KISS (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST refactor immediately, NO exceptions)
+  - 0 deviations from the Golden Rules (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST fix immediately, NO exceptions)
+  - 0 partial implementations (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST complete immediately, NO exceptions)
+  - 0 workarounds or temporary solutions (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with proper solutions immediately, NO exceptions)
+  production_code_implementation_mandate:
+    mandatory: true
+    rule: ALL production code MUST be implemented 100% correctly, to the highest standards, with 0 errors, 0 warnings, and 0 issues
+    incomplete_code_eradication:
+      requirement: The following violations MUST BE FOUND AND ERADICATED FROM THE CODEBASE
+      violations:
+      - TODOs (ALL must be found and replaced with production code)
+      - Mocks (ALL must be found and replaced with real implementation)
+      - Stubs (ALL must be found and fully implemented)
+      - "PASS" passes (ALL must be found and replaced with real validation)
+      - Hacks (ALL must be found and replaced with proper solutions)
+      - Notes that code needs to be implemented (ALL must be found and implemented)
+      - Placeholder code (ALL must be found and replaced with production code)
+      - Demo/test data in production paths (ALL must be found and replaced with real data retrieval)
+      - Partial implementations (ALL must be found and completed)
+      - Workarounds or temporary solutions (ALL must be found and replaced with proper solutions)
+    implementation_requirements:
+      - Production code MUST be implemented 100% correctly
+      - Production code MUST meet the highest enterprise standards
+      - Production code MUST have 0 errors
+      - Production code MUST have 0 warnings
+      - Production code MUST have 0 issues
+      - Production code MUST be fully functional, not partial
+      - Production code MUST NOT skip any required functionality
+      - Production code MUST NOT use workarounds or temporary solutions
+      - Production code MUST be production-ready, not development/test code
+    enforcement:
+      - Finding incomplete code = STOP current work immediately
+      - Eradicate incomplete code = MANDATORY, cannot proceed until complete
+      - Implement production code = MANDATORY, cannot skip or defer
+      - Verify implementation = MANDATORY, must achieve 0 errors, 0 warnings, 0 issues
+      - Violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  refactoring_mandate:
+    rule: If a TODO, mock, stub, "PASS" pass, hack, note, placeholder, partial implementation, or validation failure exists ANYWHERE, it MUST BE FOUND AND ERADICATED, then remediated IMMEDIATELY - NO DELAYS, NO EXCEPTIONS, NO DEFERRALS
+    enforcement: Finding a violation = STOP current work immediately, FIND AND ERADICATE violation, IMPLEMENT production code, VERIFY fix achieves 0 errors/0 warnings/0 issues, THEN continue - NO WORKAROUNDS ALLOWED
+    required_replacements:
+    - real, production-ready code (MUST be fully functional, not partial)
+    - validated code (MUST pass all quality checks)
+    - compliant code (MUST meet all standards)
+    verification: 'After remediation, MUST verify: code compiles, tests pass, validators pass, no violations remain'
+development_standards:
+  backend_first: Backend functionality MUST be implemented before frontend. Frontend-only work is a violation.
+  openapi_first: OpenAPI MUST be defined/updated before implementing endpoints. No ad-hoc endpoints.
+  naming_synchronization: Names MUST match exactly across backend/frontend. No shims/aliases.
+  data_retrieval: No static/demo data. Must retrieve real data dynamically from backend/storage.
+  pydantic_version: Pydantic v2 ONLY. Any v1 usage is a blocking violation.
+  hard_coded_variables: No hard-coded dynamic variables/settings in code. Externalise to config/DB (DB preferred).
+  universal_container_deployment:
+    mandatory: true
+    rule: This application MUST be universally deployable across ALL container platforms (Docker, Podman, Kubernetes, public cloud container services, container orchestration platforms)
+    requirements:
+    - ALL container images MUST be OCI-compliant
+    - NO platform-specific dependencies or assumptions
+    - Container manifests MUST work identically across platforms
+    - Build processes MUST produce platform-agnostic artifacts
+    - Runtime configuration MUST be environment-agnostic
+    enforcement: Violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  cybersecurity_ai_security:
+    mandatory: true
+    rule: This application MUST apply the HIGHEST STANDARDS of cybersecurity and AI security frameworks. This application will be deployed into the MOST SECURE ENVIRONMENTS ON THE PLANET. It MUST EXCEED the security frameworks they operate in.
+    requirements:
+    - MUST comply with NIST Cybersecurity Framework (CSF) at the highest maturity level
+    - MUST comply with ISO/IEC 27001 security management standards
+    - MUST comply with OWASP Top 10 and ASVS (Application Security Verification Standard)
+    - MUST comply with AI security frameworks (NIST AI RMF, ISO/IEC 23053, OWASP LLM Top 10)
+    - MUST implement defense-in-depth security architecture
+    - MUST enforce least privilege access controls
+    - MUST implement comprehensive security logging and monitoring
+    - MUST undergo regular security audits and penetration testing
+    - MUST maintain security documentation and threat models
+    - MUST implement secure-by-design principles throughout
+    enforcement: Security violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  python_version:
+    mandatory: true
+    rule: The codebase MUST use Python 3.12 or higher as the MINIMUM version
+    requirements:
+    - ALL code MUST be compatible with Python 3.12+
+    - NO code may use deprecated features from Python < 3.12
+    - Type hints MUST use Python 3.12+ syntax and features
+    - ALL dependencies MUST support Python 3.12+
+    - Build and deployment processes MUST enforce Python 3.12+ requirement
+    enforcement: Python version violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  dependency_management:
+    mandatory: true
+    rule: Dependencies MUST be maintained to support the latest versions without causing conflicts
+    requirements:
+    - Dependencies MUST be kept at their latest stable versions
+    - If a new version of a dependency would advance, improve, or enhance the codebase: IT MUST BE IMPLEMENTED IMMEDIATELY
+    - ALL breaking changes MUST be resolved
+    - ALL breaking changes MUST be validated to be 100% functional
+    - Validation MUST result in 0 errors, 0 warnings, and 0 issues
+    - Dependency conflicts MUST be resolved immediately
+    - Security vulnerabilities in dependencies MUST be remediated immediately
+    - Dependency updates MUST NOT introduce regressions
+    - ALL dependency changes MUST be validated with full test suite
+    enforcement: Dependency management violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  protocol_compliance:
+    mandatory: true
+    rule: MUST follow ALL rules defined in the Enterprise Canonical Execution Protocol - NO exceptions
+    enforcement: Protocol violation = BLOCKING ISSUE - execution MUST STOP until fixed
+logging_requirements:
+  logger_factory:
+    mandatory: true
+    location: '@src/services/logging/logger_factory.py'
+    rule: The logger factory is the ONLY logger that must be used
+  usage_patterns:
+    allowed:
+    - get_logger
+    - get_component_logger
+    - create_debug_logger
+    forbidden:
+    - logging.getLogger()
+    - logging.basicConfig()
+    - print() statements
+  security_modules: Audit logging required for security/auth/compliance modules.
+  service_modules: Debug logging capability required for service/core modules.
+  output_formats:
+    console: MUST be JSON formatted
+    file: MUST be detailed text formatted
+  blocking: Any logging non-compliance is blocking.
+execution_order:
+  mandatory: true
+  rule: MUST follow execution order sequentially - CANNOT skip steps, CANNOT reorder steps
+  blocking_rule: If ANY step fails, MUST stop and fix before proceeding - NO exceptions
+  workflow_type: 'VALIDATE → REMEDIATE → RE-VALIDATE cycle until all validations pass'
+  steps:
+    step_1_scope_identification:
+      name: Scope Identification
+      mandatory: true
+      rule: Identify validation scope (files/modules/tools/commands) and active SPEC/compliance references
+      blocking: Cannot proceed to step 2 until step 1 is complete
+    step_2_validation_execution:
+      name: Validation Execution (106)
+      mandatory: true
+      rule: |
+        - Execute defined quality checks using canonical tools and configurations
+        - Use repository scripts (package.json, Makefile, CI config) when available
+        - Do NOT substitute tools without explicit instruction
+        - Record command executed, capture exit status, capture relevant output lines
+        - Map failures to SPEC or policy sections
+      blocking: Cannot proceed to step 3 until step 2 is complete with evidence recorded
+    step_3_failure_analysis:
+      name: Failure Analysis
+      mandatory: true
+      rule: |
+        - Analyze validation results
+        - Identify blocking vs non-blocking issues
+        - Categorize failures by type (errors, warnings per policy, missing checks)
+        - Map each failure to specific defect or requirement
+      blocking: Cannot proceed to step 4 until step 3 is complete
+    step_4_remediation_entry_check:
+      name: Remediation Entry Check (107)
+      mandatory: true
+      rule: |
+        - Verify at least one entry condition exists:
+          - a failed validation step
+          - a confirmed runtime error
+          - a SPEC-defined corrective action
+          - an explicit remediation instruction
+        - If NO entry conditions exist: STOP, do NOT remediate
+        - If entry conditions exist: proceed to step 5
+      blocking: Cannot proceed to step 5 until step 4 confirms entry conditions exist
+    step_5_remediation_design:
+      name: Remediation Design (107)
+      mandatory: true
+      rule: |
+        - Design remediation for each verified failure
+        - Map each change to specific failure or requirement
+        - Ensure clear causal justification for each change
+        - Scope: one defect = one remediation scope (unless tightly coupled)
+        - FORBIDDEN: cosmetic, stylistic, preference-based, speculative, unrelated changes
+      blocking: Cannot proceed to step 6 until step 5 is complete
+    step_6_remediation_execution:
+      name: Remediation Execution (107)
+      mandatory: true
+      rule: |
+        - Execute remediation with minimal controlled changes
+        - Prefer minimal diffs
+        - Avoid touching unrelated files
+        - Preserve public APIs unless explicitly authorised
+        - Preserve data formats and contracts unless mandated
+        - Record files modified and changes applied
+      blocking: Cannot proceed to step 7 until step 6 is complete
+    step_7_revalidation:
+      name: Re-validation (106)
+      mandatory: true
+      rule: |
+        - Re-run the failing validation(s)
+        - Confirm the failure is resolved
+        - Check for regressions in adjacent behaviour
+        - Record command executed, capture exit status, capture relevant output lines
+        - Validation without evidence is invalid
+      blocking: Cannot proceed to step 8 until step 7 is complete with evidence
+    step_8_regression_check:
+      name: Regression Check
+      mandatory: true
+      rule: |
+        - Check for new failures introduced by remediation
+        - Check for regressions in adjacent behaviour
+        - If new failures or regressions found: STOP, report evidence, do NOT continue
+        - If no new failures: proceed to step 9
+      blocking: Cannot proceed to step 9 until step 8 confirms no regressions
+    step_9_cycle_completion_check:
+      name: Cycle Completion Check
+      mandatory: true
+      rule: |
+        - Check if all validations pass
+        - If failures remain: return to step 2 (validation execution) and repeat cycle
+        - If all validations pass: proceed to step 10
+      blocking: Cannot proceed to step 10 until step 9 confirms all validations pass
+    step_10_traceability:
+      name: Traceability Documentation
+      mandatory: true
+      rule: |
+        - Capture tools used, scope covered, failures mapped to SPEC/policy sections
+        - Record remediation status for each failure
+        - Document validation re-run results
+        - Create traceability record
+      blocking: Cannot proceed to step 11 until step 10 is complete
+    step_11_final_verification:
+      name: Final Verification
+      mandatory: true
+      rule: Verify ALL validation checkpoints pass - NO exceptions
+      blocking: Cannot mark complete until step 11 is complete and ALL checkpoints pass
+validation_checkpoint:
+  mandatory: true
+  rule: MUST verify ALL checkpoints before marking complete. 100% compliance only.
+  blocking: Any checkpoint failure blocks completion; fix and re-verify.
+  before_completion:
+    protocols: All required protocols followed (00, 01, 002, 97, 106, 107)
+    production_code_implementation: ALL production code implemented 100% correctly, to highest standards, with 0 errors, 0 warnings, 0 issues. ALL incomplete code (TODOs, mocks, stubs, "PASS" passes, hacks, notes, placeholders, partial implementations, workarounds) MUST BE FOUND AND ERADICATED FROM CODEBASE.
+    validation_compliance: All required validations executed with evidence, 0 errors, 0 warnings (per policy), all checks present
+    remediation_compliance: All failures remediated with minimal changes, no regressions, re-validation passed
+    zero_tolerance: 0 TODOs (FOUND AND ERADICATED), 0 mocks (FOUND AND ERADICATED), 0 stubs (FOUND AND ERADICATED), 0 "PASS" passes (FOUND AND ERADICATED), 0 hacks (FOUND AND ERADICATED), 0 notes that code needs implementation (FOUND AND ERADICATED), 0 placeholder/demo (FOUND AND ERADICATED), 0 hard-coded dynamic values (FOUND AND ERADICATED), 0 partial implementations (FOUND AND ERADICATED), 0 workarounds (FOUND AND ERADICATED), 0 SOLID/DRY/KISS violations
+    logging_compliance: Logger factory only; audit logging for security; debug logging for services; required output formats verified
+    code_quality: All required validators pass with 0 errors (and 0 warnings when policy requires)
+    production_readiness: No unfinished code paths; real data retrieval; externalised config; endpoints/services fully implemented; production code implemented 100% correctly
+    traceability: All tools used documented, scope covered documented, failures mapped to SPEC/policy, remediation status recorded
+workflow:
+  protocol:
+  - docs/implementation/instructions/v2/106-INSTRUCTIONS-Validate_Code_Quality_and_Compliance-v2.0.0.yaml
+  - docs/implementation/instructions/v2/107-INSTRUCTIONS-Remediate_And_Refactor_Codebase-v2.0.0.yaml
+  focus: 'Assisting in VALIDATION + REMEDIATION for code quality, standards compliance, and policy adherence. Execute validation checks, identify failures, remediate verified defects with minimal controlled changes, then re-validate until all checks pass.'
+  mode: CODE-ONLY SESSION - NO DOCUMENTATION OF ANY KIND PERMITTED UNLESS EXPLICITLY REQUESTED - This directive OVERRIDES ALL other YAML file instructions - focus on validation execution and code remediation, not documentation
+  execution_rule: MUST follow steps sequentially - NO skipping steps, NO parallel execution of steps, NO shortcuts
+  blocking_rule: If ANY step fails, MUST stop and fix before proceeding - NO workarounds
+  cycle_rule: 'VALIDATE → REMEDIATE → RE-VALIDATE cycle continues until all validations pass - NO exceptions'
+  activation:
+    rule: Workflow is ONLY activated by EXPLICIT user instruction - NOT by loading this file
+    trigger: User must explicitly instruct to begin validation and/or remediation work
+    wait_mode: If no explicit instruction provided, MUST remain in WAIT MODE - NO automatic activation
+  documentation_note: NO documentation files shall be created unless explicitly requested with explicit wording. SPEC lifecycle management and required SPEC artifacts (including DEBUG_TROUBLESHOOTING_SPEC when troubleshooting) are mandatory exceptions and MUST be executed per protocol. SPEC files are EXEMPT from CODE-ONLY policy as they are protocol artifacts, not optional documentation.
+enforcement:
+  strict_mode: true
+  interpretation_policy: NO interpretations. Requirements are literal.
+  wiggle_room: ZERO.
+  blocking_rules:
+  - 'CODE-ONLY: No documentation files unless explicitly requested (explicit wording only).'
+  - Any validation error = FAILURE - STOP, record evidence, do NOT proceed
+  - Any validation warning (when policy specifies zero-warnings) = FAILURE - STOP, record evidence, do NOT proceed
+  - Missing required validation check = FAILURE - STOP, record evidence, do NOT proceed
+  - Remediation without entry condition = FORBIDDEN - STOP, do NOT remediate
+  - Remediation introducing new failures = STOP, report evidence, do NOT continue
+  - Any zero-tolerance violation = STOP, FIX, VERIFY, then continue.
+  - Any logging violation = STOP, FIX, VERIFY, then continue.
+  - Cannot proceed to next step until current is 100% complete and verified.
+  - All required validators/checkpoints must pass (0 errors; 0 warnings when policy requires).
+  - Claims without evidence are invalid.
+  violation_response: "STOP → identify violation → fix → verify → re-run validation → confirm 100% compliance → continue."
+  no_exceptions: true
+output_format:
+  on_initialization:
+    mode: WAIT MODE - Acknowledgement only
+    required_output: '"Validate Remediate Codebase Protocol (v2.0.0) loaded and acknowledged.
+
+      Ready to execute validation and remediation per this protocol when explicitly instructed.
+
+      Waiting for your next explicit instruction."
+
+      '
+    forbidden_output:
+    - DO NOT output violation counts
+    - DO NOT output validation plans
+    - DO NOT output remediation plans
+    - DO NOT output proposed approaches
+    - DO NOT output next steps or options
+    - DO NOT scan codebase or analyze code
+  on_explicit_instruction: |
+    CODE/DIFF first. Then minimal evidence + re-validation commands. No narration.
+
+    Required output format:
+    1) Validation Scope
+       - Evidence: files/modules/tools/commands identified
+       - Evidence: active SPEC/compliance references
+
+    2) Validation Execution Results (106)
+       - Evidence: commands executed + exit codes
+       - Evidence: relevant output lines (only lines proving pass/fail)
+       - Evidence: failures mapped to SPEC/policy sections
+       - Evidence: blocking vs non-blocking issues identified
+
+    3) Remediation Entry Check (107)
+       - Evidence: entry conditions verified (failed validation/runtime error/SPEC action/explicit instruction)
+       - Evidence: remediation authorised or denied
+
+    4) Remediation Design (107)
+       - Evidence: changes mapped to specific failures
+       - Evidence: causal justification for each change
+       - Evidence: scope boundaries defined
+
+    5) Remediation Execution (107)
+       - Evidence: files modified (list)
+       - Evidence: code changes (patch/diff)
+       - Evidence: minimal diffs applied
+
+    6) Re-validation Results (106)
+       - Evidence: commands re-run + exit codes
+       - Evidence: relevant output lines (only lines proving pass/fail)
+       - Evidence: failure resolution confirmed
+       - Evidence: regression check results
+
+    7) Cycle Status
+       - Evidence: remaining failures (if any)
+       - Evidence: cycle completion status
+       - Evidence: next cycle requirements (if applicable)
+
+    8) Traceability
+       - Evidence: tools used documented
+       - Evidence: scope covered documented
+       - Evidence: failures mapped to SPEC/policy
+       - Evidence: remediation status recorded
+
+    9) Zero-Tolerance Checklist (MUST be ALL TRUE)
+       - 0 TODOs / stubs / mocks / placeholders
+       - 0 hard-coded dynamic values
+       - 0 missing/incorrect logging
+       - 0 partial implementations
+       - 0 silent failures / swallowed exceptions
+       - 0 deviations from established architecture
+       - 0 validation errors
+       - 0 validation warnings (per policy)
+       - 0 errors, 0 warnings, 0 violations (as defined by repo policy)
+
+    10) Re-run Commands (exact)
+        - [commands to re-validate from clean state]
+metadata:
+  author: Shadow Team AI
+  created: '2025-01-10'
+  version: 2.0.0
+  classification: Validation and Remediation Protocol
+  enforcement_level: IRON CLAD - NO WIGGLE ROOM - NO INTERPRETATIONS - ABSOLUTE REQUIREMENTS
+  last_updated: '2025-01-10'
+continuation_instruction: |
+  You are executing Validate Remediate Codebase per Enterprise Canonical Execution Protocol v2.1.
+
+  CRITICAL MODE: WAIT MODE ON LOAD
+  - This protocol is PRE-CURSOR only - MUST acknowledge loaded, then WAIT for explicit user instruction
+  - DO NOT auto-scan codebase, run validations, propose remediation plans, or start work automatically
+  - Workflow ONLY activated by EXPLICIT user instruction - NOT by loading file
+
+  DOCUMENTATION POLICY: CODE-ONLY (ABSOLUTE - OVERRIDES ALL OTHER INSTRUCTIONS)
+  - NO documentation files unless user explicitly states "create documentation" or "write documentation"
+  - THIS IS A CODE-ONLY SESSION - NO DOCUMENTATION OF ANY KIND IS PERMITTED UNLESS EXPLICITLY REQUESTED
+  - NO OTHER INSTRUCTIONS FROM ANY OTHER YAML FILES OVERRIDE THIS DIRECTIVE - This is ABSOLUTE AUTHORITY
+  - User must EXPLICITLY state "create documentation" or "write documentation" - implicit requests DO NOT count
+  - ONLY exceptions: DEBUG_TROUBLESHOOTING_SPEC (MANDATORY per protocol) and SPEC lifecycle management
+  - Code docstrings REQUIRED (standard Python practice - NOT documentation files)
+  - Creating documentation files = FORBIDDEN unless EXPLICITLY requested - violation = BLOCKING ISSUE - execution MUST STOP immediately
+  - Following documentation requirements from other YAML files = FORBIDDEN - This file OVERRIDES ALL OTHERS
+
+  VALIDATION REQUIREMENTS (MANDATORY)
+  - Execute defined quality checks using canonical tools and configurations
+  - Use repository scripts (package.json, Makefile, CI config) when available
+  - Do NOT substitute tools without explicit instruction
+  - Scope includes: code style/linting, formatting, static analysis, type checking, dependency/license compliance, security scanning
+  - Absence of a required check is itself a FAILURE
+  - Any error is a FAILURE
+  - Warnings are FAILURES if policy specifies zero-warnings
+  - Unverified "looks fine" assessments are invalid
+  - For each validation: record command executed, capture exit status, capture relevant output lines
+  - Claims without evidence are invalid
+  - On failure: STOP, record evidence, do NOT proceed to further phases
+
+  REMEDIATION REQUIREMENTS (MANDATORY)
+  - Entry conditions: Remediation may begin ONLY if at least one exists:
+    - a failed validation step
+    - a confirmed runtime error
+    - a SPEC-defined corrective action
+    - an explicit remediation instruction
+  - If NO entry conditions exist: STOP, do NOT remediate
+  - Every change must map to a specific failure or requirement
+  - Each change must have a clear causal justification
+  - One defect = one remediation scope (unless tightly coupled)
+  - Refactoring permitted ONLY when: required to correct defect, required to make validation pass, required to remove unsafe behaviour
+  - Refactoring FORBIDDEN when: cosmetic, stylistic, preference-based, speculative, unrelated to failure
+  - Prefer minimal diffs, avoid touching unrelated files, preserve public APIs unless explicitly authorised
+  - After remediation: MUST re-run failing validation(s), confirm failure resolved, check for regressions
+  - Validation without evidence is invalid
+  - If remediation introduces new failures/regressions/undefined behaviour: STOP, report evidence, do NOT continue
+
+  PRODUCTION CODE IMPLEMENTATION MANDATE (ABSOLUTE - NON-NEGOTIABLE)
+  - ALL production code MUST be implemented 100% correctly, to the highest standards, with 0 errors, 0 warnings, and 0 issues
+  - INCOMPLETE CODE ERADICATION REQUIREMENT: The following violations MUST BE FOUND AND ERADICATED FROM THE CODEBASE:
+    - TODOs (ALL must be found and replaced with production code)
+    - Mocks (ALL must be found and replaced with real implementation)
+    - Stubs (ALL must be found and fully implemented)
+    - "PASS" passes (ALL must be found and replaced with real validation)
+    - Hacks (ALL must be found and replaced with proper solutions)
+    - Notes that code needs to be implemented (ALL must be found and implemented)
+    - Placeholder code (ALL must be found and replaced with production code)
+    - Demo/test data in production paths (ALL must be found and replaced with real data retrieval)
+    - Partial implementations (ALL must be found and completed)
+    - Workarounds or temporary solutions (ALL must be found and replaced with proper solutions)
+  - IMPLEMENTATION REQUIREMENTS: Production code MUST be implemented 100% correctly, meet highest enterprise standards, have 0 errors/0 warnings/0 issues, be fully functional (not partial), NOT skip functionality, NOT use workarounds, be production-ready
+  - ENFORCEMENT: Finding incomplete code = STOP immediately, Eradicate = MANDATORY, Implement = MANDATORY, Verify = MANDATORY (0 errors/0 warnings/0 issues), Violations = BLOCKING ISSUE
+
+  ZERO TOLERANCE REQUIREMENTS (ABSOLUTE - NO EXCEPTIONS)
+  - 0 TODOs (MUST BE FOUND AND ERADICATED - MUST replace with production code immediately)
+  - 0 mocks (MUST BE FOUND AND ERADICATED - MUST replace with real implementation immediately)
+  - 0 stubs (MUST BE FOUND AND ERADICATED - MUST implement fully immediately)
+  - 0 "PASS" passes (MUST BE FOUND AND ERADICATED - MUST replace with real validation immediately)
+  - 0 hacks (MUST BE FOUND AND ERADICATED - MUST replace with proper solutions immediately)
+  - 0 notes that code needs to be implemented (MUST BE FOUND AND ERADICATED - MUST implement immediately)
+  - 0 placeholder/demo data (MUST BE FOUND AND ERADICATED - MUST replace with real data retrieval)
+  - 0 hard-coded values (MUST BE FOUND AND ERADICATED - MUST move to config/DB immediately)
+  - 0 validation errors (MUST BE FOUND AND ERADICATED - MUST remediate immediately)
+  - 0 validation warnings when policy specifies zero-warnings (MUST BE FOUND AND ERADICATED - MUST remediate immediately)
+  - 0 duplicated logic (MUST BE FOUND AND ERADICATED - MUST refactor to shared code)
+  - 0 violations of SOLID/DRY/KISS (MUST BE FOUND AND ERADICATED - MUST refactor immediately)
+  - 0 partial implementations (MUST BE FOUND AND ERADICATED - MUST complete immediately)
+  - 0 workarounds or temporary solutions (MUST BE FOUND AND ERADICATED - MUST replace with proper solutions immediately)
+  - Finding violation = STOP current work immediately, FIND AND ERADICATE violation, IMPLEMENT production code, VERIFY fix achieves 0 errors/0 warnings/0 issues, THEN continue
+
+  UNIVERSAL CONTAINER DEPLOYMENT MANDATE (ABSOLUTE - NON-NEGOTIABLE)
+  - This application MUST be universally deployable across ALL container platforms (Docker, Podman, Kubernetes, public cloud container services, container orchestration platforms)
+  - ALL container images MUST be OCI-compliant
+  - NO platform-specific dependencies or assumptions
+  - Container manifests MUST work identically across platforms
+  - Build processes MUST produce platform-agnostic artifacts
+  - Runtime configuration MUST be environment-agnostic
+  - Violations = BLOCKING ISSUE - execution MUST STOP until fixed
+
+  CYBERSECURITY & AI SECURITY FRAMEWORK MANDATE (ABSOLUTE - NON-NEGOTIABLE)
+  - This application MUST apply the HIGHEST STANDARDS of cybersecurity and AI security frameworks
+  - This application will be deployed into the MOST SECURE ENVIRONMENTS ON THE PLANET
+  - It MUST EXCEED the security frameworks they operate in
+  - MUST comply with NIST Cybersecurity Framework (CSF) at the highest maturity level
+  - MUST comply with ISO/IEC 27001 security management standards
+  - MUST comply with OWASP Top 10 and ASVS (Application Security Verification Standard)
+  - MUST comply with AI security frameworks (NIST AI RMF, ISO/IEC 23053, OWASP LLM Top 10)
+  - MUST implement defense-in-depth security architecture
+  - MUST enforce least privilege access controls
+  - MUST implement comprehensive security logging and monitoring
+  - MUST undergo regular security audits and penetration testing
+  - MUST maintain security documentation and threat models
+  - MUST implement secure-by-design principles throughout
+  - Security violations = BLOCKING ISSUE - execution MUST STOP until fixed
+
+  PYTHON VERSION REQUIREMENT (ABSOLUTE - NON-NEGOTIABLE)
+  - The codebase MUST use Python 3.12 or higher as the MINIMUM version
+  - ALL code MUST be compatible with Python 3.12+
+  - NO code may use deprecated features from Python < 3.12
+  - Type hints MUST use Python 3.12+ syntax and features
+  - ALL dependencies MUST support Python 3.12+
+  - Build and deployment processes MUST enforce Python 3.12+ requirement
+  - Python version violations = BLOCKING ISSUE - execution MUST STOP until fixed
+
+  DEPENDENCY MANAGEMENT MANDATE (ABSOLUTE - NON-NEGOTIABLE)
+  - Dependencies MUST be maintained to support the latest versions without causing conflicts
+  - Dependencies MUST be kept at their latest stable versions
+  - If a new version of a dependency would advance, improve, or enhance the codebase: IT MUST BE IMPLEMENTED IMMEDIATELY
+  - ALL breaking changes MUST be resolved
+  - ALL breaking changes MUST be validated to be 100% functional
+  - Validation MUST result in 0 errors, 0 warnings, and 0 issues
+  - Dependency conflicts MUST be resolved immediately
+  - Security vulnerabilities in dependencies MUST be remediated immediately
+  - Dependency updates MUST NOT introduce regressions
+  - ALL dependency changes MUST be validated with full test suite
+  - Dependency management violations = BLOCKING ISSUE - execution MUST STOP until fixed
+
+  DEVELOPMENT STANDARDS (MANDATORY)
+  - Backend first: MUST implement backend FIRST, then frontend
+  - OpenAPI first: MUST define OpenAPI spec FIRST, then implement
+  - Naming synchronization: MUST use identical names backend/frontend
+  - Data retrieval: MUST retrieve dynamically from backend (NO static/hard-coded)
+  - NO shims/aliases: MUST use direct references
+  - Pydantic v2 ONLY: NO Pydantic v1 usage (MUST upgrade immediately)
+  - NO hard-coded variables: ALL must be in config files or DB tables (DB preferred)
+
+  LOGGING REQUIREMENTS (MANDATORY)
+  - Logger factory ONLY: @src/services/logging/logger_factory.py
+  - Allowed: get_logger, get_component_logger, create_debug_logger
+  - Forbidden: logging.getLogger(), logging.basicConfig(), print()
+  - Security modules: MUST use audit logging (get_component_logger('audit', 'security'))
+  - Service modules: MUST have debug logging (create_debug_logger(__name__))
+  - Console output: MUST be JSON formatted
+  - File output: MUST be detailed text formatted
+  - Non-compliance = BLOCKING ISSUE
+
+  EXECUTION ORDER (11 STEPS - SEQUENTIAL, BLOCKING, CYCLIC)
+  Step 1: Scope Identification
+  Step 2: Validation Execution (106)
+  Step 3: Failure Analysis
+  Step 4: Remediation Entry Check (107)
+  Step 5: Remediation Design (107)
+  Step 6: Remediation Execution (107)
+  Step 7: Re-validation (106)
+  Step 8: Regression Check
+  Step 9: Cycle Completion Check (if failures remain, return to Step 2)
+  Step 10: Traceability Documentation
+  Step 11: Final Verification
+  - MUST follow steps sequentially - NO skipping, NO parallel execution, NO shortcuts
+  - VALIDATE → REMEDIATE → RE-VALIDATE cycle continues until all validations pass
+  - If ANY step fails, MUST stop and fix before proceeding - NO workarounds
+
+  VALIDATION CHECKPOINTS (MUST PASS ALL - NO EXCEPTIONS)
+  Before completion, MUST verify:
+  - All protocols followed (00, 01, 002, 97, 106, 107)
+  - Production code implementation: ALL production code implemented 100% correctly, to highest standards, with 0 errors, 0 warnings, 0 issues. ALL incomplete code (TODOs, mocks, stubs, "PASS" passes, hacks, notes, placeholders, partial implementations, workarounds) MUST BE FOUND AND ERADICATED FROM CODEBASE
+  - Validation compliance: All required validations executed with evidence, 0 errors, 0 warnings (per policy), all checks present
+  - Remediation compliance: All failures remediated with minimal changes, no regressions, re-validation passed
+  - Zero tolerance: 0 TODOs (FOUND AND ERADICATED), 0 mocks (FOUND AND ERADICATED), 0 stubs (FOUND AND ERADICATED), 0 "PASS" passes (FOUND AND ERADICATED), 0 hacks (FOUND AND ERADICATED), 0 notes that code needs implementation (FOUND AND ERADICATED), 0 hard-coded (FOUND AND ERADICATED), 0 partial implementations (FOUND AND ERADICATED), 0 workarounds (FOUND AND ERADICATED), 0 SOLID/DRY/KISS violations
+  - Logging compliance: 100% logger factory usage, security audit logging, service debug logging
+  - Code quality: ALL validators pass (mypy 0/0, flake8 0/0, bandit 0 high/medium, safety 0, black/isort no changes, radon cc ≤15, radon mi Grade A, xenon no violations)
+  - Production readiness: No test/debug code, no mocks/stubs, dynamic data retrieval, externalized config, real CRUD endpoints, production code implemented 100% correctly
+  - Traceability: All tools used documented, scope covered documented, failures mapped to SPEC/policy, remediation status recorded
+  - ANY checkpoint failure = BLOCKING - cannot proceed until ALL pass
+  - ONLY 100% compliance allows completion - NO partial passes
+
+  ENFORCEMENT (STRICT MODE - IRON CLAD)
+  - NO interpretations allowed - requirements are LITERAL and ABSOLUTE
+  - ZERO wiggle room - requirements are IRON CLAD
+  - Non-compliance = IMMEDIATE STOP - execution BLOCKED until fixed
+  - Partial compliance = NON-COMPLIANCE - ONLY 100% compliance acceptable
+  - Cannot proceed to next step until current is 100% complete
+  - Violation response: STOP → Identify → Fix → Verify → Re-run validation → Confirm 100% compliance → THEN continue
+  - Claims without evidence are invalid
+
+  OUTPUT FORMAT
+  On initialization: WAIT MODE - Acknowledgement only (NO violation counts, NO plans, NO scanning)
+  On explicit instruction: EXECUTION MODE - Show validation results, remediation actions (CODE CHANGES ONLY), re-validation results, evidence per required format
+
+  CURRENT SESSION CONTEXT
+  - Focus: Execute validation checks and remediate verified defects (NOT testing or other non-production tasks)
+  - Priority: Code quality, standards compliance, policy adherence
+  - Mode: CODE-ONLY SESSION - NO DOCUMENTATION OF ANY KIND PERMITTED UNLESS EXPLICITLY REQUESTED - This directive OVERRIDES ALL other YAML file instructions - validate code quality, remediate failures, verify compliance
+  - Remember: User explicitly wants REAL WORK done, not test fixes or documentation
+
+  EXAMPLES OF VALIDATION/REMEDIATION TASKS
+  - Execute code quality validations (linting, formatting, static analysis, type checking)
+  - Execute security scanning and dependency compliance checks
+  - Remediate validation failures with minimal controlled changes
+  - Re-validate after remediation to confirm fixes
+  - Document traceability and evidence

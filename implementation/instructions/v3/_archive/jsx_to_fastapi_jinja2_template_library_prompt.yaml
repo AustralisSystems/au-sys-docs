@@ -1,0 +1,125 @@
+prompt_spec:
+  name: jsx_to_fastapi_jinja2_template_library
+  version: 1.1.0
+  execution_policy:
+    execute_actions: false
+    note: Do not review or modify real files unless the user explicitly authorizes execution.
+  context:
+    input_directory: '{{ DIR_PATH }}'
+    target_runtime: FastAPI (Jinja2Templates / TemplateResponse) with HTML templates
+    intent:
+    - Create a foundational library of dynamic, reusable components and macros
+    - Templates may be used dynamically with inputs or copied and customized per application
+    quality_goals:
+    - Beautiful
+    - Responsive
+    - Extensible
+    - Dynamic
+    - Modular
+  primary_objective: Convert a directory of JSX templates into valid HTML + Jinja2 templates compatible with FastAPI server-side rendering, extracting reusable macros/components and enforcing Tailwind v4 + DaisyUI-only styling rules.
+  non_negotiable_constraints:
+    templating:
+    - 'Output must be valid HTML with valid Jinja2 syntax ({{ }}, {% %}, {# #})'
+    - No JSX syntax remains (e.g., className, React fragments, props patterns, inline JS expressions)
+    - Templates must be compatible with FastAPI Jinja2 rendering (TemplateResponse context, including request where required)
+    styling:
+    - Use Tailwind CSS v4 utility classes only for layout/spacing/typography/etc.
+    - Use DaisyUI component classes/tokens for UI components (e.g., btn, card, alert, badge, modal, etc.)
+    - 'Prohibited: inline styles, custom CSS files, hard-coded colors (hex/rgb/hsl), arbitrary Tailwind colors (e.g., text-red-500) unless they map to DaisyUI semantic usage'
+    - No static colors or bespoke palette decisions outside DaisyUI/Tailwind conventions
+    library_design:
+    - Prefer composability via {% include %}, {% extends %}, {% block %}, and {% macro %}
+    - Extract repeated UI patterns into macros placed in dedicated macro files
+    - Do not introduce React/Vue runtime dependencies
+    scope_discipline:
+    - Preserve template intent and structure
+    - Avoid adding JavaScript unless required by the original template intent; prefer HTMX attributes only when explicitly implied
+  workflow_steps:
+  - step: 1
+    name: inventory_and_classification
+    actions:
+    - Scan {{ DIR_PATH }} and produce an inventory of JSX files
+    - Classify each file as layout/page/component/partial
+    - Identify JSX constructs used (props, conditionals, loops, children slots) and data dependencies
+    outputs:
+    - inventory_table
+  - step: 2
+    name: target_architecture_definition
+    actions:
+    - Define/confirm the target Jinja2 template structure
+    - Establish naming conventions and macro/include strategy
+    recommended_structure:
+      templates:
+        layouts:
+        - base.html
+        pages: []
+        components: []
+        macros:
+        - ui.html
+        - forms.html
+        - nav.html
+        partials: []
+    outputs:
+    - architecture_plan
+  - step: 3
+    name: jsx_to_jinja2_conversion
+    actions:
+    - Convert className -> class
+    - Convert {variable} -> {{ variable }}
+    - Convert conditional rendering to {% if %}...{% endif %}
+    - Convert .map() to {% for %}...{% endfor %}
+    - Replace children/slots with blocks or macro caller patterns
+    - Remove React-only code (hooks/state/event handlers) and replace with server-rendered variables or explicit HTMX attributes only when implied
+    outputs:
+    - converted_templates
+  - step: 4
+    name: macro_extraction
+    actions:
+    - Identify repeated UI patterns and extract into macros
+    - 'Create/extend macros: buttons, cards, alerts, badges, form fields, tables, modals, nav components'
+    - Document macro parameters and defaults
+    outputs:
+    - macro_library
+  - step: 5
+    name: styling_enforcement
+    actions:
+    - Ensure only Tailwind v4 utilities and DaisyUI classes are used
+    - Replace any static/bespoke styling with DaisyUI semantic tokens (e.g., btn-primary, base-* content/background patterns)
+    - Remove inline styles and hard-coded color values
+    outputs:
+    - styling_compliance_report
+  - step: 6
+    name: dynamic_readiness
+    actions:
+    - Parameterize labels, titles, counts, lists, empty states, and variants
+    - Define required vs optional context variables and safe defaults where appropriate
+    - Ensure templates remain modular and extensible for downstream apps
+    outputs:
+    - variable_contracts
+  - step: 7
+    name: documentation
+    actions:
+    - Create README explaining structure, usage, macro imports, and styling policy
+    - Include copy/customize guidance for application teams
+    outputs:
+    - readme
+  deliverables:
+  - Converted Jinja2 templates organized into the target directory structure
+  - Macro library files with clear parameter lists and defaults
+  - 'Mapping report: original JSX -> new template file(s)'
+  - Variable contracts per page (required/optional context keys)
+  - Styling compliance report (no JSX, no inline styles, no static colors, Tailwind v4 + DaisyUI only)
+  - README for template library usage in FastAPI
+  validation_checklist:
+  - No JSX syntax remains anywhere
+  - All templates are valid HTML
+  - Jinja2 blocks/macros/includes are syntactically correct
+  - FastAPI compatibility assumptions documented (TemplateResponse context; request if required)
+  - Only Tailwind v4 utilities and DaisyUI classes are used
+  - No inline styles and no hard-coded/static colors
+  - Reusable macros exist for repeated patterns
+  - Each page documents required context variables
+  user_inputs_required_to_execute:
+  - '{{ DIR_PATH }}'
+  - Directory tree or archive / representative JSX files
+  - Any existing Tailwind v4 + DaisyUI configuration constraints (if special)

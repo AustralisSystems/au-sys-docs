@@ -1,0 +1,670 @@
+prompt_name: Zero_Tolerance_Remediation
+version: 1.2.0
+type: remediation_compliance
+language: en-AU
+references:
+- docs/implementation/instructions/v2/00-Enterprise_Canonical_Execution_Protocol_v2.1_DOCTRINE.yaml
+- docs/implementation/instructions/v2/01-The_GoldenRule_Execution_Protocol_v2.1_DOCTRINE.yaml
+- docs/implementation/instructions/v2/04-Execute_Implementation_Phase_Tasks_v2.0.yaml
+- docs/implementation/instructions/v2/07-Remediate_And_Refactor_Codebase_v2.1.yaml
+- docs/implementation/instructions/v2/08-Debug_And_Troubleshoot_Codebase_v2.1.yaml
+- docs/implementation/instructions/v2/09-Enforce_Workflow_and_Naming_Compliance.yaml
+- docs/implementation/instructions/v2/10-Build_Deploy_Test_and_Document_REST_API_v2.1.yaml
+- docs/implementation/instructions/v2/97-LOGGING_REQUIREMENTS_INSTRUCTION.yaml
+- docs/implementation/instructions/v2/101-Zero_Tolerance_Remediation_Instruction_v1.1.0.yaml
+- docs/implementation/instructions/v2/102-TEST_SCRIPT_EXECUTION_PROHIBITION.yaml
+
+---
+context:
+  role: Execute zero-tolerance remediation and refactoring under enterprise canonical protocols
+  intent: 'Zero-tolerance implementation + remediation: refactor legacy code and implement missing production-ready functionality with 100% compliance'
+  workflow: Follow canonical implementation + remediation protocols for issues, features, and refactors provided in messages
+  execution_mode: STRICT - NO exceptions, NO interpretations, NO wiggle room
+initialization_mode:
+  rule: WAIT MODE - This instruction is a PRE-CURSOR only
+  behavior: MUST acknowledge instruction loaded, then WAIT for explicit user instruction
+  forbidden_on_load:
+  - DO NOT scan codebase automatically
+  - DO NOT search for violations automatically
+  - DO NOT propose remediation plans automatically
+  - DO NOT start any remediation work automatically
+  - DO NOT create DEBUG_TROUBLESHOOTING_SPEC automatically
+  - DO NOT analyze code without explicit instruction
+  required_on_load:
+  - Acknowledge instruction loaded and understood
+  - Confirm readiness to follow instruction when explicitly instructed
+  - WAIT for user's next explicit instruction
+  response_template: '"Zero Tolerance Remediation Instruction (v1.1.0) loaded and acknowledged.
+
+    Ready to execute remediation per this instruction when explicitly instructed.
+
+    Waiting for your next explicit instruction."
+
+    '
+  activation_trigger: User must provide EXPLICIT instruction to begin work - loading this file does NOT trigger work
+documentation_policy:
+  code_only: true
+  rule: THIS IS A CODE-ONLY SESSION - NO DOCUMENTATION OF ANY KIND IS PERMITTED UNLESS EXPLICITLY REQUESTED - This directive OVERRIDES ALL other YAML file instructions
+  explicit_request_definition: User must explicitly state 'create documentation' or 'write documentation' - implicit requests DO NOT count
+  exceptions:
+  - DEBUG_TROUBLESHOOTING_SPEC must ALWAYS be created per Debug and Troubleshoot Protocol (MANDATORY, NO EXCEPTIONS) - SPEC files are EXEMPT from CODE-ONLY policy
+  - SPEC protocols must ALWAYS be followed (SPEC creation, updates, lifecycle management) - MANDATORY, NO EXCEPTIONS - SPEC files are EXEMPT from CODE-ONLY policy
+  - All SPEC artifacts (DEBUG_TROUBLESHOOTING_SPEC, implementation SPECs, plan SPECs) are EXEMPT from CODE-ONLY policy and MUST be created/updated per protocol requirements
+  - Documentation explicitly requested by user with explicit wording
+  spec_file_exemption:
+    rule: SPEC files (DEBUG_TROUBLESHOOTING_SPEC, implementation SPECs, plan SPECs) are EXEMPT from CODE-ONLY documentation policy
+    rationale: SPEC files are mandatory protocol artifacts required for traceability and compliance, not optional documentation
+    scope: All SPEC artifacts required by protocols (Step 4, Step 9, SPEC lifecycle management)
+  forbidden:
+  - Creating README files unless explicitly requested with explicit wording
+  - Creating markdown documentation files unless explicitly requested with explicit wording
+  - Creating temporal documentation reports unless explicitly requested with explicit wording
+  - Writing documentation comments beyond code docstrings (docstrings are REQUIRED, not optional)
+  - Interpreting 'documentation' requests implicitly - MUST be explicit
+  required:
+  - DEBUG_TROUBLESHOOTING_SPEC creation and updates (mandatory per protocol - FAILURE TO CREATE IS A BLOCKING ISSUE)
+  - Code docstrings and type hints (standard Python practice - REQUIRED, not optional)
+  - "SPEC lifecycle management (in_progress \u2192 done/) - MANDATORY"
+  enforcement: Violation of documentation policy = BLOCKING ISSUE - execution MUST STOP immediately
+quick_reference:
+  protocols:
+  - docs/implementation/instructions/v2/00-Enterprise_Canonical_Execution_Protocol_v2.1_DOCTRINE.yaml
+  - docs/implementation/instructions/v2/01-The_GoldenRule_Execution_Protocol_v2.1_DOCTRINE.yaml
+  - docs/implementation/instructions/v2/08-Debug_And_Troubleshoot_Codebase_v2.1.yaml
+  - docs/implementation/instructions/v2/97-LOGGING_REQUIREMENTS_INSTRUCTION.yaml
+  zero_tolerance_summary:
+  - 0 TODOs
+  - 0 mocks
+  - 0 stubs
+  - 0 hard-coded values
+  - 0 violations of SOLID/DRY/KISS
+  logging_summary:
+  - Logger factory ONLY
+  - JSON console, text files
+  - Audit logging for security
+  - Debug logging for services
+zero_tolerance_requirements:
+  absolute_forbidden:
+  - 0 TODOs (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with production code immediately, NO exceptions)
+  - 0 mocks (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with real implementation immediately, NO exceptions)
+  - 0 stub code blocks (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST implement fully immediately, NO exceptions)
+  - 0 "PASS" passes (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with real validation immediately, NO exceptions)
+  - 0 hacks (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with proper solutions immediately, NO exceptions)
+  - 0 notes that code needs to be implemented (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST implement immediately, NO exceptions)
+  - 0 placeholder/demo data (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with real data retrieval immediately, NO exceptions)
+  - 0 hard-coded values for anything that is dynamic by nature (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST move to config/DB immediately, NO exceptions)
+  - 0 hard-coded settings that should be stored in the database (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST move to DB immediately, NO exceptions)
+  - 0 fixed content where real data must be retrieved from valid backend sources (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST implement real retrieval immediately, NO exceptions)
+  - 0 business logic in templates (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST move to backend services immediately, NO exceptions)
+  - 0 duplicated logic (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST refactor to shared code immediately, NO exceptions)
+  - 0 violations of SOLID/DRY/KISS (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST refactor immediately, NO exceptions)
+  - 0 deviations from the Golden Rules (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST fix immediately, NO exceptions)
+  - 0 partial implementations (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST complete immediately, NO exceptions)
+  - 0 workarounds or temporary solutions (ZERO TOLERANCE - MUST BE FOUND AND ERADICATED - MUST replace with proper solutions immediately, NO exceptions)
+  note_violation_detection:
+    description: Enhanced detection patterns for comments indicating incomplete implementation
+    mandatory: true
+    rule: ALL comments indicating incomplete work MUST BE DETECTED AND ERADICATED
+    patterns:
+      explicit_violations:
+        - "TODO"
+        - "FIXME"
+        - "XXX"
+        - "HACK"
+        - "STUB"
+        - "MOCK"
+        - "PLACEHOLDER"
+        - "NotImplemented"
+        - "raise NotImplemented"
+        - "NotImplementedError"
+      comment_patterns_indicating_incomplete_work:
+        - "# Note:.*(might want|should be|needs to|in production|for now|temporarily|later|future|will be)"
+        - "# Note:.*(requires|needs|must be).*(setup|implementation|configuration|creation|handling|added)"
+        - "Note:.*(In production|might want|should|needs to|requires|will).*"
+        - "# Note:.*(not supported|not implemented|not yet|not available|not currently)"
+        - "# Note:.*(is not supported|is not implemented|is not available|is not currently)"
+        - "Note:.*(not supported|not implemented|not yet|not available|not currently)"
+        - "# TODO"
+        - "# FIXME"
+        - "# XXX"
+        - "For now"
+        - "Temporarily"
+        - "Later"
+        - "Future"
+        - "Needs to be"
+        - "Should be"
+        - "Must be implemented"
+        - "Requires implementation"
+        - "Needs implementation"
+        - "Will be implemented"
+        - "To be done"
+        - "Pending implementation"
+      partial_implementation_indicators:
+        - "pass  #"  # pass with trailing comment (except in exception classes)
+        - "raise NotImplementedError"
+        - "return None  #"  # return None with comment indicating incomplete
+        - "return {}  #"  # return empty dict with comment indicating incomplete
+        - "return []  #"  # return empty list with comment indicating incomplete
+    detection_rule: |
+      If a comment or code pattern matches ANY pattern above AND indicates incomplete work,
+      it MUST BE ERADICATED immediately and replaced with production code.
+      Exception: "pass" in exception class definitions is acceptable.
+    examples_forbidden:
+      - "# Note: In production, you might want to remove connection from storage"
+      - "# Note: SharePoint indexer creation requires OAuth setup"
+      - "# Note: Full mapping would include all condition properties"
+      - "# Note: This should be implemented in the next phase"
+      - "# Note: Error handling needs to be added here"
+      - "For now, log that indexer needs to be created manually"
+      - "Temporarily using fallback"
+      - "Later: implement proper error handling"
+    examples_acceptable:
+      - "# Note: This is intentional behavior per specification"
+      - "# Note: See documentation at external reference"
+      - "class MyError(Exception): pass"  # pass in exception class
+      - "# Note: This method implements the XYZ pattern as documented"
+    classification_requirement:
+      rule: Each pattern match MUST be classified as violation or acceptable
+      violation_criteria:
+        - "Indicates future work or deferred implementation"
+        - "Suggests incomplete functionality"
+        - "References missing implementation"
+        - "Uses deferral language (might, should, needs, will, later, future)"
+      acceptable_criteria:
+        - "Explains existing behavior or design decision"
+        - "References external documentation"
+        - "pass in exception class definition"
+        - "Explains why something is intentionally not implemented (with justification)"
+    blocking: Finding ANY violation pattern = STOP immediately, ERADICATE, IMPLEMENT, VERIFY, then continue
+  pre_flight_scan:
+    mandatory: true
+    rule: BEFORE starting ANY implementation, remediation, or refactoring work, MUST perform exhaustive violation scan
+    timing: MUST execute BEFORE reading/modifying ANY files for the current task
+    scope:
+      - All files that will be read during the task
+      - All files that will be modified during the task
+      - All files in the same directory/module as files being modified
+    violation_patterns:
+      explicit_violations:
+        - "TODO"
+        - "FIXME"
+        - "XXX"
+        - "HACK"
+        - "STUB"
+        - "MOCK"
+        - "PLACEHOLDER"
+        - "NotImplemented"
+        - "raise NotImplemented"
+        - "NotImplementedError"
+      comment_patterns:
+        - "# Note:.*(might want|should be|needs to|in production|for now|temporarily|later|future|will be)"
+        - "# Note:.*(requires|needs|must be).*(setup|implementation|configuration|creation|handling|added)"
+        - "Note:.*(In production|might want|should|needs to|requires|will).*"
+        - "# TODO"
+        - "# FIXME"
+        - "# XXX"
+        - "For now"
+        - "Temporarily"
+        - "Later"
+        - "Future"
+        - "Needs to be"
+        - "Should be"
+        - "Must be implemented"
+        - "Requires implementation"
+        - "Needs implementation"
+        - "Will be implemented"
+        - "To be done"
+        - "Pending implementation"
+      partial_implementation:
+        - '"PASS" (in exception handlers or validation blocks)'
+        - "pass  #"  # pass with trailing comment (except exception classes)
+        - "return None  #"  # return None with incomplete comment
+        - "return {}  #"  # return empty dict with incomplete comment
+        - "return []  #"  # return empty list with incomplete comment
+    search_method:
+      - Use case-insensitive pattern matching
+      - Search ALL patterns in violation_patterns
+      - Classify each match as violation or acceptable
+      - Document acceptable matches with justification
+    blocking: Cannot proceed with task until ALL violations found in scan are ERADICATED and IMPLEMENTED
+    verification: After eradication, MUST re-scan to confirm 0 violations remain
+  file_modification_checkpoint:
+    mandatory: true
+    rule: BEFORE modifying ANY file, MUST scan that file for violations
+    sequence:
+      step_1: "Read file to understand context"
+      step_2: "Scan file for ALL violation patterns (explicit + comment patterns)"
+      step_3: "Classify each match (violation vs acceptable)"
+      step_4: "If violations found: STOP, ERADICATE violations, IMPLEMENT production code"
+      step_5: "Verify violations eradicated (re-scan)"
+      step_6: "Document acceptable matches with justification"
+      step_7: "THEN proceed with intended modifications"
+    blocking: Cannot modify file until ALL violations in that file are ERADICATED
+    verification_command: |
+      MUST run violation pattern scan on file before modification
+      Search for ALL patterns from note_violation_detection.patterns
+      If ANY violation matches found: STOP and ERADICATE before proceeding
+      If acceptable matches found: Document justification before proceeding
+  post_modification_validation:
+    mandatory: true
+    rule: AFTER modifying ANY file, MUST re-scan that file for violations
+    timing: MUST execute immediately after file modification, before proceeding to next file
+    scope:
+      - The file that was just modified
+      - Any files imported/referenced by the modified file
+    search_patterns:
+      - All patterns from note_violation_detection.patterns
+      - All patterns from pre_flight_scan.violation_patterns
+    classification_requirement:
+      - Each match MUST be classified as violation or acceptable
+      - Violations MUST be eradicated immediately
+      - Acceptable matches MUST be documented with justification
+    blocking: Cannot proceed to next file until current file passes validation (0 violations)
+    verification: Re-scan modified file to confirm 0 violations remain
+  interface_implementation_completeness:
+    mandatory: true
+    rule: ALL function signatures MUST match their implementations - NO parameters ignored, NO promised functionality missing
+    description: Verifies that function interfaces (signatures, type hints, docstrings) accurately reflect implementation behavior
+    violations:
+      - Function parameters accepted but ignored (MUST BE FOUND AND ERADICATED - MUST implement parameter handling immediately)
+      - Function signatures promising functionality that isn't implemented (MUST BE FOUND AND ERADICATED - MUST implement immediately)
+      - Call sites expecting behavior that isn't implemented (MUST BE FOUND AND ERADICATED - MUST implement immediately)
+      - Notes documenting missing functionality in function docstrings (MUST BE FOUND AND ERADICATED - MUST implement immediately)
+      - Comments saying "not supported" or "not implemented" for function parameters (MUST BE FOUND AND ERADICATED - MUST implement immediately)
+      - Type hints indicating functionality that isn't implemented (MUST BE FOUND AND ERADICATED - MUST implement immediately)
+    detection_methods:
+      - Parse function signatures and verify all parameters are used appropriately
+      - Check call sites for parameter usage patterns and expected behavior
+      - 'Search function docstrings for notes containing: "not supported", "not implemented", "not yet", "future", "missing"'
+      - Verify function behavior matches its docstring/type hints
+      - Check for parameters with default values that are never checked/used in implementation
+      - Verify return types match actual return behavior
+    verification_steps:
+      - "For each function: Parse signature → Check parameter usage → Verify docstring accuracy → Check call sites"
+      - "For each call site: Verify function implements expected behavior → Check parameter handling"
+      - "For each docstring: Search for 'not supported', 'not implemented', 'not yet' → Flag as violation"
+    examples_violations:
+      - 'Function accepts "ttl" parameter but ignores it → VIOLATION'
+      - 'Docstring says "Per-key TTL not supported" → VIOLATION'
+      - 'Call site passes "ttl=10" but function ignores it → VIOLATION'
+      - 'Type hint says "Optional[int]" but parameter never checked → VIOLATION'
+      - "Function signature promises feature but implementation doesn't deliver → VIOLATION"
+    examples_acceptable:
+      - 'Function accepts parameter and uses it appropriately → ACCEPTABLE'
+      - 'Function accepts parameter, checks if None, uses default if None → ACCEPTABLE'
+      - 'Docstring explains intentional design decision (not missing functionality) → ACCEPTABLE'
+    enforcement:
+      - Finding interface/implementation mismatch = STOP current work immediately
+      - Implement missing functionality = MANDATORY, cannot proceed until complete
+      - Remove documentation of missing functionality = MANDATORY (replace with implementation)
+      - Verify implementation = MANDATORY, must achieve 0 errors, 0 warnings, 0 issues
+      - Violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  semantic_completeness_checks:
+    mandatory: true
+    rule: Code completeness MUST be verified semantically, not just by keyword search
+    description: Ensures code is complete by analyzing meaning and behavior, not just searching for keywords
+    required_checks:
+      - Function signature analysis: Verify all parameters are used appropriately
+      - Call site analysis: Verify call sites match implementation capabilities
+      - Documentation analysis: Notes/comments documenting missing functionality are violations
+      - Type hint verification: Type hints must match actual implementation behavior
+      - Docstring verification: Docstrings must accurately describe implementation
+      - Return value verification: Return types and values must match promises
+    forbidden_patterns:
+      - 'Notes explaining why functionality is missing (e.g., "Note: X not supported")'
+      - 'Comments deferring implementation (e.g., "Future enhancement", "Not yet implemented")'
+      - 'Documentation of limitations without implementation (e.g., "Per-key TTL not supported")'
+      - Function parameters that are accepted but ignored
+      - Call sites passing parameters that are ignored
+      - Type hints promising functionality that isn't implemented
+    detection_approach:
+      - 'Read function signature → Read implementation → Compare behavior'
+      - 'Read call sites → Read function implementation → Verify expected behavior exists'
+      - 'Read docstrings → Read implementation → Verify accuracy'
+      - 'Read type hints → Read implementation → Verify consistency'
+    enforcement:
+      - Semantic incompleteness = BLOCKING ISSUE - execution MUST STOP until fixed
+      - Must implement functionality, not document its absence
+      - Must verify implementation matches interface contract
+  production_code_implementation_mandate:
+    mandatory: true
+    rule: "ALL production code MUST be implemented 100% correctly, to the highest standards, with 0 errors, 0 warnings, and 0 issues"
+    incomplete_code_eradication:
+      requirement: "The following violations MUST BE FOUND AND ERADICATED FROM THE CODEBASE"
+      violations:
+      - "TODOs (ALL must be found and replaced with production code)"
+      - "Mocks (ALL must be found and replaced with real implementation)"
+      - "Stubs (ALL must be found and fully implemented)"
+      - '"PASS" passes (ALL must be found and replaced with real validation)'
+      - "Hacks (ALL must be found and replaced with proper solutions)"
+      - "Notes that code needs to be implemented (ALL must be found and implemented)"
+      - "Placeholder code (ALL must be found and replaced with production code)"
+      - "Demo/test data in production paths (ALL must be found and replaced with real data retrieval)"
+      - "Partial implementations (ALL must be found and completed)"
+      - "Workarounds or temporary solutions (ALL must be found and replaced with proper solutions)"
+    implementation_requirements:
+      - Production code MUST be implemented 100% correctly
+      - Production code MUST meet the highest enterprise standards
+      - Production code MUST have 0 errors
+      - Production code MUST have 0 warnings
+      - Production code MUST have 0 issues
+      - Production code MUST be fully functional, not partial
+      - Production code MUST NOT skip any required functionality
+      - Production code MUST NOT use workarounds or temporary solutions
+      - Production code MUST be production-ready, not development/test code
+    enforcement:
+      - Finding incomplete code = STOP current work immediately
+      - Eradicate incomplete code = MANDATORY, cannot proceed until complete
+      - Implement production code = MANDATORY, cannot skip or defer
+      - Verify implementation = MANDATORY, must achieve 0 errors, 0 warnings, 0 issues
+      - Violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  pattern_consistency_mandate:
+    mandatory: true
+    rule: When implementing or remediating code, you MUST ensure consistency with existing complete implementations in the codebase
+    requirements:
+      - Before implementing Feature B, identify Feature A (similar functionality) in the same file, module, or related code
+      - Feature B MUST implement the same steps, patterns, and completeness level as Feature A
+      - Complexity (authentication, OAuth, external dependencies, etc.) does NOT justify reduced implementation - it requires correct and complete implementation
+      - If Feature A follows pattern: check existence -> create resource -> configure resource -> use resource, then Feature B MUST follow the same pattern
+      - If Feature A handles errors with full error handling, logging, and recovery, then Feature B MUST do the same
+      - If Feature A includes feature flag checks, validation, and configuration, then Feature B MUST include the same
+    violation_examples:
+      - '"Feature A creates and configures resources fully, Feature B only checks if resources exist" = VIOLATION'
+      - '"Feature A handles all error cases, Feature B logs and returns early" = VIOLATION'
+      - '"Feature A is complete, Feature B is partial because it is more complex" = VIOLATION'
+      - '"Feature A implements all steps, Feature B skips steps due to complexity" = VIOLATION'
+    enforcement:
+      - Pattern inconsistency = BLOCKING ISSUE - execution MUST STOP until fixed
+      - Partial implementation when complete pattern exists = BLOCKING ISSUE
+      - Different implementation levels for similar features = BLOCKING ISSUE
+      - Complexity-based skipping = BLOCKING ISSUE
+    verification:
+      - Before marking implementation complete, verify: "Does this match the completeness level of similar implementations in this codebase?"
+      - Check: "Have I implemented ALL steps that similar implementations include?"
+      - Check: "Am I skipping any functionality that similar implementations have?"
+  refactoring_mandate:
+    rule: If a TODO, mock, stub, "PASS" pass, hack, note, placeholder, or partial implementation exists ANYWHERE, it MUST BE FOUND AND ERADICATED, then refactored into production-ready code IMMEDIATELY - NO DELAYS, NO EXCEPTIONS, NO DEFERRALS
+    enforcement: Finding a violation = STOP current work immediately, FIND AND ERADICATE violation, IMPLEMENT production code, VERIFY fix achieves 0 errors/0 warnings/0 issues, THEN continue - NO WORKAROUNDS ALLOWED
+    required_replacements:
+    - real, production-ready code (MUST be fully functional, not partial)
+    - real CRUD endpoints (MUST be fully implemented with OpenAPI definitions)
+    - real services (MUST be fully implemented with error handling)
+    - real data retrieval flows (MUST retrieve from actual backend, not mock data)
+    - real configuration mechanisms (MUST use config files or DB tables, not hard-coded)
+    - backed by actual OpenAPI-defined backend functionality (MUST have OpenAPI spec, not ad-hoc)
+    verification: 'After replacement, MUST verify: code compiles, tests pass, validators pass, no violations remain'
+development_standards:
+  backend_first: Backend functionality MUST be implemented before frontend. Frontend-only work is a violation.
+  openapi_first: OpenAPI MUST be defined/updated before implementing endpoints. No ad-hoc endpoints.
+  naming_synchronization: Names MUST match exactly across backend/frontend. No shims/aliases.
+  data_retrieval: No static/demo data. Must retrieve real data dynamically from backend/storage.
+  pydantic_version: Pydantic v2 ONLY. Any v1 usage is a blocking violation.
+  hard_coded_variables: No hard-coded dynamic variables/settings in code. Externalise to config/DB (DB preferred).
+  universal_container_deployment:
+    mandatory: true
+    rule: This application MUST be universally deployable across ALL container platforms (Docker, Podman, Kubernetes, public cloud container services, container orchestration platforms)
+    requirements:
+    - ALL container images MUST be OCI-compliant
+    - NO platform-specific dependencies or assumptions
+    - Container manifests MUST work identically across platforms
+    - Build processes MUST produce platform-agnostic artifacts
+    - Runtime configuration MUST be environment-agnostic
+    enforcement: Violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  cybersecurity_ai_security:
+    mandatory: true
+    rule: This application MUST apply the HIGHEST STANDARDS of cybersecurity and AI security frameworks. This application will be deployed into the MOST SECURE ENVIRONMENTS ON THE PLANET. It MUST EXCEED the security frameworks they operate in.
+    requirements:
+    - MUST comply with NIST Cybersecurity Framework (CSF) at the highest maturity level
+    - MUST comply with ISO/IEC 27001 security management standards
+    - MUST comply with OWASP Top 10 and ASVS (Application Security Verification Standard)
+    - MUST comply with AI security frameworks (NIST AI RMF, ISO/IEC 23053, OWASP LLM Top 10)
+    - MUST implement defense-in-depth security architecture
+    - MUST enforce least privilege access controls
+    - MUST implement comprehensive security logging and monitoring
+    - MUST undergo regular security audits and penetration testing
+    - MUST maintain security documentation and threat models
+    - MUST implement secure-by-design principles throughout
+    enforcement: Security violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  python_version:
+    mandatory: true
+    rule: The codebase MUST use Python 3.12 or higher as the MINIMUM version
+    requirements:
+    - ALL code MUST be compatible with Python 3.12+
+    - NO code may use deprecated features from Python < 3.12
+    - Type hints MUST use Python 3.12+ syntax and features
+    - ALL dependencies MUST support Python 3.12+
+    - Build and deployment processes MUST enforce Python 3.12+ requirement
+    enforcement: Python version violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  dependency_management:
+    mandatory: true
+    rule: Dependencies MUST be maintained to support the latest versions without causing conflicts
+    requirements:
+    - Dependencies MUST be kept at their latest stable versions
+    - If a new version of a dependency would advance, improve, or enhance the codebase: IT MUST BE IMPLEMENTED IMMEDIATELY
+    - ALL breaking changes MUST be resolved
+    - ALL breaking changes MUST be validated to be 100% functional
+    - Validation MUST result in 0 errors, 0 warnings, and 0 issues
+    - Dependency conflicts MUST be resolved immediately
+    - Security vulnerabilities in dependencies MUST be remediated immediately
+    - Dependency updates MUST NOT introduce regressions
+    - ALL dependency changes MUST be validated with full test suite
+    enforcement: Dependency management violations = BLOCKING ISSUE - execution MUST STOP until fixed
+  protocol_compliance:
+    mandatory: true
+    rule: MUST follow ALL rules defined in the Enterprise Canonical Execution Protocol - NO exceptions
+    enforcement: Protocol violation = BLOCKING ISSUE - execution MUST STOP until fixed
+logging_requirements:
+  logger_factory:
+    mandatory: true
+    location: '@src/services/logging/logger_factory.py'
+    rule: The logger factory is the ONLY logger that must be used
+  usage_patterns:
+    allowed:
+    - get_logger
+    - get_component_logger
+    - create_debug_logger
+    forbidden:
+    - logging.getLogger()
+    - logging.basicConfig()
+    - print() statements
+  security_modules: Audit logging required for security/auth/compliance modules.
+  service_modules: Debug logging capability required for service/core modules.
+  output_formats:
+    console: MUST be JSON formatted
+    file: MUST be detailed text formatted
+  blocking: Any logging non-compliance is blocking.
+remediation_priority:
+  execution_order: MANDATORY - MUST follow priority order sequentially - CANNOT skip priorities, CANNOT proceed to next priority until current is 100% complete
+  blocking_rule: If ANY violation found in current priority, MUST fix before proceeding - NO exceptions
+  priority_1_security:
+    rule: Fix ALL zero-tolerance + logging violations in security/auth/compliance modules first. Audit logging required.
+    blocking: Cannot proceed until 100% complete and verified.
+  priority_2_core_services:
+    rule: Fix ALL violations in core services (storage/data/integration/core). Debug logging capability required.
+    blocking: Cannot proceed until 100% complete and verified.
+  priority_3_api_routers:
+    rule: Fix ALL violations in API routers; audit + debug logging for request/response flows required.
+    blocking: Cannot proceed until 100% complete and verified.
+  priority_4_other_modules:
+    rule: Fix ALL remaining modules; logger_factory usage required everywhere.
+    blocking: Cannot mark complete until 100% complete and verified.
+validation_checkpoint:
+  mandatory: true
+  rule: MUST verify ALL checkpoints before marking complete. 100% compliance only.
+  blocking: Any checkpoint failure blocks completion; fix and re-verify.
+  before_completion:
+    protocols: All required protocols followed (00, 01, and applicable execution prompts).
+    production_code_implementation: ALL production code implemented 100% correctly, to highest standards, with 0 errors, 0 warnings, 0 issues. ALL incomplete code (TODOs, mocks, stubs, "PASS" passes, hacks, notes, placeholders, partial implementations, workarounds) MUST BE FOUND AND ERADICATED FROM CODEBASE.
+    zero_tolerance: 0 TODOs (FOUND AND ERADICATED), 0 mocks (FOUND AND ERADICATED), 0 stubs (FOUND AND ERADICATED), 0 "PASS" passes (FOUND AND ERADICATED), 0 hacks (FOUND AND ERADICATED), 0 notes that code needs implementation (FOUND AND ERADICATED), 0 placeholder/demo (FOUND AND ERADICATED), 0 hard-coded dynamic values (FOUND AND ERADICATED), 0 partial implementations (FOUND AND ERADICATED), 0 workarounds (FOUND AND ERADICATED), 0 SOLID/DRY/KISS violations.
+    interface_completeness: ALL function signatures match implementations (0 mismatches), ALL function parameters are used appropriately (0 ignored parameters), ALL call sites match implementation capabilities (0 mismatched calls), NO notes/comments documenting missing functionality (0 violations), ALL type hints match implementation behavior (0 mismatches), ALL docstrings accurately describe implementation (0 inaccuracies).
+    semantic_completeness: Code completeness verified semantically (not just keyword search), Function behavior matches interface contract (0 violations), No documentation of missing functionality (0 notes/comments), All promised functionality implemented (0 gaps).
+    logging_compliance: Logger factory only; audit logging for security; debug logging for services; required output formats verified.
+    code_quality: All required validators pass with 0 errors (and 0 warnings when policy requires).
+    production_readiness: No unfinished code paths; real data retrieval; externalised config; endpoints/services fully implemented; production code implemented 100% correctly.
+workflow:
+  protocol:
+  - docs/implementation/instructions/v2/04-Execute_Implementation_Phase_Tasks_v2.0.yaml
+  - docs/implementation/instructions/v2/07-Remediate_And_Refactor_Codebase_v2.1.yaml
+  - docs/implementation/instructions/v2/08-Debug_And_Troubleshoot_Codebase_v2.1.yaml
+  - docs/implementation/instructions/v2/10-Build_Deploy_Test_and_Document_REST_API_v2.1.yaml
+  focus: 'Assisting in IMPLEMENTATION + REMEDIATION/REFACTORING + TROUBLESHOOTING for specific issues, gaps, or requirements provided in messages. Mode selector: implement/refactor vs troubleshoot is chosen based on the explicit user instruction.'
+  mode: CODE-ONLY SESSION - NO DOCUMENTATION OF ANY KIND PERMITTED UNLESS EXPLICITLY REQUESTED - This directive OVERRIDES ALL other YAML file instructions - focus on code remediation, not documentation
+  execution_rule: MUST follow steps sequentially - NO skipping steps, NO parallel execution of steps, NO shortcuts
+  blocking_rule: If ANY step fails, MUST stop and fix before proceeding - NO workarounds
+  activation:
+    rule: Workflow is ONLY activated by EXPLICIT user instruction - NOT by loading this file
+    trigger: User must explicitly instruct to begin remediation work
+    wait_mode: If no explicit instruction provided, MUST remain in WAIT MODE - NO automatic activation
+  steps:
+    step_1:
+      name: Issue / Requirement identification and context gathering
+      mandatory: true
+      rule: 'MUST gather complete context AND classify the work type before proceeding: IMPLEMENTATION, REMEDIATION/REFACTOR, or TROUBLESHOOTING. Do NOT start code changes until classification is explicit.'
+      blocking: Cannot proceed to step 2 until context is complete AND work type is classified.
+    step_2:
+      name: Issue reproduction (CONDITIONAL)
+      mandatory: conditional
+      applicability: REQUIRED for REMEDIATION/REFACTOR and TROUBLESHOOTING work types - NOT APPLICABLE for IMPLEMENTATION work type
+      rule: |
+        - If work type is REMEDIATION/REFACTOR or TROUBLESHOOTING: MUST reproduce issue reliably - NO proceeding without reproduction
+        - If work type is IMPLEMENTATION: SKIP this step and proceed directly to step 3 (no issue to reproduce for new feature implementation)
+      blocking: Cannot proceed to step 3 until step 2 is complete (if applicable) - If IMPLEMENTATION work type, proceed directly to step 3
+    step_3:
+      name: Root cause analysis + Interface completeness check
+      mandatory: true
+      rule: |
+        MUST identify exact root cause AND verify interface/implementation completeness:
+        - Parse function signatures and verify all parameters are used appropriately
+        - Check call sites for expected behavior vs actual implementation
+        - Search for notes/comments documenting missing functionality
+        - Verify function behavior matches docstring/type hints
+        - Identify any interface/implementation mismatches
+        - Verify semantic completeness (not just keyword search)
+      blocking: Cannot proceed to step 4 until step 3 is complete with root cause identified AND interface completeness verified
+    step_4:
+      name: Create required SPEC artifacts (MANDATORY)
+      mandatory: true
+      rule: 'MANDATORY. Create or update the required SPEC artifact BEFORE implementing fixes: - If TROUBLESHOOTING: create DEBUG_TROUBLESHOOTING_SPEC per SPEC protocols (NO exceptions). - If IMPLEMENTATION/REFACTOR: ensure the active SPEC + implementation plan reflect the work scope and are updated before controlled implementation begins. Do NOT invent requirements; mirror the provided SPEC.'
+      blocking: Cannot proceed to step 5 until the correct SPEC artifact(s) exist and are updated for the current scope.
+    step_5:
+      name: Solution design
+      mandatory: true
+      rule: MUST design solution before implementation - NO ad-hoc fixes
+      blocking: Cannot proceed to step 6 until step 5 is complete with solution designed
+    step_6:
+      name: Controlled fix implementation (CODE ONLY)
+      mandatory: true
+      rule: |
+        MUST implement fix exactly as designed - NO deviations, CODE ONLY (no documentation)
+        BEFORE implementing fix:
+        - Scan target file(s) for ALL violation patterns
+        - ERADICATE any violations found in target files
+        - THEN implement intended fix
+        AFTER implementing fix:
+        - Re-scan modified file(s) for violation patterns
+        - Verify 0 violations remain
+        - Classify and document any acceptable matches
+      blocking: Cannot proceed to step 7 until step 6 is complete, fix implemented, AND violation scan passes
+    step_7:
+      name: Fix validation and testing
+      mandatory: true
+      rule: MUST validate fix works - NO proceeding without validation
+      blocking: Cannot proceed to step 8 until step 7 is complete and fix validated
+    step_8:
+      name: Regression prevention
+      mandatory: true
+      rule: MUST add regression prevention - NO skipping tests
+      blocking: Cannot proceed to step 9 until step 8 is complete
+    step_9:
+      name: Update DEBUG_TROUBLESHOOTING_SPEC with resolution (MANDATORY - SPEC protocols)
+      mandatory: true
+      rule: MUST update SPEC with resolution - NO exceptions, NO skipping SPEC update
+      blocking: Cannot proceed to step 10 until step 9 is complete and SPEC updated
+    step_10:
+      name: Persistence and audit logging
+      mandatory: true
+      rule: MUST persist to neo4j-memory - NO skipping persistence
+      blocking: Cannot proceed to step 11 until step 10 is complete
+    step_11:
+      name: Completion and verification
+      mandatory: true
+      rule: |
+        MUST verify ALL validation checkpoints pass - NO exceptions
+        REQUIRED validation steps:
+        1. Final violation pattern scan of ALL modified files
+        2. Classification of all pattern matches (violation vs acceptable)
+        3. Verification that 0 violations remain
+        4. Documentation of acceptable matches with justification
+        5. All other validation checkpoints (syntax, linting, type checking, etc.)
+      violation_scan_requirement:
+        mandatory: true
+        scope: ALL files modified, created, or touched during the session
+        patterns: All patterns from note_violation_detection.patterns
+        interface_completeness_check:
+          mandatory: true
+          rule: MUST verify interface/implementation completeness for ALL modified functions
+          checks:
+            - All function parameters are used appropriately
+            - All call sites match implementation capabilities
+            - No notes/comments documenting missing functionality
+            - Function behavior matches docstring/type hints
+          blocking: Cannot mark complete until interface completeness check passes (0 violations)
+        blocking: Cannot mark complete until violation scan shows 0 violations AND interface completeness check passes
+      blocking: Cannot mark complete until step 11 is complete, violation scan passes, AND ALL checkpoints pass
+  documentation_note: NO documentation files shall be created unless explicitly requested with explicit wording. SPEC lifecycle management and required SPEC artifacts (including DEBUG_TROUBLESHOOTING_SPEC when troubleshooting) are mandatory exceptions and MUST be executed per protocol. SPEC files are EXEMPT from CODE-ONLY policy as they are protocol artifacts, not optional documentation.
+enforcement:
+  strict_mode: true
+  interpretation_policy: NO interpretations. Requirements are literal.
+  wiggle_room: ZERO.
+  proactive_scanning:
+    mandatory: true
+    rule: MUST scan for violations BEFORE starting work, not AFTER
+    timing:
+      - Before reading any file for a task
+      - Before modifying any file
+      - Before proceeding to next step
+    violation_response: "STOP → scan file → identify violations → ERADICATE → IMPLEMENT → VERIFY → THEN continue"
+  reactive_enforcement:
+    rule: If violation found DURING work, IMMEDIATE STOP required
+    response: "STOP → identify violation → fix → verify → re-run validation → confirm 100% compliance → continue"
+  blocking_rules:
+  - 'CODE-ONLY: No documentation files unless explicitly requested (explicit wording only).'
+  - Pre-flight scan violation = BLOCKING - cannot start work
+  - File modification violation = BLOCKING - cannot modify until eradicated
+  - Any zero-tolerance violation = STOP, FIX, VERIFY, then continue.
+  - Any logging violation = STOP, FIX, VERIFY, then continue.
+  - Cannot proceed to next step/priority until current is 100% complete and verified.
+  - All required validators/checkpoints must pass (0 errors; 0 warnings when policy requires).
+  violation_response: "STOP → identify violation → fix → verify → re-run validation → confirm 100% compliance → continue."
+  no_exceptions: true
+output_format:
+  on_initialization:
+    mode: WAIT MODE - Acknowledgement only
+    required_output: '"Zero Tolerance Remediation Instruction (v1.1.0) loaded and acknowledged.
+
+      Ready to execute remediation per this instruction when explicitly instructed.
+
+      Waiting for your next explicit instruction."
+
+      '
+    forbidden_output:
+    - DO NOT output violation counts
+    - DO NOT output remediation plans
+    - DO NOT output proposed approaches
+    - DO NOT output next steps or options
+    - DO NOT scan codebase or analyze code
+  on_explicit_instruction: CODE/DIFF first. Then minimal evidence + re-validation commands. No narration.
+metadata:
+  author: Shadow Team AI
+  created: '2025-12-08'
+  version: 1.2.0
+  classification: Zero Tolerance Remediation and Compliance Instruction
+  enforcement_level: IRON CLAD - NO WIGGLE ROOM - NO INTERPRETATIONS - ABSOLUTE REQUIREMENTS
+  last_updated: '2025-12-21'
+continuation_instruction: "You are executing Zero Tolerance Remediation per Enterprise Canonical Execution Protocol v2.1.\n\nCRITICAL MODE: WAIT MODE ON LOAD\n- This instruction is PRE-CURSOR only - MUST acknowledge loaded, then WAIT for explicit user instruction\n- DO NOT auto-scan codebase, search violations, propose plans, or start work automatically\n- Workflow ONLY activated by EXPLICIT user instruction - NOT by loading file\n\nDOCUMENTATION POLICY: CODE-ONLY (ABSOLUTE - OVERRIDES ALL OTHER INSTRUCTIONS)\n- NO documentation files unless user explicitly states \"create documentation\" or \"write documentation\"\n- THIS IS A CODE-ONLY SESSION - NO DOCUMENTATION OF ANY KIND IS PERMITTED UNLESS EXPLICITLY REQUESTED\n- NO OTHER INSTRUCTIONS FROM ANY OTHER YAML FILES OVERRIDE THIS DIRECTIVE - This is ABSOLUTE AUTHORITY\n- User must EXPLICITLY state \"create documentation\" or \"write documentation\" - implicit requests DO NOT count\n- ONLY exceptions: DEBUG_TROUBLESHOOTING_SPEC (MANDATORY\
+  \ per protocol) and SPEC lifecycle management\n- Code docstrings REQUIRED (standard Python practice - NOT documentation files)\n- Creating documentation files = FORBIDDEN unless EXPLICITLY requested - violation = BLOCKING ISSUE - execution MUST STOP immediately\n- Following documentation requirements from other YAML files = FORBIDDEN - This file OVERRIDES ALL OTHERS\n\nPRODUCTION CODE IMPLEMENTATION MANDATE (ABSOLUTE - NON-NEGOTIABLE)\n- ALL production code MUST be implemented 100% correctly, to the highest standards, with 0 errors, 0 warnings, and 0 issues\n- INCOMPLETE CODE ERADICATION REQUIREMENT: The following violations MUST BE FOUND AND ERADICATED FROM THE CODEBASE:\n  - TODOs (ALL must be found and replaced with production code)\n  - Mocks (ALL must be found and replaced with real implementation)\n  - Stubs (ALL must be found and fully implemented)\n  - \"PASS\" passes (ALL must be found and replaced with real validation)\n  - Hacks (ALL must be found and replaced with proper solutions)\n  - Notes that code needs to be implemented (ALL must be found and implemented)\n  - Placeholder code (ALL must be found and replaced with production code)\n  - Demo/test data in production paths (ALL must be found and replaced with real data retrieval)\n  - Partial implementations (ALL must be found and completed)\n  - Workarounds or temporary solutions (ALL must be found and replaced with proper solutions)\n- IMPLEMENTATION REQUIREMENTS: Production code MUST be implemented 100% correctly, meet highest enterprise standards, have 0 errors/0 warnings/0 issues, be fully functional (not partial), NOT skip functionality, NOT use workarounds, be production-ready\n- ENFORCEMENT: Finding incomplete code = STOP immediately, Eradicate = MANDATORY, Implement = MANDATORY, Verify = MANDATORY (0 errors/0 warnings/0 issues), Violations = BLOCKING ISSUE\n\nZERO TOLERANCE REQUIREMENTS (ABSOLUTE - NO EXCEPTIONS)\n- 0 TODOs (MUST BE FOUND AND ERADICATED - MUST replace with production code immediately)\n- 0 mocks (MUST BE FOUND AND ERADICATED - MUST replace with real implementation immediately)\n- 0 stubs (MUST BE FOUND AND ERADICATED - MUST implement fully immediately)\n- 0 \"PASS\" passes (MUST BE FOUND AND ERADICATED - MUST replace with real validation immediately)\n- 0 hacks (MUST BE FOUND AND ERADICATED - MUST replace with proper solutions immediately)\n- 0 notes that code needs to be implemented (MUST BE FOUND AND ERADICATED - MUST implement immediately)\n- 0 placeholder/demo data (MUST BE FOUND AND ERADICATED - MUST replace with real data retrieval)\n- 0 hard-coded values (MUST BE FOUND AND ERADICATED - MUST move to config/DB immediately)\n- 0 duplicated logic (MUST BE FOUND AND ERADICATED - MUST refactor to shared code)\n- 0 violations of SOLID/DRY/KISS (MUST BE FOUND AND ERADICATED - MUST refactor immediately)\n- 0 partial implementations (MUST BE FOUND AND ERADICATED - MUST complete immediately)\n- 0 workarounds or temporary solutions (MUST BE FOUND AND ERADICATED - MUST replace with proper solutions immediately)\n- Finding violation = STOP current work immediately, FIND AND ERADICATE violation, IMPLEMENT production code, VERIFY fix achieves 0 errors/0 warnings/0 issues, THEN continue\n\nUNIVERSAL CONTAINER DEPLOYMENT MANDATE (ABSOLUTE - NON-NEGOTIABLE)\n- This application MUST be universally deployable across ALL container platforms (Docker, Podman, Kubernetes, public cloud container services, container orchestration platforms)\n- ALL container images MUST be OCI-compliant\n- NO platform-specific dependencies or assumptions\n- Container manifests MUST work identically across platforms\n- Build processes MUST produce platform-agnostic artifacts\n- Runtime configuration MUST be environment-agnostic\n- Violations = BLOCKING ISSUE - execution MUST STOP until fixed\n\nCYBERSECURITY & AI SECURITY FRAMEWORK MANDATE (ABSOLUTE - NON-NEGOTIABLE)\n- This application MUST apply the HIGHEST STANDARDS of cybersecurity and AI security frameworks\n- This application will be deployed into the MOST SECURE ENVIRONMENTS ON THE PLANET\n- It MUST EXCEED the security frameworks they operate in\n- MUST comply with NIST Cybersecurity Framework (CSF) at the highest maturity level\n- MUST comply with ISO/IEC 27001 security management standards\n- MUST comply with OWASP Top 10 and ASVS (Application Security Verification Standard)\n- MUST comply with AI security frameworks (NIST AI RMF, ISO/IEC 23053, OWASP LLM Top 10)\n- MUST implement defense-in-depth security architecture\n- MUST enforce least privilege access controls\n- MUST implement comprehensive security logging and monitoring\n- MUST undergo regular security audits and penetration testing\n- MUST maintain security documentation and threat models\n- MUST implement secure-by-design principles throughout\n- Security violations = BLOCKING ISSUE - execution MUST STOP until fixed\n\nPYTHON VERSION REQUIREMENT (ABSOLUTE - NON-NEGOTIABLE)\n- The codebase MUST use Python 3.12 or higher as the MINIMUM version\n- ALL code MUST be compatible with Python 3.12+\n- NO code may use deprecated features from Python < 3.12\n- Type hints MUST use Python 3.12+ syntax and features\n- ALL dependencies MUST support Python 3.12+\n- Build and deployment processes MUST enforce Python 3.12+ requirement\n- Python version violations = BLOCKING ISSUE - execution MUST STOP until fixed\n\nDEPENDENCY MANAGEMENT MANDATE (ABSOLUTE - NON-NEGOTIABLE)\n- Dependencies MUST be maintained to support the latest versions without causing conflicts\n- Dependencies MUST be kept at their latest stable versions\n- If a new version of a dependency would advance, improve, or enhance the codebase: IT MUST BE IMPLEMENTED IMMEDIATELY\n- ALL breaking changes MUST be resolved\n- ALL breaking changes MUST be validated to be 100% functional\n- Validation MUST result in 0 errors, 0 warnings, and 0 issues\n- Dependency conflicts MUST be resolved immediately\n- Security vulnerabilities in dependencies MUST be remediated immediately\n- Dependency updates MUST NOT introduce regressions\n- ALL dependency changes MUST be validated with full test suite\n- Dependency management violations = BLOCKING ISSUE - execution MUST STOP until fixed\n\nDEVELOPMENT STANDARDS (MANDATORY)\n- Backend first: MUST implement backend FIRST, then frontend\n- OpenAPI\
+  \ first: MUST define OpenAPI spec FIRST, then implement\n- Naming synchronization: MUST use identical names backend/frontend\n- Data retrieval: MUST retrieve dynamically from backend (NO static/hard-coded)\n- NO shims/aliases: MUST use direct references\n- Pydantic v2 ONLY: NO Pydantic v1 usage (MUST upgrade immediately)\n- NO hard-coded variables: ALL must be in config files or DB tables (DB preferred)\n\nLOGGING REQUIREMENTS (MANDATORY)\n- Logger factory ONLY: @src/services/logging/logger_factory.py\n- Allowed: get_logger, get_component_logger, create_debug_logger\n- Forbidden: logging.getLogger(), logging.basicConfig(), print()\n- Security modules: MUST use audit logging (get_component_logger('audit', 'security'))\n- Service modules: MUST have debug logging (create_debug_logger(__name__))\n- Console output: MUST be JSON formatted\n- File output: MUST be detailed text formatted\n- Non-compliance = BLOCKING ISSUE\n\nREMEDIATION PRIORITY (SEQUENTIAL - CANNOT SKIP)\n- Priority 1 (Security):\
+  \ FIND AND ERADICATE ALL incomplete code (TODOs, mocks, stubs, \"PASS\" passes, hacks, notes, placeholders, partial implementations, workarounds), add audit logging, implement production code 100% correctly, verify zero violations\n- Priority 2 (Core Services): FIND AND ERADICATE ALL incomplete code, add debug logging, implement production code 100% correctly, verify zero violations\n- Priority 3 (API Routers): FIND AND ERADICATE ALL incomplete code, add audit+debug logging, implement production code 100% correctly, verify zero violations\n- Priority 4 (Other Modules): FIND AND ERADICATE ALL incomplete code, add appropriate logging, implement production code 100% correctly, verify zero violations\n- CANNOT proceed to next priority until current is 100% complete and validated\n- If ANY violation found in current priority, MUST FIND AND ERADICATE, then IMPLEMENT production code before proceeding\n\nVALIDATION CHECKPOINTS (MUST PASS ALL - NO EXCEPTIONS)\nBefore completion, MUST verify:\n- All protocols followed (00, 01, 08, 97)\n- Production code implementation: ALL production code implemented 100% correctly, to highest standards, with 0 errors, 0 warnings, 0 issues. ALL incomplete code (TODOs, mocks, stubs, \"PASS\" passes, hacks, notes, placeholders, partial implementations, workarounds) MUST BE FOUND AND ERADICATED FROM CODEBASE\n- Zero tolerance: 0 TODOs (FOUND AND ERADICATED), 0 mocks (FOUND AND ERADICATED), 0 stubs (FOUND AND ERADICATED), 0 \"PASS\" passes (FOUND AND ERADICATED), 0 hacks (FOUND AND ERADICATED), 0 notes that code needs implementation (FOUND AND ERADICATED), 0 hard-coded (FOUND AND ERADICATED), 0 partial implementations (FOUND AND ERADICATED), 0 workarounds (FOUND AND ERADICATED), 0 SOLID/DRY/KISS violations\n- Logging compliance: 100% logger factory usage, security audit logging, service debug logging\n- Code quality: ALL validators pass (mypy 0/0, flake8 0/0, bandit 0 high/medium, safety 0, black/isort no changes, radon cc \u226415, radon mi Grade A, xenon no\
+  \ violations)\n- Production readiness: No test/debug code, no mocks/stubs, dynamic data retrieval, externalized config, real CRUD endpoints, production code implemented 100% correctly\n- ANY checkpoint failure = BLOCKING - cannot proceed until ALL pass\n- ONLY 100% compliance allows completion - NO partial passes\n\nWORKFLOW (11 STEPS - SEQUENTIAL, BLOCKING)\nStep 1: Issue identification and context gathering (MUST gather complete context AND classify work type)\nStep 2: Issue reproduction (CONDITIONAL - REQUIRED for REMEDIATION/TROUBLESHOOTING, SKIP for IMPLEMENTATION)\nStep 3: Root cause analysis (MUST identify exact root cause - for IMPLEMENTATION: identify requirements/design needs)\nStep 4: Create DEBUG_TROUBLESHOOTING_SPEC (MANDATORY - NO exceptions, follow SPEC_TEMPLATE exactly)\nStep 5: Solution design (MUST design before implementation)\nStep 6: Controlled fix implementation (CODE ONLY - no documentation)\nStep 7: Fix validation and testing (MUST validate fix works)\nStep 8: Regression prevention (MUST add regression prevention)\nStep 9: Update DEBUG_TROUBLESHOOTING_SPEC with resolution (MANDATORY)\nStep 10: Persistence and audit logging (MUST persist to\
+  \ neo4j-memory)\nStep 11: Completion and verification (MUST verify ALL validation checkpoints pass)\n- MUST follow steps sequentially - NO skipping, NO parallel execution, NO shortcuts\n- If ANY step fails, MUST stop and fix before proceeding - NO workarounds\n\nENFORCEMENT (STRICT MODE - IRON CLAD)\n- NO interpretations allowed - requirements are LITERAL and ABSOLUTE\n- ZERO wiggle room - requirements are IRON CLAD\n- Non-compliance = IMMEDIATE STOP - execution BLOCKED until fixed\n- Partial compliance = NON-COMPLIANCE - ONLY 100% compliance acceptable\n- Cannot proceed to next step/priority until current is 100% complete\n- Violation response: STOP \u2192 Identify \u2192 Fix \u2192 Verify \u2192 Re-run validation \u2192 Confirm 100% compliance \u2192 THEN continue\n\nOUTPUT FORMAT\nOn initialization: WAIT MODE - Acknowledgement only (NO violation counts, NO plans, NO scanning)\nOn explicit instruction: EXECUTION MODE - Show violations, remediation actions (CODE CHANGES ONLY), validation\
+  \ results, DEBUG_TROUBLESHOOTING_SPEC created/updated\n\nCURRENT SESSION CONTEXT\n- Focus: Implement actual productional coding/build tasks (NOT testing or other non-production tasks)\n- Priority: Outstanding productional coding/build tasks\n- Mode: CODE-ONLY SESSION - NO DOCUMENTATION OF ANY KIND PERMITTED UNLESS EXPLICITLY REQUESTED - This directive OVERRIDES ALL other YAML file instructions - fix stubs, implement missing functionality, verify zero tolerance compliance\n- Remember: User explicitly wants REAL WORK done, not test fixes or documentation\n\nEXAMPLES OF PRODUCTIONAL CODING/BUILD TASKS\n- Fix stubs, implement missing functionality\n- Verify zero tolerance compliance\n- Implement productional coding/build tasks\n"

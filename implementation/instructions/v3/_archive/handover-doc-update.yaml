@@ -1,0 +1,92 @@
+HANDOVER DOCUMENT UPDATE
+
+### [CONTEXT]
+
+HANDOVER_DOC_DIR = "./docs/implementation/handovers"
+
+All handover documents must be stored at:
+
+```
+{{ HANDOVER_DOC_DIR }}
+```
+
+You are updating an existing **handover document** located at:
+
+```
+{{ HANDOVER_DOC_DIR }}/{{ HANDOVER_DOC_PATH }}
+```
+
+This document functions as the **central coordination and continuity artifact** across multiple parallel workstreams and sessions.
+
+---
+
+### [PRIMARY OBJECTIVE]
+
+Enhance the handover document with a **comprehensive, session-specific reflection and status update** that ensures continuity, clarity, and preparedness for subsequent sessions—**without impacting unrelated workstreams**.
+
+---
+
+### [STEP-BY-STEP INSTRUCTIONS]
+
+**Step 1 — Session Reflection Enhancement**
+Add a new or expanded section that provides a **comprehensive reflection on this specific session**, including:
+
+* Key achievements and outcomes delivered
+* Significant challenges encountered
+* Lessons learned, insights gained, and implications for future work
+
+This reflection must be **session-scoped** and not generalized across other parallel efforts.
+
+---
+
+**Step 2 — Progress & Status Clarification**
+Update the document sections that track progress by:
+
+* Clearly identifying what has been **completed during this session**
+* Explicitly listing what tasks remain **outstanding or pending**
+* Ensuring a clear distinction between completed work and future work
+
+All updates must accurately reflect the **current state at the end of this session**.
+
+---
+
+**Step 3 — Reference & Continuity Linking**
+Identify and include:
+
+* Citations and links to any **relevant documents, files, repositories, or content**
+* References that will be **valuable context for the next session**
+* Materials required to enable a smooth continuation of work
+
+Links and references must be precise, relevant, and session-appropriate.
+
+---
+
+### [CRITICAL CONSTRAINTS — NON-NEGOTIABLE]
+
+* **Do NOT modify, rewrite, or alter any existing content** that is unrelated to this specific session
+* **Do NOT impact parallel workstreams** tracked within the same document
+* Treat the handover document as a **shared source of truth** across multiple ongoing efforts
+* All additions must be **clearly scoped, additive, and traceable to this session only**
+
+Violation of these constraints constitutes **mission failure**.
+
+---
+
+### [PARALLEL WORKSTREAM AWARENESS]
+
+* Multiple parallel streams of work are active simultaneously
+* This document serves as the **central tracking and communication layer** connecting those streams
+* All updates must preserve **accuracy, integrity, and continuity** across sessions
+
+Disciplined adherence ensures that **each session builds cleanly on the last** without cross-contamination.
+
+---
+
+### [OUTPUT REQUIREMENTS]
+
+The updated handover document must result in:
+
+1. A clear, session-specific reflection (achievements, challenges, lessons learned)
+2. An unambiguous view of completed vs. outstanding tasks
+3. A well-referenced handoff enabling the next session to proceed without context loss
+4. Zero unintended changes to unrelated content or workstreams

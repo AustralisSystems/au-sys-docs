@@ -1,0 +1,31 @@
+version: "1.0"
+schema: "mcp.prompt/v1"
+id: "005-execute_treatment_plan_copy_and_adapt"
+title: "Execute treatment plan: copy, adapt, remediate, and validate (gated)"
+description: "Follow the treatment plan entries in the CODE_IMPLEMENTATION_SPEC and apply copy-and-adapt remediation on a per-item, single-file basis. Each change is gated and validated before proceeding to the next item."
+source_md_section_index: 5
+action: "execute-plan-gated"
+steps:
+  - "Review the treatment plan entries in the CODE_IMPLEMENTATION_SPEC and select the next approved item."
+  - "Copy/adapt only the required files or code blocks from cloned reference repos or backups (per-item, not mass rewrite)."
+  - "Make a single-file change, run linters/tests, record artifacts and results in CODE_IMPLEMENTATION_SPEC, and present for approval before the next change."
+  - "Continue until the plan item is complete and validated."
+variables:
+  code_implementation_spec_doc:
+    required: true
+    default: "{{ CODE_IMPLEMENTATION_SPEC_DOCS }}"
+notes:
+  - "This prompt enforces single-file sequential changes and validation gating as required by directives."
+  - "Confliction note: the document includes both 'full rewrite' and 'no mass modifications' — operator must resolve scope or request clarification before any large-scope operations."
+raw: |
+  INPUTS:
+  - Start by examining the production codebase for any missing elements, TODO comments, mocks, stubs, or unfinished code.
+  - Identify which items are partially completed and can be quickly reactivated or restored by copying and adjusting them, using backups or cloned GitHub repositories.
+  - Extensively scan and search the code base for other gaps that can be promptly resolved.
+  - Proceed to pinpoint those items within your list that were only partially completed but could be promptly reactivated or restored through copying and appropriate adaptation. These elements may be sourced from existing cloned GitHub repositories or discovered GitHub repositories that SHALL be cloned.
+  - Next, assess which remaining gaps can be efficiently resolved by employing MCP TOOLS such as grep and fetch to retrieve additional repositories and code from GitHub. Clone these repositories into the local environment and selectively copy and modify the required files, modules, or code segments to address the issues.
+  - Record your observations {{ CODE_IMPLEMENTATION_SPEC_DOCS }}, DO NOT include code examples.
+  - You MUST use MCP TOOLS grep and fetch to retrieve additional useful repositories, code examples or semantically similar code base from GitHub to quickly use as a base and / or to scaffold.
+  - You MUST use GIT TO CLONE all the useful discovered GitHub repos to the local repository, even if they are only going to provide a small benefit to this code base NOTE: this is to use for future references and examples, do not remove the cloned repos.
+  - Focus on implementing, rectifying, or refactoring groups of items identified on your list, ensuring that all necessary improvements are executed with precision and adherence to best practices.
+  - Record in the {{ CODE_IMPLEMENTATION_SPEC_DOCS }} treatment plan structured checklists, DO NOT include code examples.
