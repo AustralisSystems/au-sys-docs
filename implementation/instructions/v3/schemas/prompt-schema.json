@@ -1,0 +1,484 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://australissystems.github.io/au-sys-docs/schemas/prompt-schema.json",
+  "title": "AU-SYS Prompt Schema (MCP Tier, authoring-aligned)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "authoring_schema_version",
+    "mcp_spec_revision",
+    "artifact"
+  ],
+  "properties": {
+    "authoring_schema_version": {
+      "type": "string",
+      "description": "Version of this AU-SYS authoring schema (not the upstream MCP spec). Use semantic versioning (e.g., '1.0.0').",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "mcp_spec_revision": {
+      "type": "string",
+      "description": "The upstream MCP spec revision this prompt format is intended to map to (informational but enforceable).",
+      "minLength": 4
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meta",
+        "content"
+      ],
+      "properties": {
+        "meta": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version",
+            "schema",
+            "id",
+            "name",
+            "title",
+            "description"
+          ],
+          "properties": {
+            "version": {
+              "type": "string",
+              "description": "Semantic version of this prompt definition (e.g., '1.0.0')."
+            },
+            "schema": {
+              "type": "string",
+              "const": "mcp.prompt/v1",
+              "description": "Fixed MCP-tier schema identifier for AU-SYS prompt files."
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^[a-z0-9_.:-]+$",
+              "description": "Canonical prompt identifier for governance and traceability. Lowercase; safe characters only."
+            },
+            "name": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9\\-]{2,80}$",
+              "description": "External prompt name used for discovery/invocation (e.g., an MCP server 'prompts/list' entry). Use kebab-case."
+            },
+            "title": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 120,
+              "description": "Human-friendly display title for UIs and registries."
+            },
+            "description": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 1200,
+              "description": "Concise description of what the prompt does, when to use it, and what it produces."
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": [],
+              "description": "Optional discoverability tags (e.g., 'fastapi', 'refactor', 'review', 'safe-mode')."
+            }
+          }
+        },
+        "content": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "governed_by",
+            "arguments",
+            "template",
+            "mode"
+          ],
+          "properties": {
+            "governed_by": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "doctrine_refs"
+              ],
+              "description": "Declares the governing doctrine/protocol set for this prompt. Prompts must not invent policy; they must operate under declared governance.",
+              "properties": {
+                "doctrine_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "description": "Doctrine IDs that govern this prompt."
+                },
+                "protocol_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": [],
+                  "description": "Protocol IDs that constrain execution and outputs."
+                },
+                "directive_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": [],
+                  "description": "Optional directive IDs that this prompt explicitly activates or highlights (should correspond to protocol directives)."
+                }
+              }
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "read_only",
+                "plan_only",
+                "validate_only",
+                "execute",
+                "halt"
+              ],
+              "description": "The operational safety mode of the prompt. This is used by orchestrators and reviewers to apply consistent guardrails."
+            },
+            "halt": {
+              "type": "boolean",
+              "default": false,
+              "description": "If true, the prompt must halt after generating its response and await explicit operator authorisation before any follow-on execution."
+            },
+            "arguments": {
+              "type": "array",
+              "default": [],
+              "description": "Template arguments accepted by this prompt. These map to prompt parameters exposed by an MCP server.",
+              "items": {
+                "$ref": "#/$defs/promptArgument"
+              }
+            },
+            "template": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "messages"
+              ],
+              "description": "The message template that will be rendered into a model invocation. This is designed to map directly to an MCP prompt instance's 'messages[]'.",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "default": "",
+                  "description": "Optional template description (typically returned alongside messages by a prompt provider)."
+                },
+                "messages": {
+                  "type": "array",
+                  "minItems": 1,
+                  "description": "Ordered list of role-based message templates. Each message is a content block (text/resource).",
+                  "items": {
+                    "$ref": "#/$defs/promptMessage"
+                  }
+                }
+              }
+            },
+            "output_contract": {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Optional but strongly recommended. Defines the required response structure so outputs are predictable and testable.",
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "enum": [
+                    "markdown",
+                    "json",
+                    "yaml",
+                    "text"
+                  ],
+                  "default": "markdown",
+                  "description": "Required output format of the model response."
+                },
+                "schema_ref": {
+                  "type": "string",
+                  "description": "Optional URI or repo path to a JSON Schema/YAML schema the output must conform to."
+                },
+                "required_sections": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": [],
+                  "description": "For markdown/text outputs: required headings/sections (e.g., 'Assumptions', 'Plan', 'Changes', 'Commands')."
+                }
+              }
+            },
+            "notes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": [],
+              "description": "Optional author notes, caveats, or operational guidance."
+            },
+            "conflicts": {
+              "type": "array",
+              "default": [],
+              "description": "Known conflicts with other prompts/protocols/assumptions that require explicit operator decision.",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "with",
+                  "description"
+                ],
+                "properties": {
+                  "with": {
+                    "type": "string",
+                    "description": "Identifier of the conflicting artefact (protocol/directive/prompt/instruction)."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Nature of the conflict and expected resolution approach."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "governance": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Ownership and lifecycle metadata. This supports review workflows and controlled evolution of prompts.",
+          "properties": {
+            "owners": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "draft",
+                "review",
+                "approved",
+                "deprecated"
+              ],
+              "default": "draft",
+              "description": "Lifecycle state of the prompt."
+            },
+            "changeLog": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": [],
+              "description": "Human-readable change log entries (what changed and why)."
+            }
+          }
+        },
+        "traceability": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Optional traceability fields for migration, auditing, and integrity verification.",
+          "properties": {
+            "raw": {
+              "type": "string",
+              "description": "Embedded original content for traceability. Prefer raw_ref for large or sensitive items."
+            },
+            "raw_ref": {
+              "type": "string",
+              "format": "uri",
+              "description": "Reference (URI or repo path) to original/raw content stored externally."
+            },
+            "raw_hash": {
+              "type": "string",
+              "pattern": "^[A-Fa-f0-9]{64}$",
+              "description": "SHA-256 hex digest of the original content for integrity verification."
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "promptArgument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "description"
+      ],
+      "description": "A named parameter accepted by the prompt template. Arguments should be explicit so prompt invocation is deterministic and auditable.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,50}$",
+          "description": "Argument identifier. snake_case recommended."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240,
+          "description": "What the argument represents and how it will be used."
+        },
+        "required": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the argument must be provided to invoke the prompt."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "string",
+            "integer",
+            "number",
+            "boolean",
+            "json"
+          ],
+          "default": "string",
+          "description": "Optional typing hint for tooling."
+        },
+        "default": {
+          "description": "Optional default value used when the argument is omitted.",
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "object",
+            "array",
+            "null"
+          ],
+          "default": null
+        },
+        "example": {
+          "description": "Optional example value for documentation and testing.",
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "object",
+            "array",
+            "null"
+          ],
+          "default": null
+        }
+      }
+    },
+    "promptMessage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "content"
+      ],
+      "description": "A single role-based message template that contributes to the final model invocation.",
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": [
+            "user",
+            "assistant"
+          ],
+          "description": "Message role. 'assistant' is commonly used for stable operating procedure; 'user' for task-specific inputs."
+        },
+        "content": {
+          "$ref": "#/$defs/content"
+        },
+        "annotations": {
+          "$ref": "#/$defs/annotations"
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "description": "Typed content block for prompt messages. Designed to support common MCP prompt content patterns.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text",
+            "resource"
+          ],
+          "description": "Supported content types for prompt templates. Extend with image/audio if your tooling supports it."
+        },
+        "text": {
+          "type": "string",
+          "description": "For type=text. May include template placeholders like {{argument_name}}."
+        },
+        "resource": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "uri",
+            "mimeType"
+          ],
+          "description": "For type=resource. Provides a reference or embedded resource for context (e.g., doctrine/protocol files).",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "description": "URI or repo path of the resource."
+            },
+            "mimeType": {
+              "type": "string",
+              "description": "MIME type of the resource (e.g., text/markdown, application/json)."
+            },
+            "text": {
+              "type": "string",
+              "description": "Optional embedded text version of the resource."
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "text"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "text"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "resource"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "resource"
+            ]
+          }
+        }
+      ]
+    },
+    "annotations": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional message annotations for prioritisation and audience targeting. Useful for distinguishing hard rules from guidance.",
+      "properties": {
+        "audience": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Optional audience tags (e.g., roles or model classes)."
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Priority of this message/content. Use 1 for non-negotiable rules, higher numbers for guidance."
+        },
+        "lastModified": {
+          "type": "string",
+          "description": "ISO-8601 timestamp for change tracking (optional)."
+        }
+      }
+    }
+  }
+}

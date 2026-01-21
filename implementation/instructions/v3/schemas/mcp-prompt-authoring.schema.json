@@ -1,0 +1,272 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://australissystems.github.io/au-sys-docs/schemas/mcp-prompt-authoring.schema.json",
+  "title": "AU-SYS MCP Prompt Authoring Schema (aligned to MCP 2025-06-18 Prompts)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "authoring_schema_version",
+    "mcp_spec_revision",
+    "prompt"
+  ],
+  "properties": {
+    "authoring_schema_version": {
+      "type": "string",
+      "description": "Version of this AU-SYS authoring schema.",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "mcp_spec_revision": {
+      "type": "string",
+      "description": "MCP Prompts spec revision this file targets.",
+      "const": "2025-06-18"
+    },
+    "prompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meta",
+        "template"
+      ],
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/promptMeta"
+        },
+        "template": {
+          "$ref": "#/$defs/promptTemplate"
+        },
+        "governance": {
+          "$ref": "#/$defs/governance"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "promptMeta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "MCP Prompt.name (unique identifier).",
+          "pattern": "^[a-z][a-z0-9\\-]{2,80}$"
+        },
+        "title": {
+          "type": "string",
+          "description": "MCP Prompt.title (optional in spec, recommended).",
+          "minLength": 3,
+          "maxLength": 120
+        },
+        "description": {
+          "type": "string",
+          "description": "MCP Prompt.description (optional in spec, recommended).",
+          "minLength": 10,
+          "maxLength": 800
+        },
+        "arguments": {
+          "type": "array",
+          "description": "MCP Prompt.arguments[] as per spec.",
+          "items": {
+            "$ref": "#/$defs/promptArgument"
+          },
+          "default": []
+        }
+      }
+    },
+    "promptArgument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "MCP PromptArgument.name",
+          "pattern": "^[a-z][a-z0-9_]{1,50}$"
+        },
+        "description": {
+          "type": "string",
+          "description": "MCP PromptArgument.description",
+          "minLength": 0,
+          "maxLength": 200
+        },
+        "required": {
+          "type": "boolean",
+          "description": "MCP PromptArgument.required",
+          "default": false
+        }
+      }
+    },
+    "promptTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "messages"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Description returned by prompts/get.result.description (optional).",
+          "minLength": 0,
+          "maxLength": 800
+        },
+        "messages": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/promptMessage"
+          }
+        }
+      }
+    },
+    "promptMessage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "content"
+      ],
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": [
+            "user",
+            "assistant"
+          ],
+          "description": "MCP PromptMessage.role"
+        },
+        "content": {
+          "$ref": "#/$defs/content"
+        },
+        "annotations": {
+          "$ref": "#/$defs/annotations"
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text",
+            "resource"
+          ],
+          "description": "MCP content types commonly used in prompts. Extend if you adopt image/audio."
+        },
+        "text": {
+          "type": "string",
+          "description": "For type=text. May include {{argument_name}} placeholders."
+        },
+        "resource": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "uri",
+            "mimeType"
+          ],
+          "properties": {
+            "uri": {
+              "type": "string"
+            },
+            "mimeType": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "text"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "text"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "resource"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "resource"
+            ]
+          }
+        }
+      ]
+    },
+    "annotations": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "audience": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = highest priority (matches spec intent)."
+        },
+        "lastModified": {
+          "type": "string",
+          "description": "ISO-8601 timestamp."
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "owners": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "review",
+            "approved",
+            "deprecated"
+          ],
+          "default": "draft"
+        },
+        "changeLog": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      }
+    }
+  }
+}

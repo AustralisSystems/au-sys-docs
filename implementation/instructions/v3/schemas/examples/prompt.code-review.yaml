@@ -1,0 +1,40 @@
+authoring_schema_version: 1.0.0
+mcp_spec_revision: "2025-06-18"
+
+prompt:
+  meta:
+    name: code-review
+    title: Request Code Review
+    description: Review a diff against AU-SYS coding standards and return actionable findings.
+    arguments:
+      - name: diff
+        description: Unified diff / patch text to review
+        required: true
+      - name: language
+        description: Optional language hint (python, ts, go)
+        required: false
+
+  template:
+    description: AU-SYS code review prompt
+    messages:
+      - role: assistant
+        annotations:
+          priority: 1
+        content:
+          type: text
+          text: |
+            You are performing a code review.
+            Follow AU-SYS standards and produce findings with severity and fixes.
+            Output format:
+            - Summary
+            - Findings (severity: blocker|major|minor|nit, with file/line when possible)
+            - Suggested patches (only where confident)
+      - role: user
+        content:
+          type: text
+          text: |
+            Language: {{language}}
+
+            Review this diff:
+
+            {{diff}}

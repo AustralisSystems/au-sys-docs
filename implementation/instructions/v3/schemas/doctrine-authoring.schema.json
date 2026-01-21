@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://australissystems.github.io/au-sys-docs/schemas/doctrine-authoring.schema.json",
+  "title": "AU-SYS Doctrine Authoring Schema (aligned to MCP-tier artefacts)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "authoring_schema_version",
+    "mcp_spec_revision",
+    "artifact"
+  ],
+  "properties": {
+    "authoring_schema_version": {
+      "type": "string",
+      "description": "Version of this AU-SYS authoring schema (not the MCP spec).",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "mcp_spec_revision": {
+      "type": "string",
+      "description": "MCP spec revision this schema is aligned with (informational but enforceable).",
+      "minLength": 4
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meta",
+        "content"
+      ],
+      "properties": {
+        "meta": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version",
+            "schema",
+            "id",
+            "title",
+            "description"
+          ],
+          "properties": {
+            "version": {
+              "type": "string",
+              "description": "Semantic version of the doctrine document (eg '1.0.0')."
+            },
+            "schema": {
+              "type": "string",
+              "const": "mcp.doctrine/v1",
+              "description": "Fixed MCP-tier schema identifier for doctrines."
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^[a-z0-9_.:-]+$",
+              "description": "Canonical identifier for the doctrine (lowercase, safe characters)."
+            },
+            "title": {
+              "type": "string",
+              "description": "Short human-readable title."
+            },
+            "description": {
+              "type": "string",
+              "description": "Concise statement of intent and scope."
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": [],
+              "description": "Optional discoverability tags (domains, systems, product areas)."
+            }
+          }
+        },
+        "content": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "purpose": {
+              "type": "string",
+              "description": "Higher-level rationale or business purpose for the doctrine."
+            },
+            "scope": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Where the doctrine applies (repo paths, domains, modules, products)."
+            },
+            "policies": {
+              "type": "array",
+              "description": "Governing policies derived from this doctrine (non-executable).",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "title"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Policy identifier; unique within this doctrine."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Short title for the policy."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Full description and rationale for the policy."
+                  },
+                  "severity": {
+                    "type": "string",
+                    "enum": [
+                      "blocking",
+                      "high",
+                      "medium",
+                      "low",
+                      "informational"
+                    ],
+                    "default": "blocking",
+                    "description": "How strict this policy is intended to be."
+                  },
+                  "verification": {
+                    "type": "string",
+                    "description": "How a reviewer/tool can confirm compliance."
+                  }
+                }
+              }
+            },
+            "protocols": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of protocol IDs that implement or operationalise this doctrine."
+            },
+            "enforce": {
+              "type": "boolean",
+              "description": "If true, violations are blocking unless explicitly waived."
+            },
+            "notes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Governance notes, clarifications, or commentary."
+            }
+          }
+        },
+        "governance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "owners": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "draft",
+                "review",
+                "approved",
+                "deprecated"
+              ],
+              "default": "draft"
+            },
+            "changeLog": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            }
+          },
+          "description": "Ownership and lifecycle metadata for governance workflows."
+        },
+        "traceability": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "raw": {
+              "type": "string",
+              "description": "Embedded original content for traceability; prefer raw_ref for large items."
+            },
+            "raw_ref": {
+              "type": "string",
+              "format": "uri",
+              "description": "Reference (URI or repo path) to original/raw content stored externally."
+            },
+            "raw_hash": {
+              "type": "string",
+              "pattern": "^[A-Fa-f0-9]{64}$",
+              "description": "SHA-256 hex digest of the original content for integrity verification."
+            }
+          }
+        }
+      }
+    }
+  }
+}

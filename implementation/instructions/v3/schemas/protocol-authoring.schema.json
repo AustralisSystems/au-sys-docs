@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://australissystems.github.io/au-sys-docs/schemas/protocol-authoring.schema.json",
+  "title": "AU-SYS Protocol Authoring Schema (aligned to MCP-tier artefacts)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "authoring_schema_version",
+    "mcp_spec_revision",
+    "artifact"
+  ],
+  "properties": {
+    "authoring_schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "mcp_spec_revision": {
+      "type": "string",
+      "minLength": 4
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meta",
+        "content"
+      ],
+      "properties": {
+        "meta": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version",
+            "schema",
+            "id",
+            "title",
+            "description",
+            "enforce"
+          ],
+          "properties": {
+            "version": {
+              "type": "string",
+              "description": "Schema/version of the protocol document."
+            },
+            "schema": {
+              "type": "string",
+              "const": "mcp.protocol/v1"
+            },
+            "id": {
+              "type": "string",
+              "pattern": "^[a-z0-9_.:-]+$"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "enforce": {
+              "type": "boolean",
+              "description": "If true, protocol violations are blocking unless explicitly waived."
+            },
+            "versioning": {
+              "type": "string",
+              "description": "Optional semantic version string for human tracking (eg 'v1.2.0' or date-based)."
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            }
+          }
+        },
+        "content": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "related_doctrine": {
+              "type": "string",
+              "description": "Doctrine ID this protocol implements or supports."
+            },
+            "applies_to": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Paths/domains this protocol governs (optional but recommended)."
+            },
+            "directives": {
+              "type": "array",
+              "description": "Structured directives that can be enforced, validated, and referenced.",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "level",
+                  "statement"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Stable directive identifier."
+                  },
+                  "level": {
+                    "type": "string",
+                    "enum": [
+                      "required",
+                      "recommended",
+                      "warning",
+                      "optional"
+                    ],
+                    "description": "How strongly the directive must be followed."
+                  },
+                  "statement": {
+                    "type": "string",
+                    "description": "The directive phrased as a testable requirement."
+                  },
+                  "rationale": {
+                    "type": "string",
+                    "description": "Why this directive exists."
+                  },
+                  "verification": {
+                    "type": "string",
+                    "description": "How to verify the directive was followed (manual or automated)."
+                  }
+                }
+              }
+            },
+            "inputs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Named inputs/context that must exist when applying this protocol."
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Expected artefacts produced when applying this protocol."
+            },
+            "notes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "conflicts": {
+              "type": "array",
+              "description": "Known conflicts with other protocols or directives that require explicit resolution.",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "with",
+                  "description"
+                ],
+                "properties": {
+                  "with": {
+                    "type": "string",
+                    "description": "Conflicting protocol/directive id."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Nature of the conflict and how to resolve it."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "governance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "owners": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "draft",
+                "review",
+                "approved",
+                "deprecated"
+              ],
+              "default": "draft"
+            },
+            "changeLog": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            }
+          }
+        },
+        "traceability": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "raw": {
+              "type": "string"
+            },
+            "raw_ref": {
+              "type": "string",
+              "format": "uri"
+            },
+            "raw_hash": {
+              "type": "string",
+              "pattern": "^[A-Fa-f0-9]{64}$"
+            }
+          }
+        }
+      }
+    }
+  }
+}
