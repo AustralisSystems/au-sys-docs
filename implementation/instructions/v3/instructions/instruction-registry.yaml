@@ -13,6 +13,166 @@ artifact:
     - v3
   content:
     instructions:
+    - id: api.build_deploy_test_and_document_rest_api
+      path: docs/implementation/instructions/v3/instructions/build_deploy_test_and_document_rest_api.yaml
+      title: Build, Deploy, Test, and Document REST API
+      version: 1.0.0
+      action: execute
+      tags:
+      - api
+      - deployment
+      - manual-testing
+      - documentation
+    - id: debug.live_debugging_and_remediation
+      path: docs/implementation/instructions/v3/instructions/live_debugging_and_remediation.yaml
+      title: Live Debugging and Remediation
+      version: 1.0.0
+      action: execute
+      tags:
+      - debug
+      - incident
+      - remediation
+      - logs
+    - id: debug.troubleshoot_codebase
+      path: docs/implementation/instructions/v3/instructions/debug_and_troubleshoot_codebase.yaml
+      title: Debug and Troubleshoot Codebase
+      version: 1.0.0
+      action: execute
+      tags:
+      - debug
+      - troubleshooting
+      - evidence
+    - id: docs.code_documentation.session
+      path: docs/implementation/instructions/v3/instructions/code_documentation_session.yaml
+      title: Code Documentation Session
+      version: 1.0.0
+      action: create-file
+      tags:
+      - docs
+      - code
+    - id: docs.diataxis_framework.session
+      path: docs/implementation/instructions/v3/instructions/diataxis_documentation_framework_session.yaml
+      title: Diataxis Documentation Session
+      version: 1.0.0
+      action: plan
+      tags:
+      - docs
+      - diataxis
+    - id: docs.draft_code_documentation
+      path: docs/implementation/instructions/v3/instructions/draft_code_documentation.yaml
+      title: Apply Code Documentation Standards
+      version: 1.0.0
+      action: modify-files
+      tags:
+      - docs
+      - code
+      - quality
+    - id: docs.draft_diataxis_explanation
+      path: docs/implementation/instructions/v3/instructions/draft_diataxis_explanation.yaml
+      title: Draft Diataxis Explanation
+      version: 1.0.0
+      action: create-file
+      tags:
+      - docs
+      - diataxis
+      - explanation
+      - template
+    - id: docs.draft_diataxis_howto
+      path: docs/implementation/instructions/v3/instructions/draft_diataxis_howto.yaml
+      title: Draft Diataxis How-To
+      version: 1.0.0
+      action: create-file
+      tags:
+      - docs
+      - diataxis
+      - how-to
+      - template
+    - id: docs.draft_diataxis_reference
+      path: docs/implementation/instructions/v3/instructions/draft_diataxis_reference.yaml
+      title: Draft Diataxis Reference
+      version: 1.0.0
+      action: create-file
+      tags:
+      - docs
+      - diataxis
+      - reference
+      - template
+    - id: docs.draft_diataxis_tutorial
+      path: docs/implementation/instructions/v3/instructions/draft_diataxis_tutorial.yaml
+      title: Draft Diataxis Tutorial
+      version: 1.0.0
+      action: create-file
+      tags:
+      - docs
+      - diataxis
+      - tutorial
+      - template
+    - id: docs.draft_high_level_architecture
+      path: docs/implementation/instructions/v3/instructions/draft_high_level_architecture.yaml
+      title: Draft High-Level Architecture
+      version: 1.0.0
+      action: create-file
+      tags:
+      - docs
+      - architecture
+      - template
+    - id: docs.draft_technical_design
+      path: docs/implementation/instructions/v3/instructions/draft_technical_design.yaml
+      title: Draft Technical Design Document
+      version: 1.0.0
+      action: create-file
+      tags:
+      - docs
+      - design
+      - architecture
+      - template
+    - id: docs.enterprise_architecture_documentation.session
+      path: docs/implementation/instructions/v3/instructions/enterprise_architecture_documentation_session.yaml
+      title: Enterprise Architecture Documentation Session
+      version: 1.0.0
+      action: create-file
+      tags:
+      - docs
+      - architecture
+    - id: docs.review_documentation
+      path: docs/implementation/instructions/v3/instructions/review_documentation.yaml
+      title: Review Documentation
+      version: 1.0.0
+      action: modify-files
+      tags:
+      - docs
+      - review
+      - quality
+    - id: execution.implementation_phase_tasks
+      path: docs/implementation/instructions/v3/instructions/execute_implementation_phase_tasks.yaml
+      title: Execute Implementation Phase Tasks
+      version: 1.0.0
+      action: execute
+      tags:
+      - execution
+      - spec
+      - validation
+    - id: fastapi.design_implement_refactor
+      path: docs/implementation/instructions/v3/instructions/fastapi_design_implementation_refactor.yaml
+      title: FastAPI Design, Implement, and Refactor
+      version: 1.0.0
+      action: execute
+      tags:
+      - fastapi
+      - async
+      - refactor
+      - performance
+      - reliability
+    - id: implementation.pure_code_execution
+      path: docs/implementation/instructions/v3/instructions/pure_code_implementation_execution.yaml
+      title: Pure Code Implementation Execution
+      version: 1.0.0
+      action: execute
+      tags:
+      - implementation
+      - scaffolding
+      - search
+      - validation
     - id: implementation.session
       path: docs/implementation/instructions/v3/instructions/implementation_session.yaml
       title: Implementation Session (Single Item, Validated)
@@ -21,6 +181,45 @@ artifact:
       tags:
       - implementation
       - validation
+    - id: quality.remediate_and_refactor_codebase
+      path: docs/implementation/instructions/v3/instructions/remediate_and_refactor_codebase.yaml
+      title: Remediate and Refactor Codebase
+      version: 1.0.0
+      action: refactor
+      tags:
+      - remediation
+      - refactor
+      - quality
+    - id: quality.validate_code_quality_and_compliance
+      path: docs/implementation/instructions/v3/instructions/validate_code_quality_and_compliance.yaml
+      title: Validate Code Quality and Compliance
+      version: 1.0.0
+      action: validate
+      tags:
+      - quality
+      - validation
+      - compliance
+      - security
+    - id: runtime.run_local_and_test_api_webui
+      path: docs/implementation/instructions/v3/instructions/run_locally_and_test_api_webui.yaml
+      title: Run Locally and Test API + Web UI
+      version: 1.0.0
+      action: execute
+      tags:
+      - runtime
+      - testing
+      - api
+      - webui
+    - id: scaffolding.prioritization_comparative_selection
+      path: docs/implementation/instructions/v3/instructions/scaffolding_prioritization_comparative_selection.yaml
+      title: Scaffolding Prioritization and Comparative Selection
+      version: 1.0.0
+      action: plan
+      tags:
+      - scaffolding
+      - discovery
+      - comparison
+      - reuse
     - id: swarm.agent_task_coordination.session
       path: docs/implementation/instructions/v3/instructions/agent_task_coordination_session.yaml
       title: Agent Task Coordination Session

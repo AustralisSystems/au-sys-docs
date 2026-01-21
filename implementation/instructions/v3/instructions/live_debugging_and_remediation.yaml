@@ -1,0 +1,60 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.instruction/v1"
+    id: "debug.live_debugging_and_remediation"
+    title: "Live Debugging and Remediation"
+    description: "Run a code-first debugging session: logs-first analysis, dependency/AST awareness, minimal fix, and verification gates."
+    action: "execute"
+    tags: ["debug", "incident", "remediation", "logs"]
+
+  content:
+    doctrine_refs: ["enterprise.canonical_execution"]
+    protocol_refs:
+      - "execution.golden_rule"
+      - "quality.production_code_quality"
+      - "validation.validate_remediate_codebase"
+      - "quality.zero_tolerance_remediation"
+    directives:
+      - "logs_first"
+      - "code_first_outputs"
+      - "no_documentation_files"
+    inputs:
+      - "runtime_platform"
+      - "service_name"
+      - "logs"
+      - "observed_issue"
+    outputs:
+      - "root_cause"
+      - "diff"
+      - "verification_evidence"
+    steps:
+      - id: "collect_and_review_logs"
+        description: "Collect and review runtime logs exhaustively; correlate timestamps and cascades; derive facts only."
+      - id: "dependency_awareness"
+        description: "Identify dependency/import surface of affected modules to avoid introducing new resolution errors."
+      - id: "form_hypotheses"
+        description: "Form and rank a small set of root-cause hypotheses; define what evidence would disprove each."
+      - id: "apply_minimal_fix"
+        description: "Apply the smallest change that resolves the top hypothesis; avoid redesign."
+        produces: ["diff"]
+      - id: "verify"
+        description: "Verify via logs/tests plus required validations (including AST + SAST where applicable) and capture evidence."
+        produces: ["verification_evidence"]
+      - id: "halt"
+        description: "Halt after the requested debugging scope is resolved or the minimum missing data is requested."
+    halt: true
+    notes:
+      - "If logs are insufficient, add targeted, removable logging at precise insertion points (do not guess)."
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 204-INSTRUCTIONS-Live-Debugging-and-Remedation-v2.0.0.yaml; converted to v3 logs-first + minimal-fix workflow."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/204-INSTRUCTIONS-Live-Debugging-and-Remedation-v2.0.0.yaml"

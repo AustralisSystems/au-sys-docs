@@ -1,0 +1,78 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.prompt/v1"
+    id: "ops.handover_doc.update"
+    name: "handover-doc-update"
+    title: "Update existing handover document"
+    description: "Update an existing handover document with a session-specific reflection and status update without altering unrelated content."
+    tags: ["handover", "ops", "docs", "update"]
+    icons: []
+
+  content:
+    governed_by:
+      doctrine_refs: ["enterprise.canonical_execution"]
+      protocol_refs:
+        - "execution.golden_rule"
+        - "language.rfc2119_requirements"
+      directive_refs: []
+    mode: "execute"
+    halt: true
+    arguments:
+      - name: "handover_doc_dir"
+        description: "Repo-relative directory containing handover documents"
+        required: false
+        type: "string"
+        default: "docs/implementation/handovers"
+      - name: "handover_doc_path"
+        description: "Path (relative to handover_doc_dir) to the existing handover doc"
+        required: true
+        type: "string"
+        example: "20260121_153000_mcp_migration_handover.md"
+      - name: "session_update"
+        description: "Session-scoped additions: achievements, challenges, status changes, and links"
+        required: true
+        type: "string"
+    template:
+      messages:
+        - role: "user"
+          content:
+            type: "text"
+            text: |
+              Update the existing handover document at:
+              - Path: {{handover_doc_dir}}/{{handover_doc_path}}
+
+              Constraints (non-negotiable):
+              - Do NOT modify existing content unrelated to this session.
+              - Additive, session-scoped changes only.
+              - Preserve parallel workstreams tracked in the same document.
+
+              Add a clearly labeled session update section that includes:
+              - Key achievements and outcomes
+              - Significant challenges encountered
+              - Lessons learned and implications
+              - Completed vs outstanding tasks (unambiguous)
+              - References/links needed to resume work
+
+              Use this session input:
+              {{session_update}}
+
+              Then halt.
+    output_contract:
+      format: "markdown"
+      required_sections: []
+    notes:
+      - "If the handover doc has a recurring structure, append within the most appropriate existing section while preserving unrelated content."
+    conflicts: []
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 handover-doc-update.yaml; normalized into v3 prompt schema with explicit arguments and additive-only constraint."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/handover-doc-update.yaml"

@@ -1,0 +1,85 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.prompt/v1"
+    id: "templates.jsx_to_fastapi_jinja2_library"
+    name: "jsx-to-fastapi-jinja2-template-library"
+    title: "Convert JSX templates to FastAPI Jinja2 template library"
+    description: "Convert a directory of JSX templates into valid HTML + Jinja2 templates for FastAPI server-side rendering, extracting reusable macros and enforcing Tailwind v4 + DaisyUI-only styling."
+    tags: ["fastapi", "jinja2", "templates", "tailwind", "daisyui", "migration"]
+    icons: []
+
+  content:
+    governed_by:
+      doctrine_refs: ["enterprise.canonical_execution"]
+      protocol_refs:
+        - "execution.golden_rule"
+        - "quality.production_code_quality"
+      directive_refs: []
+    mode: "plan_only"
+    halt: true
+    arguments:
+      - name: "dir_path"
+        description: "Directory containing JSX templates to convert"
+        required: true
+        type: "string"
+      - name: "target_output_dir"
+        description: "Target directory for the converted Jinja2 templates"
+        required: false
+        type: "string"
+        default: "templates"
+      - name: "tailwind_daisyui_notes"
+        description: "Optional project-specific constraints for Tailwind v4/DaisyUI"
+        required: false
+        type: "string"
+        default: ""
+    template:
+      messages:
+        - role: "user"
+          content:
+            type: "text"
+            text: |
+              Convert JSX templates under {{dir_path}} into FastAPI-compatible Jinja2 templates under {{target_output_dir}}.
+
+              Non-negotiable constraints:
+              - Output must be valid HTML + valid Jinja2 syntax; no JSX remains (no className, fragments, hooks, inline JS expressions).
+              - Styling: Tailwind CSS v4 utilities + DaisyUI component classes only; no inline styles; no hard-coded color values.
+              - Prefer reusability via {% include %}, {% extends %}, {% block %}, and {% macro %}.
+              - Do not introduce a JS framework runtime.
+
+              Workflow:
+              1) Inventory JSX files and classify (layout/page/component/partial).
+              2) Define target template structure and naming conventions.
+              3) Convert JSX to Jinja2 (conditionals, loops, variables).
+              4) Extract repeated patterns into macro files.
+              5) Define variable contracts (required/optional context keys).
+              6) Produce a mapping report (source JSX -> target template).
+
+              Project notes (if any):
+              {{tailwind_daisyui_notes}}
+
+              Then halt.
+    output_contract:
+      format: "markdown"
+      required_sections:
+        - "Inventory"
+        - "Target Structure"
+        - "Conversion Plan"
+        - "Macro Library"
+        - "Variable Contracts"
+        - "Mapping"
+    notes:
+      - "This prompt is intentionally plan-only; execution against real files should be explicitly authorised per tool workflow."
+    conflicts: []
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 jsx_to_fastapi_jinja2_template_library_prompt.yaml; simplified into v3 prompt schema with explicit governance."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/jsx_to_fastapi_jinja2_template_library_prompt.yaml"

@@ -37,6 +37,25 @@ artifact:
       tags:
       - execution
       - remediation
+    - id: ops.handover_doc.create
+      name: handover-doc-create
+      path: docs/implementation/instructions/v3/prompts/handover_doc_create.yaml
+      title: Create session handover document
+      version: 1.0.0
+      tags:
+      - handover
+      - ops
+      - docs
+    - id: ops.handover_doc.update
+      name: handover-doc-update
+      path: docs/implementation/instructions/v3/prompts/handover_doc_update.yaml
+      title: Update existing handover document
+      version: 1.0.0
+      tags:
+      - handover
+      - ops
+      - docs
+      - update
     - id: read.fastapi_platform_docs
       name: read-fastapi-platform-and-halt
       path: docs/implementation/instructions/v3/prompts/001-read-fastapi-platform-and-halt.yaml
@@ -53,6 +72,18 @@ artifact:
       tags:
       - scan
       - quality
+    - id: templates.jsx_to_fastapi_jinja2_library
+      name: jsx-to-fastapi-jinja2-template-library
+      path: docs/implementation/instructions/v3/prompts/jsx_to_fastapi_jinja2_template_library.yaml
+      title: Convert JSX templates to FastAPI Jinja2 template library
+      version: 1.0.0
+      tags:
+      - fastapi
+      - jinja2
+      - templates
+      - tailwind
+      - daisyui
+      - migration
   governance:
     owners:
     - au-sys

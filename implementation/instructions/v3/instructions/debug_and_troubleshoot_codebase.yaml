@@ -1,0 +1,60 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.instruction/v1"
+    id: "debug.troubleshoot_codebase"
+    title: "Debug and Troubleshoot Codebase"
+    description: "Debug methodically using logs-first evidence, isolate root cause, apply a controlled fix, and verify with validation gates."
+    action: "execute"
+    tags: ["debug", "troubleshooting", "evidence"]
+
+  content:
+    doctrine_refs: ["enterprise.canonical_execution"]
+    protocol_refs:
+      - "execution.golden_rule"
+      - "quality.production_code_quality"
+      - "validation.validate_remediate_codebase"
+    directives:
+      - "logs_first"
+      - "no_speculation"
+      - "verify_fix"
+    inputs:
+      - "observed_failure"
+      - "runtime_platform"
+      - "logs"
+      - "code_scope"
+    outputs:
+      - "root_cause"
+      - "diff"
+      - "verification_evidence"
+    steps:
+      - id: "collect_logs"
+        description: "Acquire relevant runtime/platform logs; if runtime is unknown, request only runtime + service/container/process name."
+      - id: "reproduce_or_characterize"
+        description: "Determine deterministic vs intermittent behaviour; record reproduction steps if available."
+      - id: "isolate_root_cause"
+        description: "Trace execution paths and rank plausible causes; do not propose fixes without evidence."
+        produces: ["root_cause"]
+      - id: "apply_controlled_fix"
+        description: "Apply the smallest viable change; avoid redesigns/refactors unless unavoidable."
+        produces: ["diff"]
+      - id: "verify"
+        description: "Verify via logs/tests and required validations (including AST + SAST where applicable); capture evidence."
+        produces: ["verification_evidence"]
+      - id: "halt"
+        description: "Halt after the requested debugging scope is resolved or a precise blocker is recorded."
+    halt: true
+    notes:
+      - "If logs are insufficient, propose the smallest targeted logging additions needed to confirm the top hypothesis."
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 108-INSTRUCTIONS-Debug_And_Troubleshoot_Codebase-v2.0.0.yaml; structured into logs-first debugging steps."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/108-INSTRUCTIONS-Debug_And_Troubleshoot_Codebase-v2.0.0.yaml"

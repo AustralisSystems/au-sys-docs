@@ -1,0 +1,56 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.instruction/v1"
+    id: "fastapi.design_implement_refactor"
+    title: "FastAPI Design, Implement, and Refactor"
+    description: "Implement or remediate FastAPI systems into a fully async, non-blocking, observable, production-safe state."
+    action: "execute"
+    tags: ["fastapi", "async", "refactor", "performance", "reliability"]
+
+  content:
+    doctrine_refs: ["enterprise.canonical_execution"]
+    protocol_refs:
+      - "execution.golden_rule"
+      - "fastapi.pure_code_implementation"
+      - "quality.production_code_quality"
+      - "validation.validate_remediate_codebase"
+      - "quality.zero_tolerance_remediation"
+    directives:
+      - "async_only"
+      - "no_blocking_calls"
+      - "validation_gate_required"
+    inputs:
+      - "scope_paths"
+      - "mode"
+      - "constraints"
+    outputs:
+      - "diff"
+      - "validation_evidence"
+    steps:
+      - id: "identify_blocking_ops"
+        description: "Identify blocking operations in async contexts and critical reliability/performance gaps in scope."
+      - id: "convert_to_async"
+        description: "Ensure endpoints and I/O paths are async and non-blocking (use appropriate async patterns for bridges when required)."
+      - id: "apply_perf_reliability_primitives"
+        description: "Apply connection pooling, retries/backoff, and safe error handling as required by the scope/spec."
+      - id: "validate"
+        description: "Run required checks (including AST + SAST where applicable) and capture evidence; treat partial success as failure."
+        produces: ["validation_evidence"]
+      - id: "halt"
+        description: "Halt after compliance is achieved or a precise blocker is recorded."
+    halt: true
+    notes:
+      - "This instruction avoids re-encoding large FastAPI guidance; it relies on the FastAPI pure-code protocol and repo standards."
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 203-INSTRUCTIONS-FastAPI_Design_Implementation_Refactor-v2.0.0.yaml; translated to v3 steps focused on async + validation gates."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/203-INSTRUCTIONS-FastAPI_Design_Implementation_Refactor-v2.0.0.yaml"

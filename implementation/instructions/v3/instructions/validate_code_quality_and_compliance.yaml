@@ -1,0 +1,59 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.instruction/v1"
+    id: "quality.validate_code_quality_and_compliance"
+    title: "Validate Code Quality and Compliance"
+    description: "Run repo-canonical quality, AST, and SAST checks; treat any failure or missing required check as blocking."
+    action: "validate"
+    tags: ["quality", "validation", "compliance", "security"]
+
+  content:
+    doctrine_refs: ["enterprise.canonical_execution"]
+    protocol_refs:
+      - "execution.golden_rule"
+      - "quality.production_code_quality"
+      - "quality.zero_tolerance_remediation"
+      - "validation.validate_remediate_codebase"
+    directives:
+      - "ast_sast_mandatory"
+      - "zero_errors_zero_warnings"
+      - "evidence_required"
+    inputs:
+      - "spec_paths"
+      - "validation_commands"
+    outputs:
+      - "validation_evidence"
+      - "blockers"
+    steps:
+      - id: "identify_scope"
+        description: "Identify files in scope (modified/created/referenced entry points) and required validations per repo/tooling."
+      - id: "run_repo_canonical_checks"
+        description: "Run the repo's canonical lint/format/type/test/security commands (no ad-hoc substitutes) and capture evidence."
+        produces: ["validation_evidence"]
+      - id: "run_ast_analysis"
+        description: "Perform AST/import-resolution verification for files in scope and record results (blocking on any unresolved imports/undefined symbols)."
+        produces: ["validation_evidence"]
+      - id: "run_sast_analysis"
+        description: "Perform SAST/security scanning for files in scope and record results (blocking on configured severities)."
+        produces: ["validation_evidence"]
+      - id: "scan_incomplete_code_markers"
+        description: "Scan governed code for TODO/stub/mock/placeholder markers; classify findings; treat violations as blockers."
+        produces: ["blockers"]
+      - id: "halt"
+        description: "Halt after reporting results and blockers."
+    halt: true
+    notes:
+      - "Absence of a required check is itself a failure."
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 106-INSTRUCTIONS-Validate_Code_Quality_and_Compliance-v2.0.0.yaml; mapped to v3 validation steps."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/106-INSTRUCTIONS-Validate_Code_Quality_and_Compliance-v2.0.0.yaml"

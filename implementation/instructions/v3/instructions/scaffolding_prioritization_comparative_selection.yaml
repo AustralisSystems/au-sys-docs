@@ -1,0 +1,64 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.instruction/v1"
+    id: "scaffolding.prioritization_comparative_selection"
+    title: "Scaffolding Prioritization and Comparative Selection"
+    description: "Prefer discovery and transplantation of best-of-breed code (internal vs external) before new implementation; verify against docs and validate rigorously."
+    action: "plan"
+    tags: ["scaffolding", "discovery", "comparison", "reuse"]
+
+  content:
+    doctrine_refs: ["enterprise.canonical_execution"]
+    protocol_refs:
+      - "execution.golden_rule"
+      - "tools.mcp_tools_workflow"
+      - "quality.zero_tolerance_remediation"
+      - "validation.validate_remediate_codebase"
+      - "fastapi.pure_code_implementation"
+    directives:
+      - "copy_not_retype"
+      - "verify_against_docs"
+      - "validate_transplanted_code"
+    inputs:
+      - "target_capability"
+      - "destination_path"
+      - "constraints"
+    outputs:
+      - "discovery_evidence"
+      - "selection_decision"
+      - "acquisition_evidence"
+      - "validation_evidence"
+    steps:
+      - id: "internal_discovery"
+        description: "Search the ecosystem repo(s) for existing candidates/patterns; record paths and identifiers."
+        produces: ["discovery_evidence"]
+      - id: "external_discovery"
+        description: "If internal candidates are insufficient, identify best external candidate(s) and acquire source for review."
+        produces: ["discovery_evidence"]
+      - id: "comparative_selection"
+        description: "Compare candidates and select best-of-breed based on cleanliness, compliance, and fit; record the decision."
+        produces: ["selection_decision"]
+      - id: "acquisition_copy"
+        description: "Acquire via bulk copy/transfer (copy, do not re-type) and record exact commands and paths."
+        produces: ["acquisition_evidence"]
+      - id: "verification_and_validation"
+        description: "Verify API usage against authoritative docs and run required validations; record evidence and remediate issues."
+        produces: ["validation_evidence"]
+      - id: "halt"
+        description: "Halt after producing discovery/selection/acquisition evidence for operator review."
+    halt: true
+    notes:
+      - "This instruction is a planning and evidence-gathering workflow; actual implementation proceeds under separate execution instructions."
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 205-INSTRUCTIONS-Scaffolding_Prioritization_Comparative_Selection-v2.0.0.yaml; mapped to v3 discovery/selection/acquisition steps."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/205-INSTRUCTIONS-Scaffolding_Prioritization_Comparative_Selection-v2.0.0.yaml"

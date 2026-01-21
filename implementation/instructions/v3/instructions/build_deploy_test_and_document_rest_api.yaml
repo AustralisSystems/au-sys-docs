@@ -1,0 +1,68 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.instruction/v1"
+    id: "api.build_deploy_test_and_document_rest_api"
+    title: "Build, Deploy, Test, and Document REST API"
+    description: "Build and deploy locally, enumerate endpoints, manually test one endpoint at a time, remediate failures, then update the authoritative spec with evidence."
+    action: "execute"
+    tags: ["api", "deployment", "manual-testing", "documentation"]
+
+  content:
+    doctrine_refs: ["enterprise.canonical_execution"]
+    protocol_refs:
+      - "execution.golden_rule"
+      - "validation.api_real_http"
+      - "validation.real_resources_only"
+      - "quality.zero_tolerance_remediation"
+      - "quality.production_code_quality"
+      - "validation.validate_remediate_codebase"
+    directives:
+      - "manual_testing_only"
+      - "one_endpoint_at_a_time"
+      - "update_spec_with_evidence"
+    inputs:
+      - "spec_paths"
+      - "implementation_plan_path"
+      - "build_deploy_method"
+      - "api_base_url"
+      - "scope_override"
+    outputs:
+      - "startup_logs"
+      - "endpoint_matrix"
+      - "test_evidence"
+      - "spec_updates"
+    steps:
+      - id: "prep"
+        description: "Identify spec_paths + implementation plan; confirm local build/deploy method and runtime configuration."
+      - id: "build_and_deploy"
+        description: "Build and deploy locally using build_deploy_method; capture startup logs as evidence."
+        produces: ["startup_logs"]
+      - id: "verify_runtime"
+        description: "Verify stable runtime via logs (no crashes/restarts); stop on errors/warnings that indicate misconfiguration."
+      - id: "enumerate_endpoints"
+        description: "Enumerate REST endpoints (method/path/auth/expected status) into an endpoint matrix."
+        produces: ["endpoint_matrix"]
+      - id: "manual_test_endpoints"
+        description: "Manually test endpoints one at a time using real HTTP requests; on failure: stop, remediate, re-test the same endpoint."
+        produces: ["test_evidence"]
+      - id: "update_authoritative_docs"
+        description: "Update spec_paths and the implementation plan with results and evidence; do not create standalone progress documents."
+        produces: ["spec_updates"]
+      - id: "halt"
+        description: "Halt after completing the requested scope and recording evidence."
+    halt: true
+    notes:
+      - "Functional REST testing automation is out of scope unless explicitly required by the spec."
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 110-INSTRUCTIONS-Build_Deploy_Test_and_Document_REST_API-v2.0.0.yaml; mapped to v3 endpoint-matrix + manual-test workflow."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/110-INSTRUCTIONS-Build_Deploy_Test_and_Document_REST_API-v2.0.0.yaml"

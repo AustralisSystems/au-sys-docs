@@ -1,0 +1,61 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.instruction/v1"
+    id: "implementation.pure_code_execution"
+    title: "Pure Code Implementation Execution"
+    description: "Implement or refactor production code with tool-first discovery (grep/docs), strict logging/async expectations, and validation evidence."
+    action: "execute"
+    tags: ["implementation", "scaffolding", "search", "validation"]
+
+  content:
+    doctrine_refs: ["enterprise.canonical_execution"]
+    protocol_refs:
+      - "execution.golden_rule"
+      - "tools.mcp_tools_workflow"
+      - "quality.zero_tolerance_remediation"
+      - "quality.production_code_quality"
+      - "validation.validate_remediate_codebase"
+      - "fastapi.pure_code_implementation"
+    directives:
+      - "search_before_code"
+      - "scaffold_before_implement"
+      - "logging_compliance"
+      - "validate_and_capture_evidence"
+    inputs:
+      - "requirement_or_issue"
+      - "scope_paths"
+      - "external_libs"
+    outputs:
+      - "diff"
+      - "evidence"
+    steps:
+      - id: "search"
+        description: "Search the repo for existing patterns/helpers before writing new code; prefer reuse/adaptation."
+      - id: "scope_lock"
+        description: "Lock scope to explicit files/modules; do not broaden without approval."
+      - id: "scaffold"
+        description: "Create or adapt minimal structure aligned to repo conventions (naming/imports/layout)."
+      - id: "implement"
+        description: "Implement fully (no TODOs/stubs/mocks/placeholders/partial behavior); ensure async/non-blocking where applicable."
+        produces: ["diff"]
+      - id: "validate"
+        description: "Run repo-canonical validations including AST + SAST as required; capture exit codes and key pass/fail lines."
+        produces: ["evidence"]
+      - id: "halt"
+        description: "Halt after producing compliant code and evidence."
+    halt: true
+    notes:
+      - "External library usage should be verified against authoritative docs before implementing non-trivial integrations."
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 202-INSTRUCTIONS-Pure_Code_Implementation_Execution_Protocol-v2.0.0.yaml; reduced to tool-first + gated execution steps."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/202-INSTRUCTIONS-Pure_Code_Implementation_Execution_Protocol-v2.0.0.yaml"

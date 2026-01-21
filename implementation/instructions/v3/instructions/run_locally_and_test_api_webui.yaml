@@ -1,0 +1,63 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.instruction/v1"
+    id: "runtime.run_local_and_test_api_webui"
+    title: "Run Locally and Test API + Web UI"
+    description: "Start the system in a clean local state, validate APIs first, then validate the Web UI, recording evidence in the active spec."
+    action: "execute"
+    tags: ["runtime", "testing", "api", "webui"]
+
+  content:
+    doctrine_refs: ["enterprise.canonical_execution"]
+    protocol_refs:
+      - "execution.golden_rule"
+      - "validation.api_real_http"
+      - "validation.real_resources_only"
+      - "testing.test_implementation"
+    directives:
+      - "api_first"
+      - "evidence_required"
+      - "no_standalone_docs"
+    inputs:
+      - "spec_paths"
+      - "runtime_command"
+      - "scope_override"
+    outputs:
+      - "startup_logs"
+      - "api_test_evidence"
+      - "ui_test_evidence"
+      - "spec_updates"
+    steps:
+      - id: "prepare_clean_state"
+        description: "Clear relevant build artifacts/caches (per repo conventions) and ensure dependencies/config are in sync."
+      - id: "start_runtime"
+        description: "Run runtime_command; capture startup logs; require zero startup errors and no misconfiguration warnings."
+        produces: ["startup_logs"]
+      - id: "test_api_first"
+        description: "Manually test backend API endpoints (real HTTP requests); capture evidence per endpoint."
+        produces: ["api_test_evidence"]
+      - id: "test_ui_second"
+        description: "After API tests pass, test Web UI flows in a real browser (or automation reflecting real user behavior); capture evidence."
+        produces: ["ui_test_evidence"]
+      - id: "record_results"
+        description: "Write outcomes (pass/fail, commands, key logs) into the active spec_paths and any implementation plan referenced by the spec."
+        produces: ["spec_updates"]
+      - id: "halt"
+        description: "Halt after the requested scope is validated and recorded."
+    halt: true
+    notes:
+      - "UI testing must not begin until API testing passes."
+      - "Scope reduction is only allowed with an explicit override."
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 105-INSTRUCTIONS-Run_Locally_and_Test_API_WebUI-v2.0.0.yaml; structured into ordered runtime/test steps."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/105-INSTRUCTIONS-Run_Locally_and_Test_API_WebUI-v2.0.0.yaml"

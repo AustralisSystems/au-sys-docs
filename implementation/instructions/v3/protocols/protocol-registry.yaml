@@ -13,6 +13,30 @@ artifact:
     - v3
   content:
     protocols:
+    - id: docs.code_documentation
+      path: docs/implementation/instructions/v3/protocols/code_documentation.yaml
+      title: Code Documentation
+      version: 1.0.0
+      enforce: true
+      tags:
+      - docs
+      - code
+    - id: docs.diataxis_framework
+      path: docs/implementation/instructions/v3/protocols/diataxis_documentation_framework.yaml
+      title: Diataxis Documentation Framework
+      version: 1.0.0
+      enforce: true
+      tags:
+      - docs
+      - diataxis
+    - id: docs.enterprise_architecture_documentation
+      path: docs/implementation/instructions/v3/protocols/enterprise_architecture_documentation.yaml
+      title: Enterprise Architecture Documentation
+      version: 1.0.0
+      enforce: true
+      tags:
+      - docs
+      - architecture
     - id: execution.golden_rule
       path: docs/implementation/instructions/v3/protocols/golden_rule_execution.yaml
       title: Golden Rule Execution

@@ -1,0 +1,86 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.prompt/v1"
+    id: "ops.handover_doc.create"
+    name: "handover-doc-create"
+    title: "Create session handover document"
+    description: "Create a session-scoped handover document that records outcomes, status, and next-session readiness without speculation."
+    tags: ["handover", "ops", "docs"]
+    icons: []
+
+  content:
+    governed_by:
+      doctrine_refs: ["enterprise.canonical_execution"]
+      protocol_refs:
+        - "execution.golden_rule"
+        - "language.rfc2119_requirements"
+      directive_refs: []
+    mode: "execute"
+    halt: true
+    arguments:
+      - name: "handover_doc_dir"
+        description: "Repo-relative directory for handover documents"
+        required: false
+        type: "string"
+        default: "docs/implementation/handovers"
+      - name: "handover_doc_filename"
+        description: "Filename for the new handover document"
+        required: true
+        type: "string"
+        example: "20260121_153000_mcp_migration_handover.md"
+      - name: "session_purpose"
+        description: "Purpose of the session"
+        required: true
+        type: "string"
+      - name: "session_scope"
+        description: "Scope/boundaries of the session"
+        required: true
+        type: "string"
+    template:
+      messages:
+        - role: "user"
+          content:
+            type: "text"
+            text: |
+              Create a session handover document at:
+              - Path: {{handover_doc_dir}}/{{handover_doc_filename}}
+
+              Requirements:
+              - Neutral, factual, traceable language (no speculation).
+              - Session-scoped only; do not modify or reinterpret parallel workstreams.
+              - Standalone and immediately usable in a future session.
+
+              Include exactly these sections:
+              1) Session Identification & Scope
+                 - Purpose: {{session_purpose}}
+                 - Scope: {{session_scope}}
+              2) Achievements & Outcomes
+              3) Challenges, Risks & Lessons Learned
+              4) Current State & Progress Snapshot
+              5) Continuity & Next-Session Readiness
+
+              Then halt.
+    output_contract:
+      format: "markdown"
+      required_sections:
+        - "Session Identification & Scope"
+        - "Achievements & Outcomes"
+        - "Challenges, Risks & Lessons Learned"
+        - "Current State & Progress Snapshot"
+        - "Continuity & Next-Session Readiness"
+    notes:
+      - "This prompt defines document structure; the authoritative location for operational continuity is the generated handover document itself."
+    conflicts: []
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 handover-doc-creation.yaml; normalized into v3 prompt schema with explicit arguments."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/handover-doc-creation.yaml"

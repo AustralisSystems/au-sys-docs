@@ -1,0 +1,60 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.instruction/v1"
+    id: "quality.remediate_and_refactor_codebase"
+    title: "Remediate and Refactor Codebase"
+    description: "Remediate verified failures with minimal diffs; refactor only when required for correctness, safety, or validation."
+    action: "refactor"
+    tags: ["remediation", "refactor", "quality"]
+
+  content:
+    doctrine_refs: ["enterprise.canonical_execution"]
+    protocol_refs:
+      - "execution.golden_rule"
+      - "quality.zero_tolerance_remediation"
+      - "quality.production_code_quality"
+      - "validation.validate_remediate_codebase"
+      - "tools.mcp_tools_workflow"
+    directives:
+      - "entry_conditions_required"
+      - "minimal_diff"
+      - "revalidate_after_fix"
+    inputs:
+      - "triggering_failure"
+      - "allowed_scope"
+      - "revalidation_commands"
+    outputs:
+      - "diff"
+      - "validation_evidence"
+      - "remaining_blockers"
+    steps:
+      - id: "confirm_entry_conditions"
+        description: "Verify there is a triggering failure/runtime error/spec-defined corrective action; if none, stop (no refactor)."
+      - id: "locate_root_cause"
+        description: "Use logs/tests/tool output as evidence to isolate the defect; avoid speculative changes."
+      - id: "apply_minimal_fix"
+        description: "Implement the smallest change that resolves the verified defect; avoid unrelated cleanup."
+        produces: ["diff"]
+      - id: "scan_incomplete_code_markers"
+        description: "Scan modified files for incomplete-code markers; eradicate violations; document acceptable matches only if explicitly allowed by protocol."
+      - id: "revalidate"
+        description: "Re-run revalidation_commands (including AST + SAST where applicable) and capture evidence."
+        produces: ["validation_evidence"]
+      - id: "halt"
+        description: "Halt after the authorised remediation scope is completed and evidence is recorded."
+    halt: true
+    notes:
+      - "Refactoring is forbidden unless required to fix correctness/safety or make validation pass."
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 107-INSTRUCTIONS-Remediate_And_Refactor_Codebase-v2.0.0.yaml; condensed to entry-condition + minimal-fix workflow."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/107-INSTRUCTIONS-Remediate_And_Refactor_Codebase-v2.0.0.yaml"

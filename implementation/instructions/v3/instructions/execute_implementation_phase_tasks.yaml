@@ -1,0 +1,63 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.instruction/v1"
+    id: "execution.implementation_phase_tasks"
+    title: "Execute Implementation Phase Tasks"
+    description: "Execute SPEC-defined implementation tasks in order with minimal deviation and continuous validation."
+    action: "execute"
+    tags: ["execution", "spec", "validation"]
+
+  content:
+    doctrine_refs: ["enterprise.canonical_execution"]
+    protocol_refs:
+      - "execution.golden_rule"
+      - "tools.mcp_tools_workflow"
+      - "quality.zero_tolerance_remediation"
+      - "quality.production_code_quality"
+      - "validation.validate_remediate_codebase"
+    directives:
+      - "spec_is_source_of_truth"
+      - "stop_on_ambiguity"
+      - "stop_on_validation_failure"
+      - "no_scope_creep"
+    inputs:
+      - "spec_path"
+      - "execution_scope"
+      - "resume_state"
+    outputs:
+      - "diff"
+      - "validation_evidence"
+      - "spec_updates"
+    steps:
+      - id: "identify_authority"
+        description: "Confirm precedence: doctrine -> protocols -> active spec_path -> this instruction. Stop on conflicts."
+      - id: "load_spec"
+        description: "Read spec_path and locate the current PHASE/ACTION/TASK/STEP for the provided execution_scope."
+      - id: "execute_in_order"
+        description: "Execute steps strictly in order; do not reorder or collapse steps; do not invent tasks."
+      - id: "change_discipline"
+        description: "Implement only what the spec step requires; avoid refactors unless explicitly required by the step."
+      - id: "validate_checkpoint"
+        description: "Run required validations for the change set and capture evidence; stop and remediate on any failure."
+        produces: ["validation_evidence"]
+      - id: "record_traceability"
+        description: "Update spec_path with what was executed (Phase/Action/Task/Step), evidence, and current status."
+        produces: ["spec_updates"]
+      - id: "halt"
+        description: "Halt after completing the requested execution scope."
+    halt: true
+    notes:
+      - "This instruction intentionally references governance protocols for security/quality requirements rather than duplicating them."
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Migrated from v2 104-INSTRUCTIONS-Execute_Implementation_Phase_Tasks-v2.0.0.yaml; condensed into structured v3 steps."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/104-INSTRUCTIONS-Execute_Implementation_Phase_Tasks-v2.0.0.yaml"
