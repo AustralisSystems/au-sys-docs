@@ -59,6 +59,7 @@ artifact:
       - "This prompt is discovery-focused; treat copy-and-adapt as a separate, explicitly approved step."
     conflicts: []
   traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/prompts/004-discover-and-clone-reference-repos.yaml"
     raw: |
       - You MUST use MCP TOOLS grep and fetch to retrieve additional useful repositories, code examples or semantically similar code base from GitHub to quickly use as a base and / or to scaffold.
       - You MUST use GIT TO CLONE all the useful discovered GitHub repos to the local repository, even if they are only going to provide a small benefit to this code base NOTE: this is to use for future references and examples, do not remove the cloned repos.

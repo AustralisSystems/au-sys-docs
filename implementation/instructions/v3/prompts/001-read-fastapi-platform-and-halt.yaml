@@ -44,6 +44,7 @@ artifact:
       - "Halt after reporting; do not proceed without explicit operator instruction."
     conflicts: []
   traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/prompts/001-read-fastapi-platform-and-halt.yaml"
     raw: |
       Base_Directory: docs/implementation/instructions/v2/
       File_Extension: .yaml

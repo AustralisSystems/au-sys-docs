@@ -52,6 +52,7 @@ artifact:
       - "Operator must resolve any scope contradictions (e.g., 'full rewrite' vs 'no mass modifications') before large-scope work."
     conflicts: []
   traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/prompts/005-execute-treatment-plan-copy-and-adapt.yaml"
     raw: |
       INPUTS:
       - Start by examining the production codebase for any missing elements, TODO comments, mocks, stubs, or unfinished code.

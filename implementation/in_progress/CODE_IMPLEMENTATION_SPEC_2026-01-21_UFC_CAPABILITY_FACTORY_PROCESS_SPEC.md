@@ -86,10 +86,10 @@ The process MUST be:
 - [ ] Jinja2 templates for all UFC components
 
 **Reference Implementation**:
-- [ ] `au_sys_unified_storage` 100% UFC compliant
-- [ ] All scripts successfully applied without manual edits
-- [ ] Plugin loads in au_sys_ufc_app
-- [ ] Passes all quality gates (MyPy, Ruff, Bandit)
+- [x] `au_sys_unified_storage` 100% UFC compliant
+- [x] All scripts successfully applied without manual edits
+- [x] Plugin loads in au_sys_ufc_app
+- [x] Passes all quality gates (MyPy, Ruff, Bandit)
 
 ---
 
@@ -201,24 +201,25 @@ All scripts MUST:
 - `006_validate_ufc_structure.py` - Verify all required directories and files exist
 
 **STAGE 3: DEVELOP (Scripts 007-009)**
-- `007_backup_legacy_source.py` - Backup legacy code before migration
+- `007_backup_legacy_code.py` - Backup legacy code before migration
 - `008_migrate_and_rewrite.py` - AST-based code migration with import rewriting
-- `009_validate_migrated_code.py` - Syntax, import, and quality validation
+- `009_validate_imports.py` - Syntax, import, and quality validation
 
 **STAGE 4: PACKAGE (Scripts 010-014)**
 - `010_generate_plugin_interface.py` - Create plugin.py from template
 - `011_generate_config_schema.py` - Generate Pydantic config models
 - `012_generate_config_yaml.py` - Create default config YAML
-- `013_add_plugin_entry_point.py` - Update pyproject.toml with entry points
-- `014_validate_plugin_interface.py` - Verify plugin loadable by au_sys_ufc_app
+- `013_configure_entry_points.py` - Update pyproject.toml with entry points
+- `014_generate_service_manifest.py` - Verify plugin loadable by au_sys_ufc_app
 
 **STAGE 5: BUILD (Script 015)**
-- `015_build_package.py` - Build wheel + SBOM generation
+- `015_build_capability.py` - Build wheel + SBOM generation
 
-**STAGES 6-9: DEPLOY/TEST/VALIDATE/INTEGRATE (Scripts 016-018)**
-- `016_test_plugin_discovery.py` - Verify plugin discovery works
-- `017_test_plugin_loading.py` - Test plugin loads without errors
-- `018_final_validation.py` - Complete UFC compliance + quality gate validation
+**STAGES 6-9: DEPLOY/TEST/VALIDATE/INTEGRATE (Scripts 016-019)**
+- `016_run_unit_tests.py` - Execute PyTest test suite
+- `017_zero_tolerance_check.py` - Strict "Zero Tolerance" compliance check (No Print/Pass/TODO)
+- `018_integrate_plugin.py` - Verify plugin integration and loading
+- `019_auto_remediate.py` - Automated remediation of common compliance issues
 
 ### 3.2 AI Agent Instructions (6 YAML Files)
 

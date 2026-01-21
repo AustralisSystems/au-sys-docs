@@ -59,6 +59,7 @@ artifact:
       - "This prompt exists to enforce continuous progress tracking in a session spec."
     conflicts: []
   traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/prompts/002-create-code-implementation-spec.yaml"
     raw: |
       LOAD_AND_PARSE:
         DOCTRINE: "000-DOCTRINE-Enterprise_Canonical_Execution"

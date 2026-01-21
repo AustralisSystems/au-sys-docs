@@ -67,6 +67,7 @@ artifact:
       - "This is intended to be blocking when governed by Zero Tolerance Remediation."
     conflicts: []
   traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/prompts/003-incomplete-code-eradication-scan.yaml"
     raw: |
       REMEMBER:
 
