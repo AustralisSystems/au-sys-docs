@@ -79,11 +79,11 @@ The process MUST be:
 ### 1.3 Success Criteria
 
 **Process Creation**:
-- [ ] Complete methodology document published
-- [ ] 18/18 automation scripts complete and validated
-- [ ] 6/6 AI agent instruction files created
-- [ ] Master runbook with phase-by-phase guidance
-- [ ] Jinja2 templates for all UFC components
+- [x] Complete methodology document published
+- [x] 19/19 automation scripts complete and validated
+- [x] 6/6 AI agent instruction files created
+- [x] Master runbook with phase-by-phase guidance
+- [x] Jinja2/Embedded templates for all UFC components
 
 **Reference Implementation**:
 - [x] `au_sys_unified_storage` 100% UFC compliant
@@ -207,8 +207,8 @@ All scripts MUST:
 
 **STAGE 4: PACKAGE (Scripts 010-014)**
 - `010_generate_plugin_interface.py` - Create plugin.py from template
-- `011_generate_config_schema.py` - Generate Pydantic config models
-- `012_generate_config_yaml.py` - Create default config YAML
+- `011_generate_di_container.py` - Generate Dependency Injection Container
+- `012_generate_config_schema.py` - Generate Pydantic config models
 - `013_configure_entry_points.py` - Update pyproject.toml with entry points
 - `014_generate_service_manifest.py` - Verify plugin loadable by au_sys_ufc_app
 
@@ -237,9 +237,9 @@ Each instruction file MUST:
 1. `001-ufc-capability-audit-and-analysis.yaml` - STAGE 1 guidance
 2. `002-ufc-structure-scaffolding.yaml` - STAGE 2 guidance
 3. `003-legacy-code-migration.yaml` - STAGE 3 guidance
-4. `004-ufc-package-manifest.yaml` - STAGE 4 guidance
-5. `005-build-and-deploy.yaml` - STAGE 5 guidance
-6. `006-test-validate-integrate.yaml` - STAGES 6-9 guidance
+4. `004-ufc-app-plugin-integration.yaml` - STAGE 4 guidance
+5. `005-ufc-build.yaml` - STAGE 5 guidance
+6. `006-ufc-deploy-verify.yaml` - STAGES 6-9 guidance
 
 ### 3.3 Runbooks (Master + Phase-Specific)
 
@@ -262,16 +262,20 @@ Each runbook MUST:
 - Provide troubleshooting guidance
 - Reference relevant blueprint sections
 
-### 3.4 Code Generation Templates (Jinja2)
+### 3.4 Code Generation Templates (Embedded & Blueprint)
 
-Location: `tooling/au-sys-tools/ufc_capability_factory/templates/`
+**Strategy**:
+- **Scaffolding**: Uses `libraries/python/_templates/ufc_blueprint_template/` as the Golden Master source.
+- **Code Generation**: Scripts (`010`, `011`, etc.) use embedded Python f-string templates to ensure standalone execution and zero external dependencies during the build process.
 
-Required templates:
-- `plugin_interface.py.j2` - Plugin class template
-- `di_container.py.j2` - Dependency injection container
-- `config_schema.py.j2` - Pydantic configuration models
-- `config_defaults.yaml.j2` - Default configuration YAML
-- `__init__.py.j2` - Package initialization files
+**Location**: `tooling/au-sys-tools/ufc_capability_factory/_ai_agent/tools/` (Embedded in scripts)
+
+**Templates Implemented**:
+- `Plugin Interface` (in `010_generate_plugin_interface.py`)
+- `DI Container` (in `011_generate_di_container.py`)
+- `Config Schema` (in `012_generate_config_schema.py`)
+- `Entry Points` (in `013_configure_entry_points.py`)
+- `Manifest` (in `014_generate_service_manifest.py`)
 
 All templates MUST:
 - Accept parameters: `capability_name`, `description`, `author`, `version`
