@@ -9,17 +9,21 @@ artifact:
     title: Code Implementation Session (Legacy v2-style)
     description: >
       Example runbook showing a combined doctrine -> protocols -> directives -> execution instruction workflow.
-    tags: ["implementation", "legacy-v2", "execution"]
+    tags: ["implementation", "execution"]
 
   content:
     governed_by:
-      doctrine_refs: ["000-DOCTRINE-Enterprise_Canonical_Execution"]
+      doctrine_refs: ["enterprise.canonical_execution"]
       protocol_refs:
-        - "001-PROTOCOL-The_GoldenRule_Execution"
-        - "002-PROTOCOL-Zero_Tolerance_Remediation"
-        - "003-PROTOCOL-FastAPI_Pure_Code_Implementation"
-        - "004-PROTOCOL-Validate_Remediate_Codebase"
-        - "006-PROTOCOL-RFC2119_Requirements_Language"
+        - "execution.golden_rule"
+        - "language.python_min_version"
+        - "deployment.universal_container_deployability"
+        - "security.enterprise_security_frameworks"
+        - "deps.dependency_management"
+        - "quality.zero_tolerance_remediation"
+        - "fastapi.pure_code_implementation"
+        - "validation.validate_remediate_codebase"
+        - "language.rfc2119_requirements"
 
     variables:
       base_directory: "docs/implementation/instructions/v2/"
@@ -32,13 +36,17 @@ artifact:
       - id: ACK-001
         type: acknowledge
         acknowledge:
-          doctrine: "000-DOCTRINE-Enterprise_Canonical_Execution"
+          doctrine: "enterprise.canonical_execution"
           protocols:
-            - "001-PROTOCOL-The_GoldenRule_Execution"
-            - "002-PROTOCOL-Zero_Tolerance_Remediation"
-            - "003-PROTOCOL-FastAPI_Pure_Code_Implementation"
-            - "004-PROTOCOL-Validate_Remediate_Codebase"
-            - "006-PROTOCOL-RFC2119_Requirements_Language"
+            - "execution.golden_rule"
+            - "language.python_min_version"
+            - "deployment.universal_container_deployability"
+            - "security.enterprise_security_frameworks"
+            - "deps.dependency_management"
+            - "quality.zero_tolerance_remediation"
+            - "fastapi.pure_code_implementation"
+            - "validation.validate_remediate_codebase"
+            - "language.rfc2119_requirements"
 
       - id: SPEC-001
         type: spec_refs
@@ -55,7 +63,7 @@ artifact:
 
       - id: EXEC-001
         type: execute_instruction
-        instruction_ref: "104-INSTRUCTIONS-Execute_Implementation_Phase_Tasks"
+        instruction_ref: "execution.implementation_phase_tasks"
         inputs:
           - "CONTINUE WITH THE CURRENT {{ CODE_IMPLEMENTATION_SPEC }} ..."
           - "Continue to iterate through the plans in the {{ CODE_IMPLEMENTATION_SPEC }} until all plans are completed, pass code quality checks and have been validated"
@@ -75,3 +83,7 @@ artifact:
     status: draft
     changeLog:
       - "Initial v3 runbook example mapped from legacy v2 combined YAML patterns"
+      - "Updated to reference canonical v3 doctrine/protocol/instruction ids"
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/104-INSTRUCTIONS-Execute_Implementation_Phase_Tasks-v2.0.0.yaml"

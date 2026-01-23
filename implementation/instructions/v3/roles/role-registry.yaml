@@ -1,0 +1,37 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.roles-registry/v1"
+    id: "roles.registry"
+    title: "Roles Registry"
+    description: "Canonical list of stable role identifiers referenced by governance artefacts."
+
+  content:
+    roles:
+      - id: "implementation_execution_agent"
+        title: "Implementation Execution Agent"
+        description: "Executes SPEC-defined implementation tasks under governance and validation gates."
+
+      - id: "validation_compliance_agent"
+        title: "Validation and Compliance Agent"
+        description: "Runs quality/validation suites, captures evidence, and reports blockers."
+
+      - id: "remediation_execution_agent"
+        title: "Remediation Execution Agent"
+        description: "Applies minimal diffs to remediate verified failures and re-validates."
+
+      - id: "debugging_incident_response_agent"
+        title: "Debugging / Incident Response Agent"
+        description: "Performs logs-first debugging, isolates root cause, and applies controlled fixes."
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Introduced to make role identifiers in roles.digital_assistant_roles enforceable in v3."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/005-PROTOCOL-Digital_Assistant_Roles-v1.0.0.yaml"

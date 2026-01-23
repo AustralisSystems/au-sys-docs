@@ -33,9 +33,47 @@ artifact:
         rationale: "Isolate causes and reduce churn."
         verification: "Each fix is paired with a re-run of the relevant check."
 
+      - id: "absence_of_required_check_is_failure"
+        level: "required"
+        statement: "If a check is required by repo standards, governance, or the current instruction scope, absence of that check is itself a FAILURE."
+        rationale: "v2 governance treats missing validations as non-compliance, not as an implicit pass."
+        verification: "Validation plan enumerates required checks; evidence shows each was run or explicitly waived." 
+
+      - id: "entry_conditions_required"
+        level: "required"
+        statement: "Remediation MUST NOT begin unless there is a triggering condition (failed validation, confirmed runtime error, SPEC-defined corrective action, or explicit operator remediation request)."
+        rationale: "Prevents speculative refactors and uncontrolled change."
+        verification: "Remediation references a concrete triggering condition and its evidence." 
+
+      - id: "no_speculative_refactors"
+        level: "required"
+        statement: "Refactoring is FORBIDDEN unless required to correct a verified defect, to make validation pass, or to remove unsafe behaviour explicitly evidenced."
+        rationale: "Reduces scope creep and protects correctness."
+        verification: "Each refactor is tied to a specific failure or requirement, with evidence." 
+
+      - id: "preserve_contracts"
+        level: "required"
+        statement: "Public APIs, data contracts, and integration behaviours MUST be preserved unless explicitly mandated by the spec or operator."
+        rationale: "Unapproved contract changes are breaking and hard to audit."
+        verification: "Diff and tests show unchanged contracts unless explicitly authorized." 
+
+      - id: "stop_on_new_failures"
+        level: "required"
+        statement: "If remediation introduces new failures or regressions, execution MUST stop, record evidence, and request approval before proceeding."
+        rationale: "Avoids cascading regressions and ensures operator oversight."
+        verification: "Evidence shows new failures cause a stop and a scoped remediation proposal." 
+
+      - id: "ast_sast_required_when_applicable"
+        level: "required"
+        statement: "AST analysis and SAST analysis MUST be performed for files in scope when the repo/tooling supports it (per quality.production_code_quality)."
+        rationale: "Ensures structural correctness and security posture before completion claims."
+        verification: "Evidence includes AST/SAST outputs or an explicit waiver noting why unavailable." 
+
     inputs: []
     outputs: []
-    notes: []
+    notes:
+      - "This protocol is intentionally tool-agnostic; use repo-canonical commands when present (Makefile, pyproject tooling, CI scripts)."
+      - "This protocol pairs with quality.production_code_quality for the detailed quality gate expectations (AST/SAST, zero warnings, etc.)."
     conflicts: []
 
   governance:

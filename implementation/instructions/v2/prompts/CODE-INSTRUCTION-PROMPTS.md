@@ -18,11 +18,12 @@ then HALT
 
 ######################################################################################################################
 
-
-This doc is the previous session chat log, review it to uncover futher info NOT included in the handover.
+CONTEXT:
+These are the previous session chat logs, and other related content. Review them to uncover futher info NOT included in the handover.
 
 READ_AND_REVIEW:
-  - the provided content from the previous session
+  - the provided content from the previous sessions
+  - related content in the context
 
 DOCUMENTS:
 {{ The provided files in the context }}
@@ -80,11 +81,15 @@ READ_AND_ACKNOWLEDGE:
 # AUSTRALIS SYSTEMS PROTOCOLS
 READ_AND_ACKNOWLEDGE:
   - "001-PROTOCOL-The_GoldenRule_Execution"
+  - "006-PROTOCOL-RFC2119_Requirements_Language"
+
+Then HALT
+
+# AUSTRALIS SYSTEMS CODING PROTOCOLS
+READ_AND_ACKNOWLEDGE:
   - "002-PROTOCOL-Zero_Tolerance_Remediation"
   - "003-PROTOCOL-FastAPI_Pure_Code_Implementation"
   - "004-PROTOCOL-Validate_Remediate_Codebase"
-  - "006-PROTOCOL-RFC2119_Requirements_Language"
-
 
 Then HALT
 

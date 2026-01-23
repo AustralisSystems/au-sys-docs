@@ -27,11 +27,47 @@ artifact:
         rationale: "Ensures structural correctness and security posture before progress."
         verification: "Provide commands run and relevant output excerpts for AST and SAST scans."
 
+      - id: "scope_definition"
+        level: "required"
+        statement: "Validation scope MUST include: all modified/created files, files directly referenced by the change, and relevant entry points for the system under test."
+        rationale: "v2 governance required validating both local changes and the paths they influence."
+        verification: "Evidence identifies the validation scope and confirms checks were run against it."
+
       - id: "use_repo_canonical_commands"
         level: "required"
         statement: "When repository-standard scripts exist (Makefile, pyproject tooling, package scripts, CI), they MUST be used for validation instead of ad-hoc substitutes."
         rationale: "Canonical scripts encode project configuration and avoid drift from CI expectations."
         verification: "Evidence shows validation ran via the repo's documented commands where available."
+
+      - id: "required_gate_categories"
+        level: "required"
+        statement: "Quality gating MUST cover, at minimum (where applicable): formatting, linting, type checking, tests, dependency vulnerability scanning, and SAST/security scanning."
+        rationale: "v2 defined a comprehensive metric set; v3 encodes the minimum categories without hard-coding a toolchain."
+        verification: "Validation report includes which category checks were run (or an explicit waiver when not applicable)."
+
+      - id: "no_suppression_without_waiver"
+        level: "required"
+        statement: "Suppressing validation findings is FORBIDDEN unless explicitly waived by the operator (e.g., adding '# noqa', '# type: ignore', '# nosec', or disabling checks)."
+        rationale: "Suppressions often hide defects and undermine the zero-tolerance posture."
+        verification: "No new suppressions are introduced; if present, waiver and justification are recorded with scope and expiry criteria."
+
+      - id: "type_checking_strict_when_configured"
+        level: "required"
+        statement: "When a repo is configured for strict type checking (e.g., mypy --strict), changes MUST maintain strict compliance; introducing untyped/Any-driven code is a failure unless explicitly waived."
+        rationale: "Type safety is a core quality dimension in AU-SYS governance."
+        verification: "Type check passes under repo configuration; no new Any/suppression is introduced without waiver."
+
+      - id: "security_scan_thresholds"
+        level: "required"
+        statement: "Security scanning MUST block on critical/high issues; medium issues MUST be remediated unless explicitly waived."
+        rationale: "Matches v2 severity posture while remaining tool-agnostic."
+        verification: "Scan output shows no unresolved high/critical issues in-scope; any waived medium issues are documented."
+
+      - id: "dependency_vuln_scan_required"
+        level: "required"
+        statement: "If the repo has dependency vulnerability scanning configured (or it is feasible via standard tooling), it MUST be run for the change set before completion claims."
+        rationale: "Supply-chain issues are a primary risk surface; v2 explicitly required this." 
+        verification: "Evidence includes dependency scan output (or an explicit note that the repo/tooling does not support it)."
 
       - id: "no_custom_fix_scripts"
         level: "required"
@@ -45,11 +81,24 @@ artifact:
         rationale: "The project standard uses 120 as the maximum for consistency across tools."
         verification: "Tool configs/commands show line-length=120 and checks pass."
 
+      - id: "complexity_limits"
+        level: "required"
+        statement: "Complexity and maintainability thresholds configured by the repo MUST be treated as blocking (e.g., max complexity 15)."
+        rationale: "v2 required explicit complexity enforcement to keep codebase maintainable."
+        verification: "Lint/complexity tooling passes; no complexity suppressions are introduced without waiver."
+
+      - id: "evidence_format_minimum"
+        level: "required"
+        statement: "Evidence for each validation run MUST include the exact command, exit status, and the relevant pass/fail excerpt."
+        rationale: "Enables auditability and repeatability across sessions and agents."
+        verification: "Validation evidence includes command, exit status, and key output lines for each gate."
+
     inputs: []
     outputs: []
     notes:
       - "The exact tool set varies per repository; apply the repo's canonical validations when present (pytest/black/isort/mypy/flake8/bandit/etc.)."
       - "This protocol governs quality gates. How to run local runtime testing is governed by runtime instructions (eg runtime.run_local_and_test)."
+      - "When toolchains do not exist, the correct action is to surface a blocker and propose the minimal repo-standard way to add them (not to invent ad-hoc substitutes)."
     conflicts: []
 
   governance:

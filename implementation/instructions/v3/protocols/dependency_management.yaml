@@ -1,0 +1,49 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.protocol/v1"
+    id: "deps.dependency_management"
+    title: "Dependency Management"
+    description: "Enforce dependency freshness, compatibility, and vulnerability remediation as a blocking governance requirement."
+    enforce: true
+    tags: ["dependencies", "security", "supply-chain", "governance"]
+
+  content:
+    related_doctrine: "enterprise.canonical_execution"
+    applies_to: ["repo://*"]
+    directives:
+      - id: "keep_deps_current"
+        level: "required"
+        statement: "Dependencies SHOULD be kept at their latest stable versions; when an update improves security, correctness, or compatibility, it MUST be applied promptly unless explicitly waived."
+        rationale: "Reduces exposure to known vulnerabilities and avoids long-lived upgrade debt."
+        verification: "Dependency set is reviewed; updates are applied or a waiver is recorded with rationale and risk."
+
+      - id: "remediate_known_vulns"
+        level: "required"
+        statement: "Known security vulnerabilities in dependencies MUST be remediated (upgrade, replace, or mitigate) before declaring completion."
+        rationale: "Supply-chain vulnerabilities are a primary risk surface."
+        verification: "Evidence includes vulnerability scan output (or equivalent) showing no unresolved critical/high issues in-scope."
+
+      - id: "compatibility_preserved"
+        level: "required"
+        statement: "Dependency changes MUST preserve compatibility with the repo's runtime constraints (including minimum Python version) and MUST NOT introduce regressions."
+        rationale: "Upgrades must not break production behavior."
+        verification: "Relevant validation suite passes; runtime constraints are still satisfied."
+
+    inputs: []
+    outputs: []
+    notes:
+      - "This protocol captures the v2 dependency-management mandate and makes waivers explicit."
+    conflicts: []
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Extracted from v2 enterprise doctrine mandates and migrated into a standalone v3 protocol for enforceability."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/000-DOCTRINE-Enterprise_Canonical_Execution-v2.0.1.yaml"

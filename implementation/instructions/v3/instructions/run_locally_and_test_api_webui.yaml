@@ -15,6 +15,10 @@ artifact:
     doctrine_refs: ["enterprise.canonical_execution"]
     protocol_refs:
       - "execution.golden_rule"
+      - "language.python_min_version"
+      - "deployment.universal_container_deployability"
+      - "security.enterprise_security_frameworks"
+      - "deps.dependency_management"
       - "validation.api_real_http"
       - "validation.real_resources_only"
       - "testing.test_implementation"
@@ -29,6 +33,9 @@ artifact:
     outputs:
       - "startup_logs"
       - "api_test_evidence"
+      - "api_prereqs_inventory"
+      - "api_prereqs_validation_report"
+      - "api_endpoint_method_matrix"
       - "ui_test_evidence"
       - "spec_updates"
     steps:
@@ -37,8 +44,23 @@ artifact:
       - id: "start_runtime"
         description: "Run runtime_command; capture startup logs; require zero startup errors and no misconfiguration warnings."
         produces: ["startup_logs"]
+
+      - id: "build_api_prereqs_inventory"
+        description: "Create an API prerequisite inventory (service_base_url, healthchecks, auth prereqs by reference id only, external backends, network requirements, seeded data plan) and store it with the run evidence."
+        produces: ["api_prereqs_inventory"]
+
+      - id: "validate_api_prereqs"
+        description: "Validate prerequisites BEFORE any API tests: service is healthy, base URL reachable, auth works, and external backends support required read/write operations; abort on any failure."
+        requires: ["api_prereqs_inventory"]
+        produces: ["api_prereqs_validation_report"]
+
+      - id: "build_api_test_matrix"
+        description: "Build the endpoint+method test matrix from authoritative artefacts (eg openapi.json and endpoint inventories). Do not infer endpoints/methods; abort and reconcile if sources conflict."
+        produces: ["api_endpoint_method_matrix"]
+
       - id: "test_api_first"
-        description: "Manually test backend API endpoints (real HTTP requests); capture evidence per endpoint."
+        description: "Test backend API endpoints via real HTTP requests to the running service_base_url (no in-process clients like TestClient). Cover 100% of the endpoint+method matrix with positive+negative cases and record expected vs actual (status + key response fields) and trace evidence per case."
+        requires: ["api_prereqs_validation_report", "api_endpoint_method_matrix"]
         produces: ["api_test_evidence"]
       - id: "test_ui_second"
         description: "After API tests pass, test Web UI flows in a real browser (or automation reflecting real user behavior); capture evidence."

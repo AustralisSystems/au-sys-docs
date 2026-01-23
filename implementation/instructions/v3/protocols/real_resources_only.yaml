@@ -21,11 +21,41 @@ artifact:
         rationale: "Production validation exists to prove real end-to-end behavior, not simulated behavior."
         verification: "Validation code contains no mock frameworks for external integrations; tests connect to real endpoints/resources."
 
+      - id: "runtime.execution_only"
+        level: "required"
+        statement: "Production validation MUST execute at runtime after the deployed service/container is running and after all required external resources are provisioned."
+        rationale: "Proves actual deployed behavior; prevents false confidence from in-process or pre-runtime checks."
+        verification: "Evidence shows service/container is running before validation begins; validations connect over real runtime interfaces."
+
       - id: "prereqs_inventory_and_gate"
         level: "required"
         statement: "Before executing validation scripts, a prerequisite inventory MUST be created and validated; if any prerequisite is missing or unreachable, the run MUST halt."
         rationale: "Guarantees the run exercises real resources and fails explicitly on missing infrastructure."
         verification: "Prerequisite inventory artefacts exist and the gate aborts on missing prereqs."
+
+      - id: "prereqs.inventory_required_fields"
+        level: "required"
+        statement: "Prerequisite inventories MUST record, at minimum: resource_type, resource_identifier (endpoint/hostname/file path; secrets by reference id only), required_permissions, network requirements, readiness criteria, provisioning method, and connection method."
+        rationale: "Ensures prerequisites are explicit, auditable, and reproducible across environments."
+        verification: "Inventory artefact includes all required fields and does not contain raw secrets."
+
+      - id: "prereqs.artifacts_required"
+        level: "required"
+        statement: "Prerequisite management MUST produce machine-readable and human-readable artefacts (eg prereqs_inventory.json + prereqs_inventory.md, prereqs_validation_report.json + prereqs_validation_report.md)."
+        rationale: "Machine-readable artefacts enable automation; human-readable artefacts enable review and audit."
+        verification: "Artefacts exist for the run and are referenced in the validation evidence."
+
+      - id: "prereqs.validation_from_runtime_context"
+        level: "required"
+        statement: "Prerequisite validation MUST confirm connectivity and permissions from the running service/container context (not only from the host machine)."
+        rationale: "Host connectivity can differ from container/service networking; production validation must match runtime reality."
+        verification: "Evidence shows validation performed from the runtime environment or equivalent network context."
+
+      - id: "prereqs.validation_minimum_checks"
+        level: "required"
+        statement: "Prerequisite validation MUST confirm: resources exist and are real (not stubbed), endpoints are reachable, auth succeeds using real credentials (referenced), and required read/write operations succeed when applicable to the integration."
+        rationale: "Prevents running a validation plan against incomplete or misconfigured infrastructure."
+        verification: "Validation report records pass/fail for each prerequisite and check type."
 
       - id: "trace_logging_to_file"
         level: "required"
@@ -33,17 +63,53 @@ artifact:
         rationale: "Enables post-run forensics and deterministic evidence without leaking credentials."
         verification: "Each script produces a timestamped log file containing inputs/outputs and redacted secrets."
 
+      - id: "logging.required_fields_minimum"
+        level: "required"
+        statement: "Trace logs MUST include, at minimum: timestamp, script_id, run_id, command_executed, inputs (redacted), expected_result, actual_result, comparison_type, comparison_result, warnings, errors, and correlation/request ids when applicable."
+        rationale: "Without a deterministic log schema, results cannot be audited or debugged reliably."
+        verification: "Sample log excerpts demonstrate the required fields are present."
+
       - id: "expected_vs_actual_required"
         level: "required"
         statement: "Every validation test MUST define machine-verifiable expected results and compare them against actual results from executing production code."
         rationale: "Absence of errors is not a sufficient success condition."
         verification: "Each test records expected vs actual values and a comparison type."
 
+      - id: "expected_result_omission_abort"
+        level: "required"
+        statement: "If any validation script/test omits an explicit expected result definition and comparison_type, the validation run MUST be marked invalid and MUST abort immediately."
+        rationale: "Forces deterministic success criteria and prevents 'no error' from being treated as a pass."
+        verification: "Runner enforces required fields and aborts when they are missing."
+
+      - id: "comparison.allowed_types"
+        level: "required"
+        statement: "Validation tests MUST declare a comparison_type using only allowed semantics: equality, invariant, predicate, or tolerance (tolerance must declare value and unit)."
+        rationale: "Standardized comparison semantics support consistent evidence and automation."
+        verification: "Each test declares comparison_type and, for tolerance, includes tolerance_value + tolerance_unit."
+
+      - id: "coverage.positive_and_negative_required"
+        level: "required"
+        statement: "Production validation coverage MUST include both positive and negative paths for each public operation, exercising real failure conditions (not mocked failures)."
+        rationale: "A happy-path-only suite does not prove production correctness or resilience."
+        verification: "Evidence identifies both pass-path and fail-path validations per operation or code path."
+
+      - id: "packaging.validation_shipped"
+        level: "required"
+        statement: "Production validation scripts and the validation harness/runner MUST ship with the production artefact (eg included in the built wheel/container image); external-only validation is insufficient."
+        rationale: "Ensures validation can be executed wherever the production artefact runs and prevents hidden dependencies."
+        verification: "Build output contains validation suite code; import/entrypoint checks confirm suite is available in the artefact."
+
       - id: "fail_fast_global"
         level: "required"
         statement: "If any validation script/test fails, the suite MUST abort immediately; continuing after failure is prohibited."
         rationale: "Fail-fast reduces noise and prevents interpreting partial runs as successful."
         verification: "Runner halts on first failure and returns non-zero."
+
+      - id: "restart_requires_fix_and_revalidate"
+        level: "required"
+        statement: "After a failed run, issues MUST be remediated and prerequisites MUST be revalidated before restarting; restarts MUST begin from the start of the suite."
+        rationale: "Prevents partial reruns from masking systemic issues and ensures the environment is still valid."
+        verification: "Evidence shows remediation + prereqs revalidation occurred before rerun, and rerun starts at suite beginning."
 
     inputs: []
     outputs: []

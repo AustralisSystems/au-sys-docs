@@ -33,6 +33,12 @@ artifact:
         rationale: "Prevent over-constraining work."
         verification: "Optional items are not treated as blocking unless another rule says so."
 
+      - id: "forbidden_is_must_not"
+        level: "required"
+        statement: "Treat FORBIDDEN / PROHIBITED as MUST NOT (hard stop) and do not proceed without an explicit operator waiver."
+        rationale: "v2 governance frequently used FORBIDDEN/PROHIBITED as absolute prohibitions."
+        verification: "Any FORBIDDEN/PROHIBITED item is not executed; waivers are explicitly recorded when granted."
+
     inputs: []
     outputs: []
     notes: []

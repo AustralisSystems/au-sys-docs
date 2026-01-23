@@ -33,9 +33,65 @@ artifact:
         rationale: "Maintain performance and correctness under async runtimes."
         verification: "No blocking filesystem/network calls in async paths without offloading."
 
+      - id: "endpoints_async_def"
+        level: "required"
+        statement: "FastAPI endpoints MUST be defined as async functions (async def) unless a documented and explicitly approved exception exists."
+        rationale: "Ensures non-blocking request handling and consistent async runtime behavior."
+        verification: "Route handlers are async def; any sync handler includes an explicit waiver and justification." 
+
+      - id: "no_blocking_calls_in_async"
+        level: "required"
+        statement: "Blocking calls (filesystem/network/db) MUST NOT run directly in async contexts; use async libraries or explicitly offload via asyncio.to_thread (or equivalent) when unavoidable."
+        rationale: "Blocking calls in async paths stall the event loop and degrade reliability."
+        verification: "Code review confirms no blocking operations in async paths without offloading; performance regressions are not introduced." 
+
+      - id: "connection_pooling_required"
+        level: "required"
+        statement: "HTTP clients and database connections MUST use pooling/keep-alive where applicable; per-request client instantiation is prohibited in production request paths."
+        rationale: "Pooling reduces latency, avoids resource exhaustion, and improves reliability."
+        verification: "Clients are created at app startup or injected via DI and reused; no per-request creation in hot paths." 
+
+      - id: "retries_and_timeouts"
+        level: "required"
+        statement: "External calls MUST have timeouts; retries/backoff SHOULD be applied for transient errors where safe and idempotent."
+        rationale: "Prevents hung requests and improves resilience under transient faults."
+        verification: "Evidence of timeout configuration; retry policy exists where appropriate and is bounded." 
+
+      - id: "backend_first"
+        level: "required"
+        statement: "Backend functionality MUST be implemented/validated before frontend/UI integrations that depend on it."
+        rationale: "Prevents UI-only stubs and reduces partial implementations."
+        verification: "API routes/services exist and validate before UI flows are considered complete." 
+
+      - id: "openapi_alignment"
+        level: "required"
+        statement: "If an OpenAPI contract exists, endpoint implementations MUST align with it; ad-hoc undocumented endpoints are prohibited."
+        rationale: "Contracts enable client compatibility and validation."
+        verification: "OpenAPI spec and implementation match; inventory/reconciliation is recorded when required." 
+
+      - id: "no_static_demo_data"
+        level: "required"
+        statement: "Production paths MUST NOT return static/demo data where real data retrieval is required; real backend/storage integration must exist or execution must stop with a blocker."
+        rationale: "Demo data is indistinguishable from bugs in production."
+        verification: "Endpoints retrieve real data or emit an explicit blocker; no demo placeholders remain." 
+
+      - id: "pydantic_v2_only"
+        level: "required"
+        statement: "Where Pydantic is used, Pydantic v2 MUST be used; v1-only patterns are prohibited."
+        rationale: "AU-SYS standardizes on modern tooling and avoids dual-version drift."
+        verification: "Dependencies and code usage align with Pydantic v2 patterns; no v1-only imports/usages remain." 
+
+      - id: "logging_observability"
+        level: "required"
+        statement: "Request/critical-path operations MUST be observable: log important events without leaking secrets, and avoid silent failure paths."
+        rationale: "FastAPI services require diagnosable behavior in production environments."
+        verification: "Logs exist for key operations and errors; errors propagate or are handled with explicit outcomes; no secrets in logs." 
+
     inputs: []
     outputs: []
-    notes: []
+    notes:
+      - "This protocol adds operational FastAPI constraints that were explicit in v2 and were previously under-specified in v3."
+      - "This protocol does not define specific client libraries; use repo-standard dependencies and patterns."
     conflicts: []
 
   governance:

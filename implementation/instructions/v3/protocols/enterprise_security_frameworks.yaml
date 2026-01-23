@@ -1,0 +1,49 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.protocol/v1"
+    id: "security.enterprise_security_frameworks"
+    title: "Enterprise Security Frameworks"
+    description: "Codify the v2 security posture mandates (cybersecurity + AI security) as enforceable v3 directives."
+    enforce: true
+    tags: ["security", "compliance", "owasp", "nist", "iso27001"]
+
+  content:
+    related_doctrine: "enterprise.canonical_execution"
+    applies_to: ["repo://*"]
+    directives:
+      - id: "framework_alignment_required"
+        level: "required"
+        statement: "Security controls MUST align with enterprise frameworks (NIST CSF, ISO/IEC 27001, OWASP Top 10/ASVS) and applicable AI security guidance (e.g., NIST AI RMF, OWASP LLM Top 10) unless explicitly scoped out by the operator."
+        rationale: "AU-SYS deployments target high-security environments and require defensible, auditable controls."
+        verification: "Provide a brief control mapping (what applies and where implemented) and evidence of security validation (SAST/dep scanning/logging)."
+
+      - id: "least_privilege"
+        level: "required"
+        statement: "Systems MUST enforce least privilege (credentials, tokens, roles, filesystem/network access) and avoid overly broad permissions by default."
+        rationale: "Reduces blast radius and supports defense-in-depth."
+        verification: "Configuration and code show restricted permissions; privileged modes are justified and documented."
+
+      - id: "security_logging"
+        level: "required"
+        statement: "Security-relevant events MUST be logged in a reviewable form (authz decisions, access failures, critical config changes) without leaking secrets."
+        rationale: "Security operations require observability; logging must not introduce credential exposure."
+        verification: "Logs exist for security events; secrets are not present in log output; log fields are structured where supported."
+
+    inputs: []
+    outputs: []
+    notes:
+      - "This protocol is intentionally framework-oriented; repository-specific security tooling is governed by quality/validation protocols."
+    conflicts: []
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Extracted from v2 enterprise doctrine mandates and migrated into a standalone v3 protocol for enforceability."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/000-DOCTRINE-Enterprise_Canonical_Execution-v2.0.1.yaml"

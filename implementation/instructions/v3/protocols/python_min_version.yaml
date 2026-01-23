@@ -1,0 +1,49 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.protocol/v1"
+    id: "language.python_min_version"
+    title: "Python Minimum Version"
+    description: "Enforce a minimum supported Python version for code, dependencies, and tooling."
+    enforce: true
+    tags: ["python", "language", "runtime", "governance"]
+
+  content:
+    related_doctrine: "enterprise.canonical_execution"
+    applies_to: ["repo://*"]
+    directives:
+      - id: "minimum_python_3_12"
+        level: "required"
+        statement: "The codebase MUST target Python 3.12+ as the minimum supported runtime unless an explicit operator waiver exists."
+        rationale: "AU-SYS governance standardizes on modern Python features, typing, and security support windows."
+        verification: "Evidence includes repo configuration showing requires-python>=3.12 (or equivalent) and a runtime check (e.g. python --version)."
+
+      - id: "deps_support_minimum"
+        level: "required"
+        statement: "Dependencies used in production paths MUST support the minimum Python version."
+        rationale: "Prevents deploy/runtime failures due to incompatible dependency wheels or syntax."
+        verification: "Dependency metadata / lockfile constraints / build output shows compatibility; incompatible dependencies are upgraded or replaced."
+
+      - id: "tooling_enforces_minimum"
+        level: "recommended"
+        statement: "Build, lint, and test tooling SHOULD be configured to enforce the minimum Python version (CI, pyproject, tox/nox, etc.)."
+        rationale: "Automated enforcement reduces drift and prevents accidental introduction of unsupported syntax."
+        verification: "CI/tooling configuration references the minimum Python version and runs successfully."
+
+    inputs: []
+    outputs: []
+    notes:
+      - "This protocol expresses the v2 Python 3.12+ mandate as a canonical v3 rule."
+    conflicts: []
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Extracted from v2 enterprise doctrine mandates and migrated into a standalone v3 protocol for enforceability."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/000-DOCTRINE-Enterprise_Canonical_Execution-v2.0.1.yaml"

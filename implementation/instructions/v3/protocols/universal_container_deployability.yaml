@@ -1,0 +1,49 @@
+authoring_schema_version: "1.0.0"
+mcp_spec_revision: "2025-11-25"
+
+artifact:
+  meta:
+    version: "1.0.0"
+    schema: "mcp.protocol/v1"
+    id: "deployment.universal_container_deployability"
+    title: "Universal Container Deployability"
+    description: "Require platform-agnostic, OCI-compatible container deployment across common runtimes and orchestrators."
+    enforce: true
+    tags: ["deployment", "containers", "oci", "kubernetes"]
+
+  content:
+    related_doctrine: "enterprise.canonical_execution"
+    applies_to: ["repo://*"]
+    directives:
+      - id: "oci_images_only"
+        level: "required"
+        statement: "Container images and build outputs MUST be OCI-compliant and platform-agnostic."
+        rationale: "Ensures portability across Docker/Podman/containerd/Kubernetes and cloud container platforms."
+        verification: "Build artifacts conform to OCI standards; manifests/images run under at least one OCI runtime without platform-specific assumptions."
+
+      - id: "no_platform_specific_assumptions"
+        level: "required"
+        statement: "Deployment configuration MUST NOT rely on platform-specific assumptions (runtime paths, privileged modes, vendor-only extensions) unless explicitly scoped and approved."
+        rationale: "Prevents hidden coupling to a single container platform."
+        verification: "Configuration is environment-driven; no hardcoded platform-only features are required for baseline operation."
+
+      - id: "runtime_config_is_external"
+        level: "required"
+        statement: "Runtime configuration MUST be externalized via environment/config injection, not baked into images."
+        rationale: "Supports repeatable deployment across environments and platforms."
+        verification: "Configuration can be changed without rebuilding images; env/config interfaces are documented in repo configuration."
+
+    inputs: []
+    outputs: []
+    notes:
+      - "This protocol captures the v2 universal container deployment mandate."
+    conflicts: []
+
+  governance:
+    owners: ["au-sys"]
+    status: "draft"
+    changeLog:
+      - "Extracted from v2 enterprise doctrine mandates and migrated into a standalone v3 protocol for enforceability."
+
+  traceability:
+    raw_ref: "repo://docs/implementation/instructions/v2/000-DOCTRINE-Enterprise_Canonical_Execution-v2.0.1.yaml"

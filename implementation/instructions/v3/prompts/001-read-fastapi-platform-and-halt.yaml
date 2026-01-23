@@ -15,6 +15,11 @@ artifact:
       doctrine_refs: ["enterprise.canonical_execution"]
       protocol_refs:
         - "execution.golden_rule"
+        - "tools.mcp_tools_workflow"
+        - "language.python_min_version"
+        - "deployment.universal_container_deployability"
+        - "security.enterprise_security_frameworks"
+        - "deps.dependency_management"
         - "quality.zero_tolerance_remediation"
         - "fastapi.pure_code_implementation"
         - "validation.validate_remediate_codebase"

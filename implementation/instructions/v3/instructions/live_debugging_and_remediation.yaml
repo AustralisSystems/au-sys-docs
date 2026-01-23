@@ -15,6 +15,7 @@ artifact:
     doctrine_refs: ["enterprise.canonical_execution"]
     protocol_refs:
       - "execution.golden_rule"
+      - "security.enterprise_security_frameworks"
       - "quality.production_code_quality"
       - "validation.validate_remediate_codebase"
       - "quality.zero_tolerance_remediation"

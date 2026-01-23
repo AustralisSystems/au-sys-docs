@@ -39,6 +39,18 @@ artifact:
         rationale: "Maintain predictable change sets."
         verification: "Changed files are directly related to the task."
 
+      - id: "stop_on_failed_validation"
+        level: "required"
+        statement: "If a required validation step fails (tests/lint/type-check/build/security scan), execution MUST stop and remediate before proceeding."
+        rationale: "Prevents compounding defects and enforces deterministic progress."
+        verification: "Evidence shows failures are addressed before additional feature work continues."
+
+      - id: "evidence_format_minimum"
+        level: "required"
+        statement: "When reporting evidence, include (a) the exact command(s) run, (b) exit status, and (c) the relevant pass/fail output excerpt."
+        rationale: "Ensures outputs are auditable and repeatable across sessions."
+        verification: "Evidence sections consistently include commands, exit status, and key output lines."
+
     inputs: []
     outputs: []
     notes: []

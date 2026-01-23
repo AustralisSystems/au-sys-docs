@@ -13,6 +13,26 @@ artifact:
     - v3
   content:
     protocols:
+    - id: deployment.universal_container_deployability
+      path: docs/implementation/instructions/v3/protocols/universal_container_deployability.yaml
+      title: Universal Container Deployability
+      version: 1.0.0
+      enforce: true
+      tags:
+      - deployment
+      - containers
+      - oci
+      - kubernetes
+    - id: deps.dependency_management
+      path: docs/implementation/instructions/v3/protocols/dependency_management.yaml
+      title: Dependency Management
+      version: 1.0.0
+      enforce: true
+      tags:
+      - dependencies
+      - security
+      - supply-chain
+      - governance
     - id: docs.code_documentation
       path: docs/implementation/instructions/v3/protocols/code_documentation.yaml
       title: Code Documentation
@@ -54,6 +74,16 @@ artifact:
       - fastapi
       - ufc
       - architecture
+    - id: language.python_min_version
+      path: docs/implementation/instructions/v3/protocols/python_min_version.yaml
+      title: Python Minimum Version
+      version: 1.0.0
+      enforce: true
+      tags:
+      - python
+      - language
+      - runtime
+      - governance
     - id: language.rfc2119_requirements
       path: docs/implementation/instructions/v3/protocols/rfc2119_requirements_language.yaml
       title: RFC2119 Requirements Language
@@ -88,6 +118,17 @@ artifact:
       - roles
       - governance
       - execution
+    - id: security.enterprise_security_frameworks
+      path: docs/implementation/instructions/v3/protocols/enterprise_security_frameworks.yaml
+      title: Enterprise Security Frameworks
+      version: 1.0.0
+      enforce: true
+      tags:
+      - security
+      - compliance
+      - owasp
+      - nist
+      - iso27001
     - id: swarm.agent_task_coordination
       path: docs/implementation/instructions/v3/protocols/agent_task_coordination.yaml
       title: Agent Task Coordination

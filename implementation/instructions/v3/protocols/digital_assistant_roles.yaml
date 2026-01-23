@@ -50,6 +50,7 @@ artifact:
     notes:
       - "This protocol intentionally does not re-encode the full v2 role catalogue into v3 structure; role catalogues remain in traceability."
       - "Common role ids from v2 include: implementation_execution_agent, validation_compliance_agent, remediation_execution_agent, debugging_incident_response_agent."
+      - "Canonical v3 role identifiers are listed in docs/implementation/instructions/v3/roles/role-registry.yaml."
     conflicts: []
 
   governance:

@@ -21,11 +21,35 @@ artifact:
         rationale: "Adapter tests are end-to-end; internal failures must be resolved first to avoid cascading noise."
         verification: "Run order shows internal production validation completed successfully before API validation began."
 
+      - id: "never_target_production"
+        level: "required"
+        statement: "API validation MUST NOT target production endpoints or production data; only isolated non-production environments/resources are permitted."
+        rationale: "Prevents data corruption and unsafe validation runs."
+        verification: "Evidence shows non-prod base URL and non-prod credentials/resources; no production hostnames are used."
+
       - id: "inventory_is_source_of_truth"
         level: "required"
         statement: "The endpoint+method test matrix MUST come from authoritative artifacts (eg openapi.json and endpoint inventories); endpoints/methods MUST NOT be inferred."
         rationale: "Prevents hallucinated coverage and ensures 100% surface area accounting."
         verification: "Test plan references the inventories/openapi and reports reconciliation if they conflict."
+
+      - id: "inventory.inputs_required"
+        level: "required"
+        statement: "API validation MUST require authoritative inventory inputs (eg openapi.json and endpoint/method inventory artefacts); if any required inventory is missing, the run MUST abort and report the missing artefact(s)."
+        rationale: "Without inventories, coverage claims are unverifiable and easily drift."
+        verification: "Evidence lists inventory file paths used; missing inventory causes a hard stop."
+
+      - id: "inventory.reconcile_conflicts"
+        level: "required"
+        statement: "If inventories and OpenAPI conflict, API validation MUST abort and produce a reconciliation report before any endpoint tests execute."
+        rationale: "Conflicting sources of truth lead to incomplete or incorrect validation."
+        verification: "Reconciliation report exists when conflicts are detected; no tests run until conflict is resolved."
+
+      - id: "coverage.endpoint_method_100"
+        level: "required"
+        statement: "API validation MUST achieve 100% coverage of endpoints and supported HTTP methods from the inventories/OpenAPI: no missing entries and no extra inferred entries."
+        rationale: "Ensures full surface area validation and prevents hallucinated endpoints/methods."
+        verification: "Coverage report enumerates all endpoint+method pairs and marks each as tested; mismatches abort."
 
       - id: "real_http_only"
         level: "required"
@@ -39,11 +63,59 @@ artifact:
         rationale: "Guarantees tests run against real running services and real dependencies."
         verification: "Prereq inventory and validation reports exist; failures abort the run."
 
+      - id: "prereqs.inventory_minimum_fields"
+        level: "required"
+        statement: "API prerequisite inventories MUST include: service_base_url, healthcheck endpoints, auth prerequisites (by reference id only), external backend endpoints, network requirements, and required seeded data plus how it is created."
+        rationale: "Makes API validation reproducible and ensures dependencies are real and ready."
+        verification: "Prereq inventory artefact includes all required fields and contains no raw secrets."
+
+      - id: "prereqs.validation_minimum_checks"
+        level: "required"
+        statement: "API prerequisite validation MUST confirm: container/service is healthy, service_base_url reachable over the network, auth works using real credentials (referenced), and external backends support required read/write operations."
+        rationale: "Prevents noisy failures caused by infrastructure gaps."
+        verification: "Prereq validation report records pass/fail per check and aborts on any failure."
+
+      - id: "tests.positive_and_negative_per_endpoint"
+        level: "required"
+        statement: "Each endpoint+method MUST have both positive and negative tests using real failure conditions (eg invalid auth, invalid input, missing resource), not mocked failures."
+        rationale: "Validates both contract and enforcement behaviour under realistic conditions."
+        verification: "Evidence shows at least one positive and one negative case per endpoint+method pair."
+
+      - id: "expected_vs_actual_required"
+        level: "required"
+        statement: "Each API test MUST define expected vs actual results (including expected HTTP status and key response fields) and perform deterministic comparisons; absence of errors is not sufficient."
+        rationale: "Forces concrete, machine-verifiable success criteria."
+        verification: "Logs/evidence include expected_http_status, actual_http_status, expected_result, actual_result, comparison_type, comparison_result."
+
+      - id: "expected_result_omission_abort"
+        level: "required"
+        statement: "If any API test omits expected results/comparison_type, the API validation run MUST abort and be marked invalid."
+        rationale: "Prevents silent or ambiguous passes."
+        verification: "Runner enforces required fields and aborts when they are missing."
+
       - id: "trace_visibility_and_redaction"
         level: "required"
         statement: "All API validation operations MUST be trace logged to timestamped files with inputs/outputs captured; secrets MUST be redacted and referenced by id only."
         rationale: "Ensures forensic traceability without leaking sensitive material."
         verification: "Logs exist per run; no secrets are present; operations include request/response evidence."
+
+      - id: "logging.required_fields_minimum"
+        level: "required"
+        statement: "API validation trace logs MUST include, at minimum: timestamp, script_id, run_id, operation_id, operation_sequence_number, endpoint, method, request summary (redacted), response summary, status, duration_ms, warnings, errors, and correlation/request ids when applicable."
+        rationale: "A consistent log schema enables audit and troubleshooting of endpoint coverage and failures."
+        verification: "Sample log excerpts demonstrate the required fields are present."
+
+      - id: "fail_fast_global"
+        level: "required"
+        statement: "Any failed API test MUST abort the entire API validation plan immediately; continuing after failure is prohibited."
+        rationale: "Fail-fast reduces noise and prevents partial passes being misread as success."
+        verification: "Runner halts on first failing endpoint+method test and returns non-zero."
+
+      - id: "restart_requires_fix_and_revalidate"
+        level: "required"
+        statement: "After a failed API validation run, issues MUST be remediated and prerequisites MUST be revalidated before restarting; restarts MUST begin from the start of the plan."
+        rationale: "Ensures coverage and prerequisites remain consistent and prevents cherry-picked reruns."
+        verification: "Evidence shows remediation + prereqs revalidation occurred before rerun, and rerun starts at plan beginning."
 
     inputs: []
     outputs: []

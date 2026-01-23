@@ -15,41 +15,89 @@ artifact:
     related_doctrine: "enterprise.canonical_execution"
     applies_to: ["repo://*"]
     directives:
-      - id: "golden_rule_sequence"
+      - id: "workflow.six_phase_model"
         level: "recommended"
-        statement: "For non-trivial tasks, use the workflow: docs research -> code example search -> implement -> validate."
-        rationale: "Evidence-backed decisions reduce rework and prevent ungrounded output."
-        verification: "Worklog includes citations to docs and/or real code examples for unfamiliar APIs."
+        statement: "For non-trivial tasks, follow the six-phase workflow: Context Load -> Research -> Plan -> Implement -> Track -> Save."
+        rationale: "A consistent workflow reduces missed context and supports auditable outcomes."
+        verification: "Worklog indicates which phases were executed (or explicitly skipped) with brief justification."
 
-      - id: "research_required_for_unfamiliar"
+      - id: "context_load.progressive_expansion"
+        level: "recommended"
+        statement: "When loading historical context, start with a narrow query and expand progressively until sufficient context is found (eg 5m -> 30m -> 1h -> 4-48h), then broaden search terms."
+        rationale: "Progressive expansion finds relevant context without flooding the session with unrelated history."
+        verification: "Context load evidence shows at least one scoped query before any broad query."
+
+      - id: "context_load.no_full_graph_dump"
+        level: "required"
+        statement: "Full knowledge-store dumps at session start are prohibited; do not perform full graph reads unless explicitly required for the task and justified."
+        rationale: "Broad dumps are noisy, slow, and increase the chance of acting on irrelevant information."
+        verification: "No evidence of full graph dumps; if performed, justification and narrow follow-up queries are recorded."
+
+      - id: "research.required_for_unfamiliar"
         level: "required"
         statement: "Before implementing unfamiliar APIs/libraries, documentation research and real code example search MUST be performed."
         rationale: "Prevents incorrect implementations caused by missing or stale knowledge."
-        verification: "References to docs and example sources are provided for unfamiliar APIs."
+        verification: "Evidence includes doc references and at least one real code example source for the unfamiliar API/library."
 
-      - id: "avoid_overbroad_scans"
+      - id: "research.required_for_security_sensitive"
         level: "required"
-        statement: "Avoid overbroad repository scans; prefer targeted file search and targeted content search to limit scope."
-        rationale: "Keeps investigation bounded and reduces accidental changes or missed context."
-        verification: "Search queries are scoped; no root-level full-tree dumps."
+        statement: "For security-sensitive changes (auth, crypto, permissions, secrets, input validation, deserialization, SSRF/XSS/SQLi), research MUST be performed even if the API is familiar."
+        rationale: "Security posture depends on current best practices and correct threat modeling, not familiarity."
+        verification: "Worklog links at least one authoritative security reference and one production-grade example or guideline."
 
-      - id: "plan_for_complex_work"
+      - id: "research.context7_resolve_then_query"
+        level: "required"
+        statement: "When using documentation retrieval tools, resolve the library/package identifier first, then query version-appropriate documentation; do not rely on guesswork."
+        rationale: "Version mismatches and misidentified libraries are a common source of implementation errors."
+        verification: "Evidence includes the resolved doc identifier and the specific doc query used."
+
+      - id: "examples.literal_code_search_only"
+        level: "required"
+        statement: "When searching for real-world code examples, queries MUST be literal code patterns (eg 'useState(', 'getServerSession', 'async def'); keyword questions (eg 'fastapi tutorial') are prohibited."
+        rationale: "Literal code searches return concrete usage patterns and reduce low-signal results."
+        verification: "Worklog records example-search queries and they are literal code patterns."
+
+      - id: "exploration.targeted_search_over_scans"
+        level: "required"
+        statement: "Avoid overbroad repository scans; prefer targeted file name search and targeted content search to limit scope."
+        rationale: "Keeps investigation bounded and reduces accidental changes or missed context."
+        verification: "Search queries are scoped; no root-level full-tree dumps are used as a substitute for targeted search."
+
+      - id: "exploration.keep_bounded"
         level: "recommended"
-        statement: "For complex multi-step work, create an explicit step plan with validation checkpoints before editing files."
+        statement: "Keep initial codebase exploration bounded (eg <=20 file candidates, <=10 file reads) and iterate only when evidence indicates more is needed."
+        rationale: "Encourages high-signal exploration and prevents time loss due to unfocused reading."
+        verification: "Worklog shows iterative narrowing (eg initial candidates -> refined shortlist)."
+
+      - id: "planning.required_for_multistep"
+        level: "required"
+        statement: "For complex multi-step work (multi-file refactors, architectural decisions, unclear requirements), create an explicit step plan with validation checkpoints before editing files."
         rationale: "Prevents mid-flight scope drift and ensures predictable checkpoints."
         verification: "Plan exists and includes checkpoints that match executed validations."
 
-      - id: "persist_significant_outcomes"
+      - id: "implementation.parallelize_independent_only"
         level: "recommended"
-        statement: "Persist significant patterns and decisions for future sessions in the project knowledge system."
-        rationale: "Reduces repeated rediscovery cost across sessions."
-        verification: "Significant outcomes are recorded (when the project uses a knowledge store)."
+        statement: "Only parallelize independent operations; avoid parallel edits/commands when outputs depend on each other."
+        rationale: "Reduces race conditions and prevents making decisions on stale context."
+        verification: "Parallel operations are independent and do not require ordered output to be correct."
+
+      - id: "tracking.record_while_working"
+        level: "recommended"
+        statement: "For multi-step tasks, record current state, key decisions, and blockers during execution (not only at the end)."
+        rationale: "In-flight recording preserves reasoning and reduces rework when context switches occur."
+        verification: "Worklog includes intermediate checkpoints (decisions, blockers, next steps)."
+
+      - id: "save.persist_significant_outcomes"
+        level: "required"
+        statement: "Significant patterns, decisions, and reusable approaches MUST be persisted for future sessions when a project knowledge system is available."
+        rationale: "Reduces repeated rediscovery cost and supports repeatable implementations."
+        verification: "Evidence links to persisted knowledge entries (or explicitly notes that no knowledge system is configured)."
 
     inputs: []
     outputs: []
     notes:
       - "This protocol is workflow guidance; it does not override doctrine/protocol requirements that are explicitly 'required' or 'halt'."
-      - "The v2 artefact contains extended narrative workflow content; v3 keeps only enforceable gates and high-signal guidance."
+      - "The v2 artefact contains extended narrative workflow content; v3 extracts tool-specific gates and enforceable workflow directives."
     conflicts: []
 
   governance:

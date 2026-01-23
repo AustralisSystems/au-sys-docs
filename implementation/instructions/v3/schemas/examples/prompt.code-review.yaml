@@ -12,8 +12,8 @@ artifact:
     icons: []
   content:
     governed_by:
-      doctrine_refs: ["000-DOCTRINE-Enterprise_Canonical_Execution"]
-      protocol_refs: []
+      doctrine_refs: ["enterprise.canonical_execution"]
+      protocol_refs: ["execution.golden_rule", "language.rfc2119_requirements", "quality.production_code_quality"]
       directive_refs: []
     mode: "validate_only"
     halt: true

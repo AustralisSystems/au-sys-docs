@@ -17,19 +17,69 @@ artifact:
     directives:
       - id: "eradicate_incomplete_markers"
         level: "required"
-        statement: "Do not leave TODOs, stubs, mocks, placeholders, or 'pass' as production behaviour in governed code."
-        rationale: "Incomplete code is a latent defect."
-        verification: "Scan for markers; no remaining occurrences in production paths or they are fully remediated."
+        statement: "Governed code MUST NOT contain TODOs, stubs, mocks, placeholders, demo/test data, partial implementations, or 'pass' as production behaviour."
+        rationale: "Incomplete code is a latent defect and breaks production readiness claims."
+        verification: "Marker scans show zero violations in production paths; any matches are remediated or explicitly classified as acceptable with justification."
 
       - id: "stop_on_violation"
         level: "required"
-        statement: "If a violation is found, stop further work and propose a single-item remediation plan for approval."
-        rationale: "Prevents compounding incomplete work."
-        verification: "Session halts and records findings and proposed next action."
+        statement: "If ANY zero-tolerance violation is found, execution MUST stop and the next action MUST be a single-item remediation scope approved by the operator."
+        rationale: "Prevents compounding incomplete work and enforces sequential correctness."
+        verification: "A violation triggers an explicit halt and a scoped remediation plan; no unrelated work proceeds." 
+
+      - id: "scan_schedule_mandatory"
+        level: "required"
+        statement: "A zero-tolerance scan MUST be performed (1) before starting work in a scope, (2) before modifying each file, and (3) after modifying each file."
+        rationale: "Ensures violations are detected early and do not propagate through refactors."
+        verification: "Evidence shows pre-flight scan, per-file pre-modification scan, and post-modification re-scan." 
+
+      - id: "scan_patterns_minimum"
+        level: "required"
+        statement: "Scans MUST include, at minimum: TODO, FIXME, XXX, HACK, STUB, MOCK, PLACEHOLDER, NotImplemented/NotImplementedError, 'raise NotImplementedError', and deferral language (e.g. 'for now', 'temporarily', 'later', 'future', 'needs to', 'should', 'will be')."
+        rationale: "v2 governance relied on explicit and implicit marker detection, including future-tense deferrals."
+        verification: "Recorded scan patterns include both explicit markers and deferral-language patterns." 
+
+      - id: "classify_matches"
+        level: "required"
+        statement: "Each scan match MUST be classified as (a) violation requiring remediation or (b) acceptable with explicit justification."
+        rationale: "Avoids false positives while keeping the system deterministic and auditable."
+        verification: "Scan report includes classification and justification for any retained match." 
+
+      - id: "acceptable_exceptions"
+        level: "required"
+        statement: "Exceptions are narrow: 'pass' is acceptable only in exception class definitions; documentation-only notes are acceptable only when they do not indicate deferred implementation."
+        rationale: "Some language constructs are idiomatic; deferral notes are not."
+        verification: "Any retained matches meet the stated exception criteria." 
+
+      - id: "no_hardcoded_dynamic_values"
+        level: "required"
+        statement: "Hard-coded values for dynamic configuration, credentials, endpoints, or business rules MUST be externalized (env/config/DB) unless explicitly required by the spec."
+        rationale: "Hard-coded dynamic values break deployability, portability, and security posture."
+        verification: "Configuration is externalized; no hard-coded secrets or environment-specific values exist in governed paths." 
+
+      - id: "no_demo_data_in_production_paths"
+        level: "required"
+        statement: "Demo/test data in production paths MUST be removed and replaced with real data retrieval and/or controlled fixtures in non-production paths."
+        rationale: "Demo data causes correctness failures and security leakage in production."
+        verification: "Production paths contain real data retrieval; fixtures exist only in tests or explicitly approved tooling paths." 
+
+      - id: "no_workarounds_or_temporary_solutions"
+        level: "required"
+        statement: "Workarounds or temporary solutions MUST be replaced with proper implementations before declaring completion."
+        rationale: "Temporary fixes accumulate debt and frequently become permanent production behavior."
+        verification: "No remaining workaround markers or temporary branches exist in governed paths." 
+
+      - id: "reduce_duplication"
+        level: "recommended"
+        statement: "When remediating similar issues in multiple places, prefer refactoring into shared helpers to avoid duplication (while keeping diffs minimal)."
+        rationale: "Reduces drift and future bug surface area."
+        verification: "Repeated logic is consolidated where safe; changes remain scoped and justified." 
 
     inputs: []
     outputs: []
-    notes: []
+    notes:
+      - "This protocol codifies the v2 zero-tolerance posture with explicit scan schedule and minimum pattern requirements."
+      - "This protocol governs code paths (repo://src/**). Documentation-focused sessions should use documentation protocols/instructions."
     conflicts: []
 
   governance:
