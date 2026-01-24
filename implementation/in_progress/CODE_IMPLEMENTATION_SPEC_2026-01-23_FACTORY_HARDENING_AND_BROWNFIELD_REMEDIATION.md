@@ -2,8 +2,8 @@
 
 **Version**: v1.0.0
 **Date**: 2026-01-23
-**Last Updated**: 2026-01-23 14:15:00 (Australia/Adelaide)
-**Status**: 🟡 In Progress - Session Initialized
+**Last Updated**: 2026-01-24 17:30:00 (Australia/Adelaide)
+**Status**: � Analysis Complete - Ready for Implementation
 **Priority**: P0 - CRITICAL
 **Session Type**: Code Implementation and Remediation Session
 **Instruction Files**:
@@ -322,8 +322,44 @@ While the AI tool is better at *decision making* (where things go), the Factory 
 1. **Critical Tooling Gap**: Current `scaffold_target.py` uses `shutil.copytree` or similar overwrite logic, which is high-risk for existing ("Brownfield") services.
 2. **Standardization Status**: Validation runner and path resolver are ready but not yet universally active in the `au_sys_unified_storage` capability.
 
+### New Task (2026-01-24): Digital Angels Storage & Sync Comparison Analysis
+**Status**: [COMPLETE]
+**Target**: `apps/digital-angels/src/services/storage` & `apps/digital-angels/src/services/sync`
+
+**Comparative Analysis Results**:
+- **Storage Intent**: The local `beanie_tinydb_adapter.py` and `tinydb_doc_ids.py` use a deterministic ID strategy (`blake2b`) that could solve concurrency issues in V2's `TinyDBProvider`.
+- **Sync Intent (Universal DB Mobility)**: Digital Angels demonstrates a modular pattern (`UniversalSyncManager`) that V2 must adopt to enable "True Universal Storage" — specifically syncing and migrating between SQL (ORM) and NoSQL (ODM) stores.
+- **Sync Architecture**: The current V2 monolithic sync cannot handle schema transformation (Table <-> Document). Adopting the DA "Engine" pattern is mandatory to implement the required `SchemaMapperEngine`.
+- **Failover Logic**: Local `dynamic_manager.py` tracks specific failure counts per operation type, providing richer telemetry than V2's current state.
+
+**🔍 V2 ENHANCEMENT OPPORTUNITIES (Based on Comparison)**:
+- [ ] **Universal DB Sync Engine**: Refactor V2's `SyncManager` into a modular system capable of plugging in `SchemaMapperEngine` for ORM-to-ODM translation.
+- [ ] **Postgres JSONB Provider**: Implement a new `PostgresJSONBProvider` to serve as a high-performance bridge between Relational and Document paradigms.
+- [ ] **Deterministic Concurrency**: Port the `blake2b` doc_id logic from `digital-angels` to `au_sys_unified_storage_v2`.
+- [ ] **Telemetry Enrichment**: Enhance V2's `PerformanceMonitor` and `HealthCheckOptimizer` with granular backend metrics.
+
+## 💡 V2 ENHANCEMENT RECOMMENDATIONS (Derived from Analysis)
+
+The analysis of `digital-angels` has identified several "Intents" that can further optimize the global `au_sys_unified_storage_v2` library:
+
+### 1. Model-Aware "Smart" Providers
+- **Source**: `beanie_tinydb_adapter.py` / `tinydb_doc_ids.py`
+- **Enhancement**: Add a `ModelProvider` decorator to V2 that automates Pydantic serialization and enforces deterministic hash-based IDs (using `blake2b`) to prevent race conditions in concurrent TinyDB/SQLite writes.
+
+### 2. General Target Synchronization
+- **Source**: `differential_analysis_engine.py`
+- **Enhancement**: Extend V2's `SyncAlgorithmOptimizer` to support non-storage "Sync Targets" (e.g., REST APIs, Webhooks) for mirroring configurations across varied platforms.
+
+### 3. Step-Based Sync Workflows
+- **Source**: `workflow_engine.py`
+- **Enhancement**: Implement a `SyncWorkflowEngine` in V2 to handle multi-stage synchronization sequences (Pre-check -> Analyze -> Resolve -> Apply -> Verify) as first-class citizens.
+
+### 4. Failover Logic "Reasoning" Engine
+- **Source**: `dynamic_manager.py` / `factory.py`
+- **Enhancement**: Formalize "Failover Recommendations" in `HealthCheckOptimizer` to provide structured JSON reasons for state transitions, improving observability during high-availability events.
+
 ---
 
 **Session Status**: 🟡 In Progress - Session Initialized
 
-**Last Updated**: 2026-01-23 14:15:00 (Australia/Adelaide)
+**Last Updated**: 2026-01-24 16:30:00 (Australia/Adelaide)
